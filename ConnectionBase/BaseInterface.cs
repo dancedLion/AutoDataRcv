@@ -14,7 +14,7 @@ namespace ConnectionBase
         }
 
     }
-    public interface ConnectionDriver
+    public interface IConnectionDriver
     {
         string ConnectionString
         {
@@ -28,11 +28,25 @@ namespace ConnectionBase
         {
             get;
         }
+        List<object> ItemList
+        {
+            get;
+            set;
+        }
+        int ConnectToDevice();
         int TryConnection();
+        int EstablishDataList();
+        int ReadData(int ItemId);
+        int ReadData();
+        int AcceptRequest(RequestType requesttype,object requestdata);
+        int SendData(int ItemId);
+        int SendData();
+        int TransactRequest();
+        int ParsingConnectionString();
     }
     public interface ConnectionBase
     {
-        ConnectionDriver Driver { get; set; }
+        IConnectionDriver Driver { get; set; }
         int TryConnection();
         int Connect();
         int ReadData();

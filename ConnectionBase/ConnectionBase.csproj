@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BaseInterface.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="DriverBase.cs" />
     <Compile Include="Models.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
