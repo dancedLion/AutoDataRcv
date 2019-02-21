@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-
+using System.Net.Sockets;
+using System.Net;
 namespace ConnectionBase
 {
     public class DriverBase:IConnectionDriver
@@ -53,6 +54,10 @@ namespace ConnectionBase
             return 1;
         }
         public virtual int ReadData(int ItemId) {
+            //获取itemlist
+            //获取值 
+
+            //锁定并更新值 
             return 1;
         }
         public virtual int ReadData()
@@ -93,8 +98,12 @@ namespace ConnectionBase
         {
             return 1;
         }
-
-        protected virtual int Initialize()
+        public virtual void Listening()
+        {
+            TcpListener listener = new TcpListener("127.0.0.1",1435);
+            
+        }
+        public virtual int Initialize()
         {
             try
             {
@@ -108,13 +117,16 @@ namespace ConnectionBase
                     if (TryConnection() > 0)
                     {
                         //初始化连接成功
-                        m_listening = new Thread(new ThreadStart(AcceptRequest),);
+                        m_listening = new Thread(Listening);
+                        m_listening.IsBackground = true;
                         m_processlist.Add(m_listening);
+                        m_listening.Start();
                     }
                 }
             }
             catch (Exception ex)
             {
+
             }
             return 1;
         }
