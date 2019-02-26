@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{340315DD-849A-43F6-B9E7-F277D4BAF7A0}</ProjectGuid>
+    <ProjectGuid>{870F19E1-1BC7-4D09-8A67-50D077CE801E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CHQ.RD.S7Sharp7Driver</RootNamespace>
-    <AssemblyName>CHQ.RD.S7Sharp7Driver</AssemblyName>
+    <RootNamespace>CHQ.RD.ConnectorBase</RootNamespace>
+    <AssemblyName>CHQ.RD.ConnectorBase</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -40,25 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContract.cs" />
-    <Compile Include="S7ByteConvert.cs" />
-    <Compile Include="S7Sharp7Driver.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sharp7.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DataContract\DataContract.csproj">
-      <Project>{e84f2e6a-a6b4-4cce-b385-7bf71d275538}</Project>
-      <Name>DataContract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DriverBase\DriverBase.csproj">
-      <Project>{ce1d7b60-53de-4d8d-bd9c-9d5e2b8ea3f4}</Project>
-      <Name>DriverBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GeneralOPs\GeneralOPs.csproj">
-      <Project>{1c37dead-2077-44d4-8ea6-4a19217706e4}</Project>
-      <Name>GeneralOPs</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

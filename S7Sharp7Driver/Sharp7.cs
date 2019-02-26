@@ -40,7 +40,7 @@ using Windows.Storage.Streams;
 using System.Net.Sockets;
 #endif
 
-namespace S7Sharp7Driver
+namespace CHQ.RD.S7Sharp7Driver
 {
 
     #region [Async Sockets UWP(W10,IoT,Phone)/Windows 8/Windows 8 Phone]

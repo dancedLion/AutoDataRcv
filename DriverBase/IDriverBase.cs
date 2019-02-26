@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DriverBase
+namespace CHQ.RD.DriverBase
 {
     public interface IDriverBase
     {

@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "S7Sharp7Driver", "S7Sharp7D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralOPs", "GeneralOPs\GeneralOPs.csproj", "{1C37DEAD-2077-44D4-8EA6-4A19217706E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectorBase", "ConnectorBase\ConnectorBase.csproj", "{870F19E1-1BC7-4D09-8A67-50D077CE801E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{1C37DEAD-2077-44D4-8EA6-4A19217706E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C37DEAD-2077-44D4-8EA6-4A19217706E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C37DEAD-2077-44D4-8EA6-4A19217706E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{870F19E1-1BC7-4D09-8A67-50D077CE801E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{870F19E1-1BC7-4D09-8A67-50D077CE801E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{870F19E1-1BC7-4D09-8A67-50D077CE801E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{870F19E1-1BC7-4D09-8A67-50D077CE801E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-namespace DriverBase
+namespace CHQ.RD.DriverBase
 {
     public class DriverBase
     {
@@ -27,7 +27,7 @@ namespace DriverBase
             return 1;
         }
 
-        public virtual object ReadDeviceData(int ItemId)
+        public virtual object ReadDeviceData(object Item)
         {
             return 1;
         }

@@ -6,7 +6,7 @@ using DataContract;
 using DriverBase;
 using GeneralOPs;
 using System.Net;
-namespace S7Sharp7Driver
+namespace CHQ.RD.S7Sharp7Driver
 {
     class DataContract
     {
@@ -18,7 +18,7 @@ namespace S7Sharp7Driver
         public int RackNo;
         public int SlotNo;
     }
-    public class S7DataItem
+    public class S7DataItemSetting
     {
         public int Id;
         public S7Client.S7DataItem DataItem;

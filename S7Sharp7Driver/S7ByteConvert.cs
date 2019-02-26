@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 
-namespace S7Sharp7Driver
+namespace CHQ.RD.S7Sharp7Driver
 {
     public class S7ByteConvert
     {
