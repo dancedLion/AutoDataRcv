@@ -10,8 +10,8 @@ namespace CHQ.RD.DriverBase
     {
         protected Thread m_thread;
         protected List<IAddressSetting> m_items;
-        protected string m_host;
-        protected string m_port;
+        //protected object m_host;
+        //protected string m_port;
         public DriverBase()
         {
             
@@ -26,11 +26,18 @@ namespace CHQ.RD.DriverBase
         {
             return 1;
         }
+        public virtual object ReadData(int ItemId)
+        {
+            return 1;
+        }
 
         public virtual object ReadDeviceData(object Item)
         {
             return 1;
         }
-
+        public virtual int SetStatus(object status)
+        {
+            return 1;
+        }
     }
 }

@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContract.cs" />
     <Compile Include="S7ByteConvert.cs" />
     <Compile Include="S7Sharp7Driver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -100,7 +100,7 @@ namespace ConnectionBase
         }
         public virtual void Listening()
         {
-            TcpListener listener = new TcpListener("127.0.0.1",1435);
+            //TcpListener listener = new TcpListener("127.0.0.1",1435);
             
         }
         public virtual int Initialize()
@@ -131,5 +131,9 @@ namespace ConnectionBase
             return 1;
         }
 
+        public virtual int SetStatus(object status)
+        {
+            return 1;
+        }
     }
 }
