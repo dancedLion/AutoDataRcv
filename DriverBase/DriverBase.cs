@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using System.Threading;
 namespace CHQ.RD.DriverBase
 {
-    public class DriverBase
+    public class DriverBase:IDriverBase
     {
         protected Thread m_thread;
-        protected List<IAddressSetting> m_items;
+        //protected List<IAddressSetting> m_items;
         //protected object m_host;
         //protected string m_port;
         public DriverBase()

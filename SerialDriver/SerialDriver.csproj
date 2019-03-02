@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{870F19E1-1BC7-4D09-8A67-50D077CE801E}</ProjectGuid>
+    <ProjectGuid>{89A00632-3401-4958-A581-ABFE4E5CD364}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CHQ.RD.ConnectorBase</RootNamespace>
-    <AssemblyName>CHQ.RD.ConnectorBase</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>CHQ.RD.SerialDriver</RootNamespace>
+    <AssemblyName>CHQ.RD.SerialDriver</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -37,16 +37,12 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnDriverBase.cs" />
-    <Compile Include="ConnectBase.cs" />
-    <Compile Include="IConnectorBase.cs" />
+    <Compile Include="SerialDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataContract\DataContract.csproj">
@@ -60,14 +56,6 @@
     <ProjectReference Include="..\GeneralOPs\GeneralOPs.csproj">
       <Project>{1c37dead-2077-44d4-8ea6-4a19217706e4}</Project>
       <Name>GeneralOPs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\S7Sharp7Driver\S7Sharp7Driver.csproj">
-      <Project>{340315dd-849a-43f6-b9e7-f277d4baf7a0}</Project>
-      <Name>S7Sharp7Driver</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SerialDriver\SerialDriver.csproj">
-      <Project>{89a00632-3401-4958-a581-abfe4e5cd364}</Project>
-      <Name>SerialDriver</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

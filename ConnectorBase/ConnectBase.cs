@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CHQ.RD.ConnectorBase
 {
-    public class Class1
+    public class ConnectBase
     {
     }
 }

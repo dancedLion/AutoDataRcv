@@ -8,13 +8,16 @@ namespace CHQ.RD.DriverBase
 {
     public interface IDriverBase
     {
-
-    }
-
-    public interface IAddressSetting
-    {
-        int Id { get; set; }
-        string ValueType { get; set; }
-        object Address { get; set; }
+        int TransMode { get; set; } //数据传输模式，0-等待读取 1-主动发送
+        int ReadMode { get; set; }  //从设备读取数据的模式，0-由连接器请求 1-连接器请求后不间断读取
+        int ReadInterval { get; set; }  //从设备读取数据的时间间隔
+        object ReadData(int ItemId);
+        /// <summary>
+        /// 获取设置
+        /// </summary>
+        /// <param name="host">主机设置</param>
+        /// <param name="list">地址列表</param>
+        /// <returns></returns>
+        int AcceptSetting(object host, object list);
     }
 }
