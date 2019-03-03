@@ -14,6 +14,7 @@ namespace CHQ.RD.DataContract
         MB,
         PE
     }
+    //基础类型，上升为所有驱动所使用的类型
     public enum S7DataType
     {
         BIT,

@@ -110,12 +110,12 @@ namespace CHQ.RD.S7Sharp7Driver
                 {
                     S7SharpReadItem ssri = new S7SharpReadItem();
                     ssri.Id = ssi.Id;
-                    ssri.ValueType = ssi.ValueType;
-                    ssri.Address.BlockArea = m_dbtype[ssi.Address.BlockType.ToString()];
-                    ssri.Address.BlockNo = ssi.Address.BlockNo;
-                    ssri.Address.Start = ssi.Address.Start;
+                    ssri.ValueType =(S7DataType)Enum.Parse(typeof(S7DataType), ssi.ValueType);
+                    ssri.Address.BlockArea = m_dbtype[((S7Address)ssi.Address).BlockType.ToString()];
+                    ssri.Address.BlockNo = ((S7Address)ssi.Address).BlockNo;
+                    ssri.Address.Start = ((S7Address)ssi.Address).Start;
                     ssri.Address.WordLen = m_valuetype[ssi.ValueType.ToString()];
-                    ssri.Address.DataLen = ssi.ValueType == S7DataType.BIT ? 1 : (ssi.Address.DataLen / S7.DataSizeByte(m_valuetype[ssi.ValueType.ToString()]));
+                    ssri.Address.DataLen = ssri.ValueType == S7DataType.BIT ? 1 : (((S7Address)ssi.Address).DataLen / S7.DataSizeByte(m_valuetype[ssi.ValueType.ToString()]));
                     m_itemlist.Add(ssri);
                 }
                 //每个值的试读
