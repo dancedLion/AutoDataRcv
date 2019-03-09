@@ -4,7 +4,9 @@
     <Assemblies Id="" DllFile=""/>
   </DriverAssemblies>
   <ConnDrivers>
-    <Driver Id="1" Type="CHQ.RD.S7SharpDriver.S7SharpDriver" Assembly="CHQ.RD.S7SharpDriver.dll"/> 
+    <Driver Id="1" Type="CHQ.RD.S7SharpDriver.S7SharpDriver" Assembly="CHQ.RD.S7SharpDriver.dll">
+      <host></host>
+    </Driver>
   </ConnDrivers>
   <AppSettings>
     <DataItems>

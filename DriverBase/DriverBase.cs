@@ -12,12 +12,30 @@ namespace CHQ.RD.DriverBase
         //protected List<IAddressSetting> m_items;
         //protected object m_host;
         //protected string m_port;
+        int m_transmode;
+        int m_readmode;
+        int m_readinterval;
+        public int TransMode
+        {
+            get { return m_transmode; }
+            set { m_transmode = value; }
+        }
+        public int ReadMode
+        {
+            get { return m_readmode; }
+            set { m_readmode = value; }
+        }
+        public int ReadInterval
+        {
+            get { return m_readinterval; }
+            set { m_readinterval = value; }
+        }
         public DriverBase()
         {
             
         }
 
-        public virtual int SettingAddress()
+        public virtual int AcceptSetting(object host,object list)
         {
             return 1;
         }
