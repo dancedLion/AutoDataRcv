@@ -22,14 +22,17 @@ using System.Text;
 using CHQ.RD.DriverBase;
 using CHQ.RD.DataContract;
 using System.Reflection;    //创建驱动实例用
+using GeneralOPs;
+using System.Data;
 namespace CHQ.RD.ConnectorBase
 {
     public class ConnDriverBase
     {
 
-        public ConnDriverBase(int id)
+        public ConnDriverBase(int id,ConnectorBase host)
         {
-
+            m_id = id;
+            m_host = host;
         }
         int m_id = -1;
         public int ID
@@ -65,8 +68,10 @@ namespace CHQ.RD.ConnectorBase
             get { return readinterval; }
             set { readinterval = value; }
         }
-
-
+        ConnDriverSetting m_conndriverset;
+        DriverSetting m_driverset;
+        List<ConnDriverDataItem> m_dataitems;
+        ConnectorBase m_host;
     
 
         public virtual int SetStatus(ConnDriverStatus status)
@@ -81,9 +86,16 @@ namespace CHQ.RD.ConnectorBase
         /// 传入driver中的设置以此为基础
         /// </summary>
         /// <returns></returns>
-        public int GetSettings()
+        public virtual int GetSettings()
         {
-            return 1;
+            int ret = 0;
+            m_conndriverset = Ops.getConnDriverSetting(m_id);
+            if (m_conndriverset == null)
+            {
+                ret = -1;
+                TxtLogWriter.WriteErrorMessage("ConnDriver.GetSettings(" + m_id.ToString() + "):" + "获取设置失败！");
+            }
+            return ret;
         }
         /// <summary>
         /// 建立变量列表
@@ -93,7 +105,20 @@ namespace CHQ.RD.ConnectorBase
         /// <returns></returns>
         public virtual int EstableItemList()
         {
-            return -1;
+            int ret = 0;
+            DataTable dt = Ops.getConnDriverDataItems(m_id);
+            m_dataitems = new List<ConnDriverDataItem>();
+            foreach(DataRow dr in dt.Rows)
+            {
+                ConnDriverDataItem item = new ConnDriverDataItem
+                {
+                    Id = int.Parse(dr["id"].ToString()),
+                    Address = dr["address"].ToString(),
+                    ValueType = dr["valuetype"].ToString()
+                };
+                m_dataitems.Add(item);
+            }
+            return ret; ;
         }
         /// <summary>
         /// 连接到驱动
@@ -101,19 +126,41 @@ namespace CHQ.RD.ConnectorBase
         /// <returns>1-成功，负数表示失败</returns>
         public virtual int ConnectToDriver()
         {
+            
             return -1;
         }
         /// <summary>
         /// 读取数据，由于是dynamic类型，所以返回object，由调用程序负责根据valuetype进行转换
+        /// 如果值更新，则发生值 改变事件
         /// </summary>
         /// <returns></returns>
         public virtual object ReadData()
         {
+            foreach(ConnDriverDataItem item in m_dataitems)
+            {
+                object value = ReadData(item.Id);
+                object curvalue = m_host.ValueList[item.Id];
+                if (value == null)
+                {
+                    if (curvalue != null)
+                    {
+                        //引起值变化
+                    }
+                }
+                else
+                {
+                    if (curvalue == null || curvalue != value)
+                    {
+                        //引起值变化
+                    }
+                }
+            }
             return null;
         }
         public virtual object ReadData(int itemid)
         {
-            return null;
+            object value = m_driver.ReadData(itemid);
+            return value;
         }
         /// <summary>
         /// 初始化
@@ -123,7 +170,9 @@ namespace CHQ.RD.ConnectorBase
         public virtual int Init()
         {
             //加载驱动
-            m_driver = (IDriverBase)m_driverclass.Assembly.CreateInstance(m_driverclass.ToString()); 
+            m_driver = (IDriverBase)m_driverclass.Assembly.CreateInstance(m_driverclass.ToString());
+            m_driver.AcceptSetting(m_conndriverset.DriverSet.Host, m_dataitems);
+
             //m_driver.AcceptSetting()
             return -1;
         }

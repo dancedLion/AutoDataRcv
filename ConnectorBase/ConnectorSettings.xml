@@ -1,19 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Connector>
   <DriverAssemblies>
-    <Assemblies Id="" DllFile=""/>
+    <Assemblies Type="CHQ.RD.S7SharpDriver.S7SharpDriver" DllFile="CHQ.RD.S7SharpDriver.dll"/>
   </DriverAssemblies>
   <ConnDrivers>
-    <Driver Id="1" Type="CHQ.RD.S7SharpDriver.S7SharpDriver" Assembly="CHQ.RD.S7SharpDriver.dll">
-      <host></host>
-    </Driver>
+    <ConnDriver Id="1" Name="某个连接" Type="CHQ.RD.S7SharpDriver.S7SharpDriver" ReadInterval="1000" ReadMode="1" TransMode="1">
+      <Driver Host="Host=192.168.1.4;Port=102;RackNo=0;SlotNo=1" ReadInterval="1000" ReadMode="1" TransMode="1"/>
+    </ConnDriver>
   </ConnDrivers>
+  <DataItems>
+    <Item Id="1" ConnId="1" Name="" ValueType="" TransSig="" Address=""/>
+  </DataItems>
   <AppSettings>
-    <DataItems>
-      <ConnDriver>
-        <Item Id="1" ValueType="" Sig="" Address=""/>
-      </ConnDriver>
-    </DataItems>
     <AppSet>
       <Sending Id="" Server="" Port="" Via="UDP" UsingSig="1" Items="" Interval="2000"/>
       <Listening Id="" Ip="" Port="" MaxConnection=""/>

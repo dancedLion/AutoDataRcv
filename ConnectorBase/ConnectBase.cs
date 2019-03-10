@@ -13,7 +13,7 @@ namespace CHQ.RD.ConnectorBase
         protected Thread manageThread;
         protected Thread sendingThread;
         protected Thread listenThread;
-        
+        public Dictionary<int, object> ValueList;
         protected List<ConnDriverBase> connDriverList;
         int m_id= -1;
         public int ConnectorId

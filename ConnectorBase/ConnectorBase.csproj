@@ -63,6 +63,7 @@
       <DependentUpon>FrmDataItemsView.cs</DependentUpon>
     </Compile>
     <Compile Include="IConnectorBase.cs" />
+    <Compile Include="Ops.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
