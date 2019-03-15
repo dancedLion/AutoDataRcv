@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CHQ.RD.DriverBase
 {
-    public interface IDriverBase
+    public interface IDriverBase:IDisposable
     {
         int TransMode { get; set; } //数据传输模式，0-等待读取 1-主动发送
         int ReadMode { get; set; }  //从设备读取数据的模式，0-由连接器请求 1-连接器请求后不间断读取

@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using CHQ.RD.DriverBase;
 using CHQ.RD.DataContract;
+using System.Threading;
 using System.Reflection;    //创建驱动实例用
 using GeneralOPs;
 using System.Data;
@@ -28,55 +29,105 @@ namespace CHQ.RD.ConnectorBase
 {
     public class ConnDriverBase
     {
-
-        public ConnDriverBase(int id,ConnectorBase host)
+        public ConnDriverBase(int id, ConnectorBase host)
         {
             m_id = id;
             m_host = host;
         }
+
+        #region 局部变量及相关属性设置
+        //驱动数据读取时的错误标记
+        public const string ErrorString = "ERROR";
+        //驱动连接器设置变量
+        ConnDriverSetting m_conndriverset;
+        //驱动设置变量
+        DriverSetting m_driverset;
+        //数据项列表
+        List<ConnDriverDataItem> m_dataitems;
+        //连接管理器宿主
+        ConnectorBase m_host;
+        //数据发生变化事件
+        DataChangeEventHandler m_datachangehandler;
+        //数据处理线程
+        Timer m_datareader;
+        Timer m_errortransact;
+        //驱动接口，用以实现发送设置，读取变量
+        IDriverBase m_driver;
+        //驱动类型，用于初始化驱动
+        Type m_driverclass;
+        /// <summary>
+        /// 驱动连接器状态变量
+        /// </summary>
+        ConnDriverStatus m_status = ConnDriverStatus.None;
+        /// <summary>
+        /// 不同种类的错误计数
+        /// </summary>
+        Dictionary<int, int> m_errorCount;
+        /// <summary>
+        /// 错误日志文件路径
+        /// </summary>
+        string errorfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\ConnDriverError.log";
+        /// <summary>
+        /// 驱动连接器运行日志
+        /// 用于记录用于调试的信息
+        /// </summary>
+        string logfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\ConnDriver.log";
+        //读取间隔
+        int m_readinterval = -1;
+        //检测异常时间间隔
+        int m_errortransactinterval = 100000;
+        //驱动连接器ID
         int m_id = -1;
+        int m_readmode = -1;
+        int m_transmode = -1;
+        /// <summary>
+        /// 驱动连接器ID，初始化时赋值
+        /// </summary>
         public int ID
         {
             get { return m_id; }
         }
-        IDriverBase m_driver;
+        /// <summary>
+        /// 驱动器
+        /// </summary>
         public IDriverBase Driver
         {
             get { return m_driver; }
         }
-        Type m_driverclass;
+        /// <summary>
+        /// 驱动类型
+        /// </summary>
         public Type DriverClass
         {
             get { return m_driverclass; }
             set { m_driverclass = value; }
         }
-        ConnDriverStatus m_status = ConnDriverStatus.None;
+        /// <summary>
+        /// 驱动连接器状态
+        /// </summary>
         public ConnDriverStatus Status
         {
             get { return m_status; }
             set { SetStatus(value); }
         }
-        Dictionary<int, int> m_errorCount;
-        string errorfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\ConnDriverError.log";
-        string logfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\ConnDriver.log";
-        int readinterval = -1;
+
         /// <summary>
         /// 读取数据的间隔
         /// </summary>
         public int ReadInterval
         {
-            get { return readinterval; }
-            set { readinterval = value; }
+            get { return m_readinterval; }
+            set { m_readinterval = value; }
         }
-        ConnDriverSetting m_conndriverset;
-        DriverSetting m_driverset;
-        List<ConnDriverDataItem> m_dataitems;
-        ConnectorBase m_host;
-    
+        public event DataChangeEventHandler DataChanged{
+            add { m_datachangehandler += value; }
+            remove { m_datachangehandler -= value; }
+        }
+
+        #endregion
 
         public virtual int SetStatus(ConnDriverStatus status)
         {
-
             return -1;
         }
         /// <summary>
@@ -94,6 +145,13 @@ namespace CHQ.RD.ConnectorBase
             {
                 ret = -1;
                 TxtLogWriter.WriteErrorMessage("ConnDriver.GetSettings(" + m_id.ToString() + "):" + "获取设置失败！");
+            }
+            else
+            {
+                m_readmode = m_conndriverset.ReadMode;
+                m_readinterval = m_conndriverset.ReadInterval;
+                m_transmode = m_conndriverset.TransMode;
+                m_driverclass = Type.GetType(m_conndriverset.DriverType);
             }
             return ret;
         }
@@ -123,44 +181,101 @@ namespace CHQ.RD.ConnectorBase
         /// <summary>
         /// 连接到驱动
         /// </summary>
-        /// <returns>1-成功，负数表示失败</returns>
-        public virtual int ConnectToDriver()
+        /// <returns>0-成功，负数表示失败</returns>
+        public virtual int TryDriver()
         {
-            
-            return -1;
+            int ret = -1;
+            using (IDriverBase tmp = (IDriverBase)m_driverclass.Assembly.CreateInstance(m_driverclass.FullName))
+            {
+                try
+                {
+                    if (m_driverclass != null)
+                    {
+                        ret = tmp.AcceptSetting(m_driverset.Host, m_dataitems);
+                        if (ret != 0)
+                        {
+                            throw new Exception("尝试连接时错误！");
+                        }
+                        object value = tmp.ReadData(m_dataitems[0].Id);
+                        if (value.ToString() == ErrorString )
+                        {
+                            throw new Exception("试读数据时出错！");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("创建驱动错误！");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TxtLogWriter.WriteErrorMessage("ConnDriverBase.TryDriver(" + m_id.ToString() + "):" + ex.Message);
+                    ret = -1;
+                }
+            }
+            return ret;
         }
         /// <summary>
         /// 读取数据，由于是dynamic类型，所以返回object，由调用程序负责根据valuetype进行转换
         /// 如果值更新，则发生值 改变事件
         /// </summary>
         /// <returns></returns>
-        public virtual object ReadData()
+        public virtual void ReadData(object state)
         {
-            foreach(ConnDriverDataItem item in m_dataitems)
+            try
             {
-                object value = ReadData(item.Id);
-                object curvalue = m_host.ValueList[item.Id];
-                if (value == null)
+                foreach (ConnDriverDataItem item in m_dataitems)
                 {
-                    if (curvalue != null)
+                    object value = ReadData(item.Id);
+                    object curvalue = m_host.ValueList[item.Id];
+                    if (value == null)
                     {
-                        //引起值变化
+                        if (curvalue != null)
+                        {
+                            //引起值变化
+                            onDataChanged(this, new DataChangeEventArgs(item.Id, value));
+                        }
                     }
-                }
-                else
-                {
-                    if (curvalue == null || curvalue != value)
+                    else
                     {
-                        //引起值变化
+                        if (value.ToString() == ErrorString)
+                        {
+                            continue;
+                        }
+                        if (curvalue == null || curvalue != value)
+                        {
+                            //引起值变化
+                            onDataChanged(this, new DataChangeEventArgs(item.Id, value));
+                        }
                     }
                 }
             }
-            return null;
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "ConnDriverBase.ReadData(" + m_id.ToString() + "):" + ex.Message);
+            }
+                //Thread.Sleep(m_readinterval);
+            
+            //return null;
         }
         public virtual object ReadData(int itemid)
         {
-            object value = m_driver.ReadData(itemid);
-            return value;
+            object ret = null;
+            try
+            {
+                object value = m_driver.ReadData(itemid);
+                if (value.ToString() == ErrorString)
+                {
+
+                    throw new Exception("读取数据时发生错误！");
+                }
+                return value;
+            }
+            catch(Exception ex)
+            {
+                ret = null;
+            }
+            return ret;
         }
         /// <summary>
         /// 初始化
@@ -170,11 +285,21 @@ namespace CHQ.RD.ConnectorBase
         public virtual int Init()
         {
             //加载驱动
+            int ret = -1;
             m_driver = (IDriverBase)m_driverclass.Assembly.CreateInstance(m_driverclass.ToString());
-            m_driver.AcceptSetting(m_conndriverset.DriverSet.Host, m_dataitems);
-
+            ret=m_driver.AcceptSetting(m_conndriverset.DriverSet.Host, m_dataitems);
+            //设置状态
+            if (ret != 0)
+            {
+                TxtLogWriter.WriteErrorMessage("ConnDriverBase.Init(" + m_id.ToString() + "):初始化失败");
+            }
+            else
+            {
+                m_status = ConnDriverStatus.Inited;
+            }
             //m_driver.AcceptSetting()
-            return -1;
+            return ret;
+
         }
         /// <summary>
         /// 开始运行连接器，即开始向驱动索要数据
@@ -182,8 +307,17 @@ namespace CHQ.RD.ConnectorBase
         /// <returns></returns>
         public virtual int Start()
         {
+            int ret = 0;
+            try {
+                m_datareader = new Timer(ReadData, null, m_readinterval, m_readinterval);
+                //m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
+            
+            }
+            catch(Exception ex)
+            {
 
-            return -1;
+            }
+            return ret; 
         }
         /// <summary>
         /// 暂停驱动读数
@@ -191,7 +325,8 @@ namespace CHQ.RD.ConnectorBase
         /// <returns></returns>
         public virtual int Pause()
         {
-            return -1;
+            int ret = -1;
+            return ret;
         }
         /// <summary>
         /// 停止驱动取数，主要是为了变更变量列表
@@ -217,5 +352,70 @@ namespace CHQ.RD.ConnectorBase
         {
             return -1;
         }
+
+        /// <summary>
+        /// 错误处理
+        /// 当某个错误号达到10次以上时，将进行重连
+        /// </summary>
+        /// <param name="state"></param>
+        public virtual void ErrorTransact(object state)
+        {
+            try
+            {
+                foreach (KeyValuePair<int, int> m in m_errorCount)
+                {
+                    if (m.Value >= 10)
+                    {
+                        //置状态
+
+                        //
+                        if (m_datareader != null)
+                        {
+                            m_datareader.Dispose();
+                            m_datareader = null;
+                        }
+                        //准备重新启动并初始化驱动
+                        if (TryDriver() == 0)
+                        {
+                            this.Stop();
+                            this.Close();
+                            this.Init();
+                            this.Start();
+                            if (m_status == ConnDriverStatus.Running)
+                            {
+                                m_errorCount[m.Key] = 0;
+                            }
+                            else
+                            {
+                                throw new Exception("尝试连接驱动成功，但重新初始化时发生错误！");
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            throw new Exception("尝试连接驱动失败！");
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "ConnDriverBase.ErrorTransact(" + m_id.ToString() + "):"+ex.Message);
+            }
+        }
+
+        #region 内部事件和方法
+        void onDataChanged(object sender,DataChangeEventArgs e)
+        {
+            //写值
+            m_host.ValueList[e.ItemId] = e.Value;
+            //触发handler
+            if(m_datachangehandler!=null)
+            {
+                m_datachangehandler(sender, e);
+            }
+        }
+        #endregion
+
     }
 }

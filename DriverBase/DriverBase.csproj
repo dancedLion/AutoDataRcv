@@ -46,5 +46,15 @@
     <Compile Include="IDriverBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataContract\DataContract.csproj">
+      <Project>{e84f2e6a-a6b4-4cce-b385-7bf71d275538}</Project>
+      <Name>DataContract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeneralOPs\GeneralOPs.csproj">
+      <Project>{1c37dead-2077-44d4-8ea6-4a19217706e4}</Project>
+      <Name>GeneralOPs</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

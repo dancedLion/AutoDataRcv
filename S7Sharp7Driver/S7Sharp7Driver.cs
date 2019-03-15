@@ -41,7 +41,7 @@ namespace CHQ.RD.S7Sharp7Driver
             //初始化列表
             m_itemlist = new List<S7SharpReadItem>();
             
-            m_items = new List<IAddressSetting>();
+            //m_items = new List<IAddressSetting>();
             m_host = new S7TCPHost();
             m_client = new S7Client();
             m_dbtype = new Dictionary<string, int>();

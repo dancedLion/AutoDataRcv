@@ -59,6 +59,10 @@ namespace GeneralOPs
         {
             WriteMessage(DefaultErrorFilename, message);
         }
+        public static void WriteErrorMessage(string filename,string message)
+        {
+            WriteMessage(filename, message);
+        }
         /// <summary>
         /// 写入指定文件
         /// </summary>

@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{0A4D5FD2-9026-4039-BCB3-C7E02E1BB961}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectionBase", "ConnectionBase\ConnectionBase.csproj", "{D1F8BF12-20D8-40B9-A1FF-5CD13F7C7F66}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverBase", "DriverBase\DriverBase.csproj", "{CE1D7B60-53DE-4D8D-BD9C-9D5E2B8EA3F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataContract", "DataContract\DataContract.csproj", "{E84F2E6A-A6B4-4CCE-B385-7BF71D275538}"
@@ -29,10 +27,6 @@ Global
 		{0A4D5FD2-9026-4039-BCB3-C7E02E1BB961}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A4D5FD2-9026-4039-BCB3-C7E02E1BB961}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A4D5FD2-9026-4039-BCB3-C7E02E1BB961}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1F8BF12-20D8-40B9-A1FF-5CD13F7C7F66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1F8BF12-20D8-40B9-A1FF-5CD13F7C7F66}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1F8BF12-20D8-40B9-A1FF-5CD13F7C7F66}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1F8BF12-20D8-40B9-A1FF-5CD13F7C7F66}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE1D7B60-53DE-4D8D-BD9C-9D5E2B8EA3F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE1D7B60-53DE-4D8D-BD9C-9D5E2B8EA3F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE1D7B60-53DE-4D8D-BD9C-9D5E2B8EA3F4}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="ConnDriverBase.cs" />
     <Compile Include="ConnectBase.cs" />
+    <Compile Include="ConnectorEvent.cs" />
     <Compile Include="FrmConnectorBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +95,11 @@
       <Project>{89a00632-3401-4958-a581-abfe4e5cd364}</Project>
       <Name>SerialDriver</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmConnectorBase.resx">
+      <DependentUpon>FrmConnectorBase.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

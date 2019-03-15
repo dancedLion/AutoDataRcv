@@ -75,5 +75,14 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConnectorBase\ConnectorBase.csproj">
+      <Project>{870f19e1-1bc7-4d09-8a67-50d077ce801e}</Project>
+      <Name>ConnectorBase</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

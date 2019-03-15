@@ -1,4 +1,18 @@
-﻿using System;
+﻿/**************自我保护*********************
+ * 驱动和驱动连接器的数据读取模式
+ * 驱动：
+ * ReadMode->0:按照interval读取主机（硬件）数据,1-主动读取数，忽略interval
+ * TransMode->0:由连接器来读,1-主动发送给连接器，需要连接器配合
+ * 驱动连接器：
+ * ReadMode->0:读取驱动中的数据，1->由指定的程序来接收驱动发送的数据
+ * TransMode->0:由驱动管理器来读，1->更新驱动管理器的数据
+ * 连接管理器：
+ * 当ReadMode为0时读取数据（驱动连接器的模式设置为0）并更新，当为1时，啥也不用做
+ * **连接管理器才能往外发送数据
+ * **连接管理器负责报警事件
+ * **连接管理器负责附加事件
+ */ 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +23,10 @@ namespace CHQ.RD.DataContract
     {
     }
 
+
+
+
+
     public enum ConnDriverStatus
     {
         None,
@@ -16,16 +34,26 @@ namespace CHQ.RD.DataContract
         Running,
         Pausing,
         Stoped,
-        Closed
+        Closed,
+        Error
     }
 
-
+    public enum DriverStatus
+    {
+        None,
+        Inited,
+        Running,
+        Stoped,
+        Closed,
+        Error
+    }
     public class DriverSetting
     {
         public string Host;
         public int ReadInterval;
         public int ReadMode;
         public int TransMode;
+        public int ErrorTransactInterval;
     }
     public class ConnDriverSetting
     {
