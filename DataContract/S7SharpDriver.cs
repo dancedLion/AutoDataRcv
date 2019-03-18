@@ -14,16 +14,6 @@ namespace CHQ.RD.DataContract
         TCP,
         MPI
     }
-    public enum S7SharpHostStatus
-    {
-        NOTCONNECT,
-        CONNECTED,
-        RUNNING,
-        PAUSING,
-        RUNNINGWITHERROR,
-        REQUIREINIT
-    }
-
     public class S7SharpReadAddress
     {
         public int BlockArea;

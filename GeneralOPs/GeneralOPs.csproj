@@ -45,5 +45,11 @@
     <Compile Include="TxtLogWriter.cs" />
     <Compile Include="XMLOper.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataContract\DataContract.csproj">
+      <Project>{e84f2e6a-a6b4-4cce-b385-7bf71d275538}</Project>
+      <Name>DataContract</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

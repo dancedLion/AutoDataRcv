@@ -77,9 +77,9 @@ namespace CHQ.RD.ConnectorBase
         public string Name;
         public string Memo;
     }
-    class AssemblyFile
+    public class AssemblyFile
     {
-        public string Id;
+        public int Id;
         public string DriverName;
         public string ClassName;
         public string AssemblyInfo;

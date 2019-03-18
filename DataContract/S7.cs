@@ -46,6 +46,10 @@ namespace CHQ.RD.DataContract
         public int Port;
         public int RackNo;
         public int SlotNo;
+        public override string ToString()
+        {
+            return "IPAddress=" + IPAddress + ";Port=" + Port.ToString() + ";RackNo=" + RackNo.ToString() + ";SlotNo=" + SlotNo.ToString();
+        }
     }
 
 }

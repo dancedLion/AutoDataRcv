@@ -63,6 +63,24 @@
     <Compile Include="FrmDataItemsView.Designer.cs">
       <DependentUpon>FrmDataItemsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmDriverClassEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDriverClassEdit.Designer.cs">
+      <DependentUpon>FrmDriverClassEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDriverClassView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDriverClassView.Designer.cs">
+      <DependentUpon>FrmDriverClassView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSelectClassFromFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSelectClassFromFile.Designer.cs">
+      <DependentUpon>FrmSelectClassFromFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="IConnectorBase.cs" />
     <Compile Include="Ops.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,6 +117,15 @@
   <ItemGroup>
     <EmbeddedResource Include="FrmConnectorBase.resx">
       <DependentUpon>FrmConnectorBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDriverClassEdit.resx">
+      <DependentUpon>FrmDriverClassEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDriverClassView.resx">
+      <DependentUpon>FrmDriverClassView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSelectClassFromFile.resx">
+      <DependentUpon>FrmSelectClassFromFile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

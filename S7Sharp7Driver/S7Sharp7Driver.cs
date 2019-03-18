@@ -22,17 +22,11 @@ namespace CHQ.RD.S7Sharp7Driver
         Dictionary<string, int> m_dbtype;
         Dictionary<string, int> m_datalen;
         Dictionary<int, int> m_errorcount;
+        string errorfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\S7Sharp7DriverError.log";
+        string logfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\S7Sharp7Driver.log";
 
-        S7SharpHostStatus m_status;
-        public S7SharpHostStatus DriverStatus
+        public override int SetStatus(DriverStatus status)
         {
-            get { return m_status; }
-            set { SetStatus(value); }
-        }
-
-        public override int SetStatus(object status)
-        {
-
             return base.SetStatus(status);
         }
 
@@ -69,7 +63,7 @@ namespace CHQ.RD.S7Sharp7Driver
             m_datalen.Add("UINT32", 4);
             m_datalen.Add("INT", 4);
         }
-        public void Dispose()
+        public override void Dispose()
         {
             m_valuetype.Clear();
             m_dbtype.Clear();
@@ -91,14 +85,19 @@ namespace CHQ.RD.S7Sharp7Driver
             m_itemlist = null;
             m_errorcount = null;
         }
-        public int AcceptSetting(object host,object list)
+        /// <summary>
+        /// 对传入的设置进行转化
+        /// </summary>
+        /// <param name="host">主机</param>
+        /// <param name="list">变量列表</param>
+        /// <returns></returns>
+        public override int AcceptSetting(object host,object list)
         {
-            int ret = 1;
-            
+            int ret = -1;
             try
             {
                 m_itemlist.Clear();
-                m_host = (S7TCPHost)host;
+                m_host = (S7TCPHost)ParsingHost(host.ToString());
                 IPAddress hostip = IPAddress.Parse(m_host.IPAddress);
                 List<S7SharpItem> tmp_list = (List<S7SharpItem>)list;
                 ret = m_client.ConnectTo(m_host.IPAddress, m_host.RackNo, m_host.SlotNo);
@@ -111,25 +110,23 @@ namespace CHQ.RD.S7Sharp7Driver
                     S7SharpReadItem ssri = new S7SharpReadItem();
                     ssri.Id = ssi.Id;
                     ssri.ValueType =(S7DataType)Enum.Parse(typeof(S7DataType), ssi.ValueType);
-                    ssri.Address.BlockArea = m_dbtype[((S7Address)ssi.Address).BlockType.ToString()];
-                    ssri.Address.BlockNo = ((S7Address)ssi.Address).BlockNo;
-                    ssri.Address.Start = ((S7Address)ssi.Address).Start;
+                    ssri.Address.BlockArea = m_dbtype[((S7Address)ParsingAddress(ssi.Address)).BlockType.ToString()];
+                    ssri.Address.BlockNo = ((S7Address)ParsingAddress(ssi.Address)).BlockNo;
+                    ssri.Address.Start = ((S7Address)ParsingAddress(ssi.Address)).Start;
                     ssri.Address.WordLen = m_valuetype[ssi.ValueType.ToString()];
-                    ssri.Address.DataLen = ssri.ValueType == S7DataType.BIT ? 1 : (((S7Address)ssi.Address).DataLen / S7.DataSizeByte(m_valuetype[ssi.ValueType.ToString()]));
+                    ssri.Address.DataLen = ssri.ValueType == S7DataType.BIT ? 1 : (((S7Address)ParsingAddress(ssi.Address)).DataLen / S7.DataSizeByte(m_valuetype[ssi.ValueType.ToString()]));
                     m_itemlist.Add(ssri);
                 }
                 //每个值的试读
-                ret = SettingAddress();
+                //ret = SettingAddress();
                 //地址设置的错误不影响整 体的使用
-                if (ret != 1)
-                {
-                    ret = 1;
-                }
+                Status = DriverStatus.Inited;
             }
             catch(Exception ex)
             {
-                TxtLogWriter.WriteErrorMessage(this.ToString() + ":AcceptSetting(" + host.ToString() + "," + list.ToString() + "):" + ex.Message);
-                ret = -1;
+                TxtLogWriter.WriteErrorMessage(errorfile, "AcceptSetting(" + host.ToString() + "):" + ex.Message);
+                //ret = -1;
+                Status = DriverStatus.Error;
             }
             return ret;
         }
@@ -166,8 +163,16 @@ namespace CHQ.RD.S7Sharp7Driver
         //    return result;
         //}
 
+
+
+        /// <summary>
+        /// 读取数据，直接转换为相应的类型设置
+        /// </summary>
+        /// <param name="ItemId">数据ID</param>
+        /// <returns></returns>
         public override object ReadData(int ItemId)
         {
+            if (Status != DriverStatus.Inited) { return "ERROR"; }
             object ret = null;
             try
             {
@@ -210,12 +215,16 @@ namespace CHQ.RD.S7Sharp7Driver
             }
             catch (Exception ex)
             {
-                TxtLogWriter.WriteErrorMessage("S7SharpDriver read DataError:" + m_host.IPAddress + ";" + ItemId.ToString() + ":" + ex.Message);
+                TxtLogWriter.WriteErrorMessage(errorfile,"S7SharpDriver read DataError:" + m_host.IPAddress + ";" + ItemId.ToString() + ":" + ex.Message);
             }
             return ret;
         }
 
-
+        /// <summary>
+        /// 读取硬件数据，不负责数据转换
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public override object ReadDeviceData(object t)
         {
             object ret=null;
@@ -243,48 +252,100 @@ namespace CHQ.RD.S7Sharp7Driver
                     }
                     throw new Exception("read data error, item id=" + t.ToString() + "!");
                 }
-                //else
-                //{
-                //    switch (item.valuetype)
-                //    {
-                //        case "BIT":
-                //            ret = S7ByteConvert.ToBit(buffer[0], address.DataLength, 0);
-                //            break;
-                //        case "BYTE":
-                //            ret = buffer[0];
-                //            break;
-                //        case "INT":
-                //            ret = S7ByteConvert.ToInt(buffer, 0);
-                //            break;
-                //        case "INT16":
-                //            ret = S7ByteConvert.ToInt16(buffer, 0);
-                //            break;
-                //        case "REAL":
-                //            ret = S7ByteConvert.ToFloat(buffer, 0);
-                //            break;
-                //        case "UINT16":
-                //            ret = S7ByteConvert.ToUInt16(buffer, 0);
-                //            break;
-                //        case "UINT32":
-                //            ret = S7ByteConvert.ToUInt32(buffer, 0);
-                //            break;
-                //        case "TEXT":
-                //            ret = Encoding.Default.GetString(buffer, 2, address.DataLength - 2);
-                //            break;
-                //        default:
-                //            ret = BitConverter.ToString(buffer);
-                //            break;
-
-                //    }
-                //}
                 ret = buffer;
             }
             catch(Exception ex)
             {
-                TxtLogWriter.WriteErrorMessage(this.ToString() + ":ReadDeviceData error:" + ex.Message);
+                TxtLogWriter.WriteErrorMessage(errorfile,this.ToString() + ":ReadDeviceData error:" + ex.Message);
             }
             return ret;
             //return base.ReadDeviceData(ItemId);
+        }
+
+        /// <summary>
+        /// 尝试连接到硬件
+        /// </summary>
+        /// <returns>0-成功</returns>
+        public override int TryConnectToDevice()
+        {
+            int ret = -1;
+            try {
+                //根据设置创建临时对象并赋设置值 
+                S7Client tmp = new S7Client();
+                ret=tmp.ConnectTo(m_host.IPAddress, m_host.RackNo, m_host.SlotNo);
+                if (!tmp.Connected)
+                {
+                    throw new Exception("连接主机失败:" + ret.ToString());
+                }                
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage("S7SharpDriver.TryConnectoToDevice("+m_host.ToString()+"):" + ex.Message);
+            }
+            return ret;
+        }
+        /// <summary>
+        /// 根据字符串解析主机地址
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns>null-不成功</returns>
+        public override object ParsingHost(string host)
+        {
+            S7TCPHost ret = new S7TCPHost
+            {
+                SlotNo = -1,
+                RackNo = -1
+            };
+            try
+            {
+                string[] settings = host.Split(';');
+                if (settings.Length < 4) { throw new Exception("设置格式不正确"); }
+                for(int i = 0; i < settings.Length; i++)
+                {
+                    string[] row = settings[i].Split('=');
+                    switch (row[0].ToLower())
+                    {
+                        case "host":
+                            IPAddress.Parse(row[1]);
+                            ret.IPAddress = row[1];
+                            break;
+                        case "port":
+                            ret.Port = int.Parse(row[1]);
+                            break;
+                        case "slotno":
+                            ret.SlotNo = int.Parse(row[1]);
+                            break;
+                        case "rackno":
+                            ret.RackNo = int.Parse(row[1]);
+                            break;
+                    }
+
+                }
+                if (ret.SlotNo == -1 || ret.RackNo == -1)
+                {
+                    throw new Exception("解析失败！请确认设置是否正确！");
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "ParsingHost(" + host + ")发生错误:" + ex.Message);
+                ret = null;
+            }
+            return ret;
+        }
+        /// <summary>
+        /// 根据地址字符串解析地址
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns>null-不成功</returns>
+        public override object ParsingAddress(string address)
+        {
+            S7Address ret = (S7Address)GeneralOps.ParsingS7Address(address);
+            if (ret == null)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "ParsingAddress("+address+"):解释地址出错！");
+            }
+            return ret;
         }
     }
 }
