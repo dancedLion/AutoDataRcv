@@ -118,6 +118,9 @@
     <EmbeddedResource Include="FrmConnectorBase.resx">
       <DependentUpon>FrmConnectorBase.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmConnectorEditBase.resx">
+      <DependentUpon>FrmConnectorEditBase.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmDriverClassEdit.resx">
       <DependentUpon>FrmDriverClassEdit.cs</DependentUpon>
     </EmbeddedResource>

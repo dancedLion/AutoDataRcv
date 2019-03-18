@@ -15,6 +15,8 @@ namespace CHQ.RD.ConnectorBase
         {
             InitializeComponent();
         }
+        protected List<AssemblyFile> m_driverclasses;
+        protected ConnectorBase m_connector;
 
 
 

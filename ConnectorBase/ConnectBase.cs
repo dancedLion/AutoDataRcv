@@ -33,27 +33,35 @@ namespace CHQ.RD.ConnectorBase
 
         public virtual int InitConnDriver(ConnDriverBase conn)
         {
-
+            int ret = -1;
+            return ret;
         }
         public virtual int RunConnDriver(ConnDriverBase conn)
         {
-
+            int ret = -1;
+            return ret;
         }
         public virtual int TestConnDriver(ConnDriverBase conn)
         {
-
+            int ret = -1;
+            return ret;
         }
         public virtual int StopConnDriver(ConnDriverBase conn)
         {
-
+            int ret = -1;
+            return ret;
         }
         public virtual int PauseConnDriver(ConnDriverBase conn)
         {
-
+            int ret = -1;
+            return ret;
         }
         public virtual int CloseConnDriver(ConnDriverBase conn)
         {
-
+            int ret = -1;
+            return ret;
         }
+
+
     }
 }

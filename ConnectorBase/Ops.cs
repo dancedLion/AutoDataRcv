@@ -18,8 +18,9 @@ using System.Net;
 using CHQ.RD.DataContract;
 using GeneralOPs;
 using System.Data;
+using System.Windows.Forms;
 namespace CHQ.RD.ConnectorBase
-{ 
+{
     public class Ops
     {
         static string xmlfile = AppDomain.CurrentDomain.BaseDirectory + "\\connectorsettings.xml";
@@ -33,7 +34,7 @@ namespace CHQ.RD.ConnectorBase
         /// <param name="connDriverId"></param>
         /// <param name="setting"></param>
         /// <returns></returns>
-        public static int writeDriverSetting(int connDriverId,DriverSetting setting)
+        public static int writeDriverSetting(int connDriverId, DriverSetting setting)
         {
             int ret = 0;
             try
@@ -42,7 +43,7 @@ namespace CHQ.RD.ConnectorBase
                 doc.Load(xmlfile);
                 XmlNodeList nodes = doc.GetElementsByTagName("ConnDriver");
                 XmlNode node = null;
-                foreach(XmlNode n in nodes)
+                foreach (XmlNode n in nodes)
                 {
                     if (n.Attributes["Id"].Value == connDriverId.ToString())
                     {
@@ -133,9 +134,9 @@ namespace CHQ.RD.ConnectorBase
                 node.SetAttribute("TransMode", setting.TransMode.ToString());
                 node.SetAttribute("Name", setting.Name);
                 doc.Save(xmlfile);
-                ret=writeDriverSetting(int.Parse(node.Attributes["Id"].Value), setting.DriverSet);
+                ret = writeDriverSetting(int.Parse(node.Attributes["Id"].Value), setting.DriverSet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ret = -1;
                 TxtLogWriter.WriteErrorMessage("ConnectBase.Ops.writeConnDriverSetting(" + setting.ToString() + "):" + ex.Message);
@@ -155,7 +156,7 @@ namespace CHQ.RD.ConnectorBase
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlfile);
                 XmlNodeList nodes = doc.GetElementsByTagName("ConnDriver");
-                foreach(XmlElement e in nodes)
+                foreach (XmlElement e in nodes)
                 {
                     if (e.Attributes["Id"].Value == connDriverId.ToString())
                     {
@@ -170,7 +171,7 @@ namespace CHQ.RD.ConnectorBase
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TxtLogWriter.WriteErrorMessage("ConnectorBase.Ops.getConnDriverSetting(" + connDriverId.ToString() + "):" + ex.Message);
                 ret = null;
@@ -190,11 +191,11 @@ namespace CHQ.RD.ConnectorBase
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlfile);
                 XmlNodeList nodes = doc.GetElementsByTagName("ConnDriver");
-                foreach(XmlElement e in nodes)
+                foreach (XmlElement e in nodes)
                 {
                     if (e.Attributes["Id"].ToString() == connDriverId.ToString())
                     {
-                        foreach(XmlElement ec in e.ChildNodes)
+                        foreach (XmlElement ec in e.ChildNodes)
                         {
                             if (ec.LocalName != "Driver")
                             {
@@ -209,14 +210,174 @@ namespace CHQ.RD.ConnectorBase
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TxtLogWriter.WriteErrorMessage("Ops.getDriverSetting(" + connDriverId.ToString() + "):" + ex.Message);
                 ret = null;
             }
             return ret;
         }
+        /// <summary>
+        /// 获取所有注册的驱动类型的列表
+        /// </summary>
+        /// <returns></returns>
+        public static List<AssemblyFile> getDriverClassList()
+        {
+            List<AssemblyFile> ret = new List<AssemblyFile>();
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList nodes = doc.GetElementsByTagName("DriverAssemblies");
+                if (nodes.Count > 0)
+                {
+                    foreach (XmlElement e in nodes[0].ChildNodes)
+                    {
+                        ret.Add(new AssemblyFile
+                        {
+                            Id = int.Parse(e.Attributes["Id"].Value),
+                            DriverName = e.Attributes["DriverName"].Value,
+                            ClassName = e.Attributes["ClassName"].Value,
+                            AssemblyInfo = e.Attributes["AssemblyInfo"].Value,
+                            FileName = e.Attributes["FileName"].Value
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "GetDriverClassList:" + ex.Message);
+            }
+            return ret;
+        }
+        /// <summary>
+        /// 根据注册的驱动类型获得及程序中的类型
+        /// </summary>
+        /// <param name="driverclass"></param>
+        /// <returns></returns>
+        public static Type getType(AssemblyFile driverclass)
+        {
+            Type ret = null;
+            try
+            {
+                Assembly asm = Assembly.LoadFile(driverclass.FileName);
+                ret = asm.GetType(driverclass.ClassName);
+            }
+            catch (Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "getType(" + driverclass.ClassName + "):" + ex.Message);
+            }
+            return ret;
+        }
+        /// <summary>
+        /// 保存驱动类型（新增)
+        /// </summary>
+        /// <param name="driverclass">AssemblyFile类型</param>
+        /// <returns>0-成功</returns>
+        public static int saveDriverClass(AssemblyFile driverclass)
+        {
+            int ret = -1;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList nodes = doc.GetElementsByTagName("DriverAssemblies");
+                if (nodes.Count == 0)
+                {
+                    XmlElement ele = doc.CreateElement("DriverAssemblies");
+                    doc.DocumentElement.AppendChild(ele);
+                }
+                nodes = doc.GetElementsByTagName("DriverAssemblies");
+                foreach (XmlElement e in nodes[0].ChildNodes)
+                {
+                    if(e.Attributes["ClassName"].Value==driverclass.ClassName||
+                        e.Attributes["Id"].Value == driverclass.Id.ToString()||
+                        e.Attributes["DriverName"].Value==driverclass.DriverName)
+                    {
+                        throw new Exception("指定的类型或者名称或者ID已经存在！");
+                    }
+                }
+                XmlElement newele = doc.CreateElement("Assemblie");
+                newele.SetAttribute("Id", driverclass.Id.ToString());
+                newele.SetAttribute("DriverName", driverclass.DriverName);
+                newele.SetAttribute("ClassName", driverclass.ClassName);
+                newele.SetAttribute("AssemblyInfo", driverclass.AssemblyInfo);
+                newele.SetAttribute("FileName", driverclass.FileName);
+                nodes[0].AppendChild(newele);
+                doc.Save(xmlfile);
+                ret = 0;
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "SaveDriverClass(" + driverclass.ClassName + "):" + ex.Message);
+            }
+            return ret;
+        }
+        /// <summary>
+        /// 删除驱动类型
+        /// </summary>
+        /// <param name="driverclass"></param>
+        /// <returns></returns>
+        public static int removeDriverClass(AssemblyFile driverclass)
+        {
+            int ret = -1;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList nodes = doc.GetElementsByTagName("DriverAssemblies");
+                bool isfound = false;
+                //TODO:先找有没有被引用
 
+                //再找是否存在
+                isfound = false;
+                foreach(XmlElement e in nodes[0].ChildNodes)
+                {
+                    if(e.Attributes["Id"].Value==driverclass.Id.ToString()&&
+                        e.Attributes["DriverName"].Value==driverclass.DriverName&&
+                        e.Attributes["ClassName"].Value == driverclass.ClassName)
+                    {
+                        nodes[0].RemoveChild(e);
+                        isfound = true;
+                        break;
+                    }
+                }
+                if (isfound)
+                {
+                    doc.Save(xmlfile);
+                    ret = 0;
+                }
+                else
+                {
+                    throw new Exception("指定的类型未找到！");
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "RemoveDriverClass(" + driverclass.ClassName + "):" + ex.Message);
+            }
+            return ret;
+        }
+        /// <summary>
+        /// 保存编辑的驳动类型，类型无法更改
+        /// </summary>
+        /// <param name="olddriver">旧的类型，用于获取其ID</param>
+        /// <param name="newdriver">新的类型，用于保存ID和名称</param>
+        /// <returns></returns>
+        public static int updateDriverClass(AssemblyFile olddriver, AssemblyFile newdriver)
+        {
+            int ret = -1;
+            //已引用的要变更为新的ID
+            try
+            {
+                //TODO:加入更新代码
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "UpdateDriverClass(" + newdriver.ClassName + "):" + ex.Message);
+            }
+            return ret;
+        }
         #endregion
 
         #region 数据项操作
@@ -465,5 +626,21 @@ namespace CHQ.RD.ConnectorBase
             return ret;
         }
         #endregion
+    }
+
+
+    public class MyMessageBox { 
+        public static DialogResult ShowTipMessage(string message)
+        {
+            return MessageBox.Show(message, "提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+        }
+        public static DialogResult ShowErrorMessage(string message)
+        {
+            return MessageBox.Show(message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        public static DialogResult ShowSelectionMessage(string message)
+        {
+            return MessageBox.Show(message, "选择", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        }
     }
 }
