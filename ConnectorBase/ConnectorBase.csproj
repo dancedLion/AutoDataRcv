@@ -45,6 +45,12 @@
     <Compile Include="ConnDriverBase.cs" />
     <Compile Include="ConnectBase.cs" />
     <Compile Include="ConnectorEvent.cs" />
+    <Compile Include="FrmConnDriverEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConnDriverEdit.Designer.cs">
+      <DependentUpon>FrmConnDriverEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmConnectorBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +121,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FrmConnDriverEdit.resx">
+      <DependentUpon>FrmConnDriverEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmConnectorBase.resx">
       <DependentUpon>FrmConnectorBase.cs</DependentUpon>
     </EmbeddedResource>
