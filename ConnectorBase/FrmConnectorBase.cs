@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
+using CHQ.RD.DataContract;
 namespace CHQ.RD.ConnectorBase
 {
     public partial class FrmConnectorBase : Form
@@ -79,14 +80,7 @@ namespace CHQ.RD.ConnectorBase
         public string Name;
         public string Memo;
     }
-    public class AssemblyFile
-    {
-        public int Id;
-        public string DriverName;
-        public string ClassName;
-        public string AssemblyInfo;
-        public string FileName;
-    }
+
     class ConnDriverInfo
     {
         public string Id;

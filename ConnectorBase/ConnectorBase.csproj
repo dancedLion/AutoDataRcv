@@ -81,6 +81,12 @@
     <Compile Include="FrmDriverClassView.Designer.cs">
       <DependentUpon>FrmDriverClassView.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmDriverSettingEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDriverSettingEdit.Designer.cs">
+      <DependentUpon>FrmDriverSettingEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmSelectClassFromFile.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmDriverClassView.resx">
       <DependentUpon>FrmDriverClassView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDriverSettingEdit.resx">
+      <DependentUpon>FrmDriverSettingEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmSelectClassFromFile.resx">
       <DependentUpon>FrmSelectClassFromFile.cs</DependentUpon>

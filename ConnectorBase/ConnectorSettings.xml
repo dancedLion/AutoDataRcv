@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Connector>
   <DriverAssemblies>
-    <Assemblies Type="CHQ.RD.S7SharpDriver.S7SharpDriver" DllFile="CHQ.RD.S7SharpDriver.dll"/>
   </DriverAssemblies>
   <ConnDrivers>
     <ConnDriver Id="1" Name="某个连接" Type="CHQ.RD.S7SharpDriver.S7SharpDriver" ReadInterval="1000" ReadMode="1" TransMode="1">

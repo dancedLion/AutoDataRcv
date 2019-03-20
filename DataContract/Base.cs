@@ -62,8 +62,7 @@ namespace CHQ.RD.DataContract
         public int ReadInterval;    //
         public int ReadMode;    //
         public int TransMode;   //传送模式
-        public string DriverType;   //驱动类型
-        public string AssemblyFile;
+        public AssemblyFile ClassFile;    //驱动编辑及类型
         public List<ConnectorDataItem> DataItems;
         public DriverSetting DriverSet; //驱动设置
     }
@@ -88,5 +87,14 @@ namespace CHQ.RD.DataContract
         public int Id;
         public string Address;
         public string ValueType;
+    }
+
+    public class AssemblyFile
+    {
+        public int Id;
+        public string DriverName;
+        public string ClassName;
+        public string AssemblyInfo;
+        public string FileName;
     }
 }
