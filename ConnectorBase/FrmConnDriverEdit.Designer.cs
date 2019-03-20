@@ -38,37 +38,37 @@
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btntestdriver = new System.Windows.Forms.Button();
+            this.btnselectdriverclass = new System.Windows.Forms.Button();
+            this.btneditdriversetting = new System.Windows.Forms.Button();
+            this.cbxdriverreadmode = new System.Windows.Forms.ComboBox();
+            this.cbxdriversendmode = new System.Windows.Forms.ComboBox();
+            this.cbxconndriversendmode = new System.Windows.Forms.ComboBox();
+            this.cboconndriverreadmode = new System.Windows.Forms.ComboBox();
+            this.tbxconndriverreadinterval = new System.Windows.Forms.TextBox();
+            this.tbxdriverreadinterval = new System.Windows.Forms.TextBox();
+            this.tbxdriverhost = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tbxdriverclass = new System.Windows.Forms.TextBox();
+            this.tbxname = new System.Windows.Forms.TextBox();
+            this.tbxid = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.vwDataItem = new System.Windows.Forms.DataGridView();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwDataItem)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -145,25 +145,25 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.button3);
-            this.tabPage1.Controls.Add(this.button2);
-            this.tabPage1.Controls.Add(this.button1);
-            this.tabPage1.Controls.Add(this.comboBox4);
-            this.tabPage1.Controls.Add(this.comboBox3);
-            this.tabPage1.Controls.Add(this.comboBox2);
-            this.tabPage1.Controls.Add(this.comboBox1);
-            this.tabPage1.Controls.Add(this.textBox9);
-            this.tabPage1.Controls.Add(this.textBox8);
-            this.tabPage1.Controls.Add(this.textBox7);
+            this.tabPage1.Controls.Add(this.btntestdriver);
+            this.tabPage1.Controls.Add(this.btnselectdriverclass);
+            this.tabPage1.Controls.Add(this.btneditdriversetting);
+            this.tabPage1.Controls.Add(this.cbxdriverreadmode);
+            this.tabPage1.Controls.Add(this.cbxdriversendmode);
+            this.tabPage1.Controls.Add(this.cbxconndriversendmode);
+            this.tabPage1.Controls.Add(this.cboconndriverreadmode);
+            this.tabPage1.Controls.Add(this.tbxconndriverreadinterval);
+            this.tabPage1.Controls.Add(this.tbxdriverreadinterval);
+            this.tabPage1.Controls.Add(this.tbxdriverhost);
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.label11);
             this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.label13);
             this.tabPage1.Controls.Add(this.label10);
             this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.textBox3);
-            this.tabPage1.Controls.Add(this.textBox2);
-            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Controls.Add(this.tbxdriverclass);
+            this.tabPage1.Controls.Add(this.tbxname);
+            this.tabPage1.Controls.Add(this.tbxid);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.label3);
@@ -176,6 +176,171 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "主要";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btntestdriver
+            // 
+            this.btntestdriver.Location = new System.Drawing.Point(674, 174);
+            this.btntestdriver.Name = "btntestdriver";
+            this.btntestdriver.Size = new System.Drawing.Size(48, 23);
+            this.btntestdriver.TabIndex = 34;
+            this.btntestdriver.Text = "测试";
+            this.btntestdriver.UseVisualStyleBackColor = true;
+            // 
+            // btnselectdriverclass
+            // 
+            this.btnselectdriverclass.Location = new System.Drawing.Point(615, 16);
+            this.btnselectdriverclass.Name = "btnselectdriverclass";
+            this.btnselectdriverclass.Size = new System.Drawing.Size(48, 23);
+            this.btnselectdriverclass.TabIndex = 33;
+            this.btnselectdriverclass.Text = "选择";
+            this.btnselectdriverclass.UseVisualStyleBackColor = true;
+            // 
+            // btneditdriversetting
+            // 
+            this.btneditdriversetting.Location = new System.Drawing.Point(616, 174);
+            this.btneditdriversetting.Name = "btneditdriversetting";
+            this.btneditdriversetting.Size = new System.Drawing.Size(48, 23);
+            this.btneditdriversetting.TabIndex = 32;
+            this.btneditdriversetting.Text = "编辑";
+            this.btneditdriversetting.UseVisualStyleBackColor = true;
+            // 
+            // cbxdriverreadmode
+            // 
+            this.cbxdriverreadmode.FormattingEnabled = true;
+            this.cbxdriverreadmode.Location = new System.Drawing.Point(65, 137);
+            this.cbxdriverreadmode.Name = "cbxdriverreadmode";
+            this.cbxdriverreadmode.Size = new System.Drawing.Size(121, 20);
+            this.cbxdriverreadmode.TabIndex = 31;
+            // 
+            // cbxdriversendmode
+            // 
+            this.cbxdriversendmode.FormattingEnabled = true;
+            this.cbxdriversendmode.Location = new System.Drawing.Point(484, 137);
+            this.cbxdriversendmode.Name = "cbxdriversendmode";
+            this.cbxdriversendmode.Size = new System.Drawing.Size(121, 20);
+            this.cbxdriversendmode.TabIndex = 30;
+            // 
+            // cbxconndriversendmode
+            // 
+            this.cbxconndriversendmode.FormattingEnabled = true;
+            this.cbxconndriversendmode.Location = new System.Drawing.Point(484, 47);
+            this.cbxconndriversendmode.Name = "cbxconndriversendmode";
+            this.cbxconndriversendmode.Size = new System.Drawing.Size(121, 20);
+            this.cbxconndriversendmode.TabIndex = 29;
+            // 
+            // cboconndriverreadmode
+            // 
+            this.cboconndriverreadmode.FormattingEnabled = true;
+            this.cboconndriverreadmode.Location = new System.Drawing.Point(65, 47);
+            this.cboconndriverreadmode.Name = "cboconndriverreadmode";
+            this.cboconndriverreadmode.Size = new System.Drawing.Size(121, 20);
+            this.cboconndriverreadmode.TabIndex = 28;
+            // 
+            // tbxconndriverreadinterval
+            // 
+            this.tbxconndriverreadinterval.Location = new System.Drawing.Point(284, 46);
+            this.tbxconndriverreadinterval.Name = "tbxconndriverreadinterval";
+            this.tbxconndriverreadinterval.Size = new System.Drawing.Size(123, 21);
+            this.tbxconndriverreadinterval.TabIndex = 27;
+            // 
+            // tbxdriverreadinterval
+            // 
+            this.tbxdriverreadinterval.Location = new System.Drawing.Point(274, 136);
+            this.tbxdriverreadinterval.Name = "tbxdriverreadinterval";
+            this.tbxdriverreadinterval.Size = new System.Drawing.Size(123, 21);
+            this.tbxdriverreadinterval.TabIndex = 26;
+            // 
+            // tbxdriverhost
+            // 
+            this.tbxdriverhost.Location = new System.Drawing.Point(65, 174);
+            this.tbxdriverhost.Name = "tbxdriverhost";
+            this.tbxdriverhost.Size = new System.Drawing.Size(540, 21);
+            this.tbxdriverhost.TabIndex = 25;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(8, 180);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(65, 12);
+            this.label14.TabIndex = 24;
+            this.label14.Text = "设备主机：";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(413, 145);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 12);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "发送模式：";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(8, 145);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(65, 12);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "读取模式：";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(216, 145);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(65, 12);
+            this.label13.TabIndex = 21;
+            this.label13.Text = "读取间隔：";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(413, 54);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(65, 12);
+            this.label10.TabIndex = 20;
+            this.label10.Text = "发送模式：";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(8, 54);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 12);
+            this.label9.TabIndex = 19;
+            this.label9.Text = "读取模式：";
+            // 
+            // tbxdriverclass
+            // 
+            this.tbxdriverclass.Location = new System.Drawing.Point(384, 18);
+            this.tbxdriverclass.Name = "tbxdriverclass";
+            this.tbxdriverclass.ReadOnly = true;
+            this.tbxdriverclass.Size = new System.Drawing.Size(225, 21);
+            this.tbxdriverclass.TabIndex = 12;
+            // 
+            // tbxname
+            // 
+            this.tbxname.Location = new System.Drawing.Point(160, 18);
+            this.tbxname.Name = "tbxname";
+            this.tbxname.Size = new System.Drawing.Size(175, 21);
+            this.tbxname.TabIndex = 11;
+            // 
+            // tbxid
+            // 
+            this.tbxid.Location = new System.Drawing.Point(38, 18);
+            this.tbxid.Name = "tbxid";
+            this.tbxid.Size = new System.Drawing.Size(74, 21);
+            this.tbxid.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 112);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 12);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "设备设置：";
             // 
             // label4
             // 
@@ -215,7 +380,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.dataGridView1);
+            this.tabPage2.Controls.Add(this.vwDataItem);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -224,180 +389,15 @@
             this.tabPage2.Text = "变量";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // vwDataItem
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(786, 393);
-            this.dataGridView1.TabIndex = 0;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 112);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 12);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "设备设置：";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(38, 18);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(74, 21);
-            this.textBox1.TabIndex = 10;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(160, 18);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(175, 21);
-            this.textBox2.TabIndex = 11;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(384, 18);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(225, 21);
-            this.textBox3.TabIndex = 12;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 54);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(65, 12);
-            this.label9.TabIndex = 19;
-            this.label9.Text = "读取模式：";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(413, 54);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(65, 12);
-            this.label10.TabIndex = 20;
-            this.label10.Text = "发送模式：";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(413, 145);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(65, 12);
-            this.label11.TabIndex = 23;
-            this.label11.Text = "发送模式：";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(8, 145);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(65, 12);
-            this.label12.TabIndex = 22;
-            this.label12.Text = "读取模式：";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(216, 145);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(65, 12);
-            this.label13.TabIndex = 21;
-            this.label13.Text = "读取间隔：";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(8, 180);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(65, 12);
-            this.label14.TabIndex = 24;
-            this.label14.Text = "设备主机：";
-            // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(65, 174);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(540, 21);
-            this.textBox7.TabIndex = 25;
-            // 
-            // textBox8
-            // 
-            this.textBox8.Location = new System.Drawing.Point(274, 136);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(123, 21);
-            this.textBox8.TabIndex = 26;
-            // 
-            // textBox9
-            // 
-            this.textBox9.Location = new System.Drawing.Point(284, 46);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(123, 21);
-            this.textBox9.TabIndex = 27;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(65, 47);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 20);
-            this.comboBox1.TabIndex = 28;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(484, 47);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 20);
-            this.comboBox2.TabIndex = 29;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(484, 137);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 20);
-            this.comboBox3.TabIndex = 30;
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(65, 137);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(121, 20);
-            this.comboBox4.TabIndex = 31;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(616, 174);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(48, 23);
-            this.button1.TabIndex = 32;
-            this.button1.Text = "编辑";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(615, 16);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(48, 23);
-            this.button2.TabIndex = 33;
-            this.button2.Text = "选择";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(674, 174);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(48, 23);
-            this.button3.TabIndex = 34;
-            this.button3.Text = "测试";
-            this.button3.UseVisualStyleBackColor = true;
+            this.vwDataItem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.vwDataItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vwDataItem.Location = new System.Drawing.Point(3, 3);
+            this.vwDataItem.Name = "vwDataItem";
+            this.vwDataItem.RowTemplate.Height = 23;
+            this.vwDataItem.Size = new System.Drawing.Size(786, 393);
+            this.vwDataItem.TabIndex = 0;
             // 
             // FrmConnDriverEdit
             // 
@@ -414,7 +414,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwDataItem)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -436,10 +436,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.DataGridView vwDataItem;
+        private System.Windows.Forms.TextBox tbxdriverclass;
+        private System.Windows.Forms.TextBox tbxname;
+        private System.Windows.Forms.TextBox tbxid;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label11;
@@ -447,15 +447,15 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox tbxdriverhost;
+        private System.Windows.Forms.ComboBox cboconndriverreadmode;
+        private System.Windows.Forms.TextBox tbxconndriverreadinterval;
+        private System.Windows.Forms.TextBox tbxdriverreadinterval;
+        private System.Windows.Forms.ComboBox cbxdriverreadmode;
+        private System.Windows.Forms.ComboBox cbxdriversendmode;
+        private System.Windows.Forms.ComboBox cbxconndriversendmode;
+        private System.Windows.Forms.Button btneditdriversetting;
+        private System.Windows.Forms.Button btnselectdriverclass;
+        private System.Windows.Forms.Button btntestdriver;
     }
 }

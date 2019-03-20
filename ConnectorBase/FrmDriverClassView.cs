@@ -6,21 +6,39 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using CHQ.RD.DataContract;
 namespace CHQ.RD.ConnectorBase
 {
     public partial class FrmDriverClassView : Form
     {
         List<AssemblyFile> m_files = new List<AssemblyFile>();
         bool m_selectmode = false;
-        int m_returnvalue = -1;
+        int m_result = -1;
+        AssemblyFile m_returnedvalue;
         List<AssemblyFile> m_classes;// = new List<AssemblyFile>();
-
+        
         public FrmDriverClassView()
         {
             InitializeComponent();
         }
 
+        public AssemblyFile ReturnedValue
+        {
+            get { return m_returnedvalue; }
+        }
+        public int SelectDriver()
+        {
+            m_selectmode = true;
+            initVIEW();
+            this.ShowDialog();
+            return m_result;
+        }
+        public void ViewDrivers()
+        {
+            m_selectmode = false;
+            initVIEW();
+            this.Show();
+        }
         void initVIEW()
         {
             viewFiles.Items.Clear();
