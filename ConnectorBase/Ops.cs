@@ -251,6 +251,42 @@ namespace CHQ.RD.ConnectorBase
             return ret;
         }
         /// <summary>
+        /// 根据ID获取注册的驱动类型信息
+        /// 运用于驱动连接器获取类信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static AssemblyFile getDriverClass(int id)
+        {
+            AssemblyFile ret = null;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList nodes = doc.GetElementsByTagName("Assemblies");
+                foreach(XmlElement e in nodes)
+                {
+                    if (e.Attributes["Id"].Value == id.ToString())
+                    {
+                        ret = new AssemblyFile
+                        {
+                            Id = id,
+                            ClassName = e.Attributes["ClassName"].Value,
+                            DriverName = e.Attributes["DriverName"].Value,
+                            AssemblyInfo = e.Attributes["AssemblyInfo"].Value,
+                            FileName = e.Attributes["FileName"].Value
+                        };
+                        break;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "getDriverClass(" + id.ToString() + "):" + ex.Message);
+            }
+            return ret;
+        }
+        /// <summary>
         /// 根据注册的驱动类型获得及程序中的类型
         /// </summary>
         /// <param name="driverclass"></param>
@@ -625,6 +661,18 @@ namespace CHQ.RD.ConnectorBase
             }
             return ret;
         }
+
+        public static object ParsingHost(Type hosttype,string hoststring)
+        {
+            object ret = null;
+            return ret;
+        }
+        public static object ParsingAddress(Type addresstype,string address)
+        {
+            object ret = null;
+            return ret;
+        }
+
         #endregion
     }
 
