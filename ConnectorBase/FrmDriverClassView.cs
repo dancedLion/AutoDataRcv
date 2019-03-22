@@ -139,5 +139,10 @@ namespace CHQ.RD.ConnectorBase
         {
             removeItem();
         }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            toAddNew();
+        }
     }
 }

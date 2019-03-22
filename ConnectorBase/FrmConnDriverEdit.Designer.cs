@@ -88,12 +88,12 @@
             // 
             // toolStripButton1
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(36, 22);
+            this.toolStripButton1.Text = "保存";
             // 
             // toolStripSeparator1
             // 
@@ -102,21 +102,21 @@
             // 
             // toolStripButton2
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(36, 22);
+            this.toolStripButton2.Text = "增行";
             // 
             // toolStripButton3
             // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton3.Text = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(36, 22);
+            this.toolStripButton3.Text = "删行";
             // 
             // toolStripSeparator2
             // 
@@ -125,12 +125,12 @@
             // 
             // toolStripButton4
             // 
-            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
             this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton4.Text = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(36, 22);
+            this.toolStripButton4.Text = "退出";
             // 
             // tabControl1
             // 
@@ -207,7 +207,7 @@
             // cbxdriverreadmode
             // 
             this.cbxdriverreadmode.FormattingEnabled = true;
-            this.cbxdriverreadmode.Location = new System.Drawing.Point(65, 137);
+            this.cbxdriverreadmode.Location = new System.Drawing.Point(65, 138);
             this.cbxdriverreadmode.Name = "cbxdriverreadmode";
             this.cbxdriverreadmode.Size = new System.Drawing.Size(121, 20);
             this.cbxdriverreadmode.TabIndex = 31;
@@ -215,7 +215,7 @@
             // cbxdriversendmode
             // 
             this.cbxdriversendmode.FormattingEnabled = true;
-            this.cbxdriversendmode.Location = new System.Drawing.Point(484, 137);
+            this.cbxdriversendmode.Location = new System.Drawing.Point(484, 138);
             this.cbxdriversendmode.Name = "cbxdriversendmode";
             this.cbxdriversendmode.Size = new System.Drawing.Size(121, 20);
             this.cbxdriversendmode.TabIndex = 30;
@@ -223,7 +223,7 @@
             // cbxconndriversendmode
             // 
             this.cbxconndriversendmode.FormattingEnabled = true;
-            this.cbxconndriversendmode.Location = new System.Drawing.Point(484, 47);
+            this.cbxconndriversendmode.Location = new System.Drawing.Point(484, 48);
             this.cbxconndriversendmode.Name = "cbxconndriversendmode";
             this.cbxconndriversendmode.Size = new System.Drawing.Size(121, 20);
             this.cbxconndriversendmode.TabIndex = 29;
@@ -231,21 +231,21 @@
             // cboconndriverreadmode
             // 
             this.cboconndriverreadmode.FormattingEnabled = true;
-            this.cboconndriverreadmode.Location = new System.Drawing.Point(65, 47);
+            this.cboconndriverreadmode.Location = new System.Drawing.Point(65, 48);
             this.cboconndriverreadmode.Name = "cboconndriverreadmode";
             this.cboconndriverreadmode.Size = new System.Drawing.Size(121, 20);
             this.cboconndriverreadmode.TabIndex = 28;
             // 
             // tbxconndriverreadinterval
             // 
-            this.tbxconndriverreadinterval.Location = new System.Drawing.Point(284, 46);
+            this.tbxconndriverreadinterval.Location = new System.Drawing.Point(284, 47);
             this.tbxconndriverreadinterval.Name = "tbxconndriverreadinterval";
             this.tbxconndriverreadinterval.Size = new System.Drawing.Size(123, 21);
             this.tbxconndriverreadinterval.TabIndex = 27;
             // 
             // tbxdriverreadinterval
             // 
-            this.tbxdriverreadinterval.Location = new System.Drawing.Point(274, 136);
+            this.tbxdriverreadinterval.Location = new System.Drawing.Point(274, 137);
             this.tbxdriverreadinterval.Name = "tbxdriverreadinterval";
             this.tbxdriverreadinterval.Size = new System.Drawing.Size(123, 21);
             this.tbxdriverreadinterval.TabIndex = 26;
@@ -313,7 +313,7 @@
             // 
             // tbxdriverclass
             // 
-            this.tbxdriverclass.Location = new System.Drawing.Point(384, 18);
+            this.tbxdriverclass.Location = new System.Drawing.Point(384, 17);
             this.tbxdriverclass.Name = "tbxdriverclass";
             this.tbxdriverclass.ReadOnly = true;
             this.tbxdriverclass.Size = new System.Drawing.Size(225, 21);

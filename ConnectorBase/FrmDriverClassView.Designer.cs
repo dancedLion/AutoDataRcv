@@ -30,9 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDriverClassView));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.viewFiles = new System.Windows.Forms.ListView();
-            this.splitSel = new System.Windows.Forms.ToolStripSeparator();
             this.cmdOK = new System.Windows.Forms.ToolStripButton();
+            this.splitSel = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
@@ -40,6 +39,7 @@
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+            this.viewFiles = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -66,28 +66,6 @@
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // viewFiles
-            // 
-            this.viewFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5});
-            this.viewFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.viewFiles.FullRowSelect = true;
-            this.viewFiles.Location = new System.Drawing.Point(0, 25);
-            this.viewFiles.Name = "viewFiles";
-            this.viewFiles.Size = new System.Drawing.Size(800, 425);
-            this.viewFiles.TabIndex = 1;
-            this.viewFiles.UseCompatibleStateImageBehavior = false;
-            this.viewFiles.View = System.Windows.Forms.View.Details;
-            // 
-            // splitSel
-            // 
-            this.splitSel.Name = "splitSel";
-            this.splitSel.Size = new System.Drawing.Size(6, 25);
-            // 
             // cmdOK
             // 
             this.cmdOK.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -97,6 +75,11 @@
             this.cmdOK.Size = new System.Drawing.Size(36, 22);
             this.cmdOK.Text = "确定";
             // 
+            // splitSel
+            // 
+            this.splitSel.Name = "splitSel";
+            this.splitSel.Size = new System.Drawing.Size(6, 25);
+            // 
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -105,6 +88,7 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(36, 22);
             this.toolStripButton2.Text = "新增";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // toolStripButton3
             // 
@@ -151,6 +135,23 @@
             this.toolStripButton6.Name = "toolStripButton6";
             this.toolStripButton6.Size = new System.Drawing.Size(36, 22);
             this.toolStripButton6.Text = "退出";
+            // 
+            // viewFiles
+            // 
+            this.viewFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5});
+            this.viewFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewFiles.FullRowSelect = true;
+            this.viewFiles.Location = new System.Drawing.Point(0, 25);
+            this.viewFiles.Name = "viewFiles";
+            this.viewFiles.Size = new System.Drawing.Size(800, 425);
+            this.viewFiles.TabIndex = 1;
+            this.viewFiles.UseCompatibleStateImageBehavior = false;
+            this.viewFiles.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader1
             // 

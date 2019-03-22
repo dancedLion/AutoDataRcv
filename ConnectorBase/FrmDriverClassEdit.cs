@@ -86,5 +86,20 @@ namespace CHQ.RD.ConnectorBase
         {
             this.DialogResult = DialogResult.Cancel;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            toSelectFromFile();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            toSave();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            toCancel();
+        }
     }
 }

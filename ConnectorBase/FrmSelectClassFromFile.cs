@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 using CHQ.RD.DriverBase;
+using CHQ.RD.DataContract;
 namespace CHQ.RD.ConnectorBase
 {
     public partial class FrmSelectClassFromFile : Form
@@ -75,6 +76,7 @@ namespace CHQ.RD.ConnectorBase
                     nd.Nodes.Add(node);
                 }
             }
+            treeClasses.Nodes.Add(nd);
         }
 
         public void selectOK()

@@ -72,6 +72,12 @@ namespace CHQ.RD.ConnectorBase
             //加载可设置项
         }
         #endregion
+
+        private void 编辑驱动类型ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmDriverClassView v = new FrmDriverClassView();
+            v.ViewDrivers();
+        }
     }
     class AllView
     {

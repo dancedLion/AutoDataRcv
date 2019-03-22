@@ -31,16 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmConnectorBase));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.briefView = new System.Windows.Forms.TreeView();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.detailView = new System.Windows.Forms.ListView();
-            this.messageList = new System.Windows.Forms.ListBox();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
@@ -48,6 +40,15 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.briefView = new System.Windows.Forms.TreeView();
+            this.detailView = new System.Windows.Forms.ListView();
+            this.messageList = new System.Windows.Forms.ListBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.编辑驱动类型ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -78,22 +79,6 @@
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1017, 25);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
-            this.toolStripMenuItem1.Text = "文件";
-            // 
             // toolStripButton1
             // 
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -107,75 +92,6 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 50);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.messageList);
-            this.splitContainer1.Size = new System.Drawing.Size(1017, 587);
-            this.splitContainer1.SplitterDistance = 383;
-            this.splitContainer1.TabIndex = 2;
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.briefView);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.detailView);
-            this.splitContainer2.Size = new System.Drawing.Size(1017, 383);
-            this.splitContainer2.SplitterDistance = 273;
-            this.splitContainer2.TabIndex = 0;
-            // 
-            // briefView
-            // 
-            this.briefView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.briefView.Location = new System.Drawing.Point(0, 0);
-            this.briefView.Name = "briefView";
-            this.briefView.Size = new System.Drawing.Size(273, 383);
-            this.briefView.TabIndex = 0;
-            // 
-            // imageList1
-            // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // detailView
-            // 
-            this.detailView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.detailView.Location = new System.Drawing.Point(0, 0);
-            this.detailView.Name = "detailView";
-            this.detailView.Size = new System.Drawing.Size(740, 383);
-            this.detailView.TabIndex = 0;
-            this.detailView.UseCompatibleStateImageBehavior = false;
-            // 
-            // messageList
-            // 
-            this.messageList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.messageList.FormattingEnabled = true;
-            this.messageList.ItemHeight = 12;
-            this.messageList.Location = new System.Drawing.Point(0, 0);
-            this.messageList.Name = "messageList";
-            this.messageList.Size = new System.Drawing.Size(1017, 200);
-            this.messageList.TabIndex = 0;
             // 
             // toolStripButton2
             // 
@@ -236,6 +152,100 @@
             this.toolStripButton7.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton7.Text = "toolStripButton7";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1017, 25);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.编辑驱动类型ToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
+            this.toolStripMenuItem1.Text = "文件";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 50);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.messageList);
+            this.splitContainer1.Size = new System.Drawing.Size(1017, 587);
+            this.splitContainer1.SplitterDistance = 383;
+            this.splitContainer1.TabIndex = 2;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.briefView);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.detailView);
+            this.splitContainer2.Size = new System.Drawing.Size(1017, 383);
+            this.splitContainer2.SplitterDistance = 273;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // briefView
+            // 
+            this.briefView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.briefView.Location = new System.Drawing.Point(0, 0);
+            this.briefView.Name = "briefView";
+            this.briefView.Size = new System.Drawing.Size(273, 383);
+            this.briefView.TabIndex = 0;
+            // 
+            // detailView
+            // 
+            this.detailView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.detailView.Location = new System.Drawing.Point(0, 0);
+            this.detailView.Name = "detailView";
+            this.detailView.Size = new System.Drawing.Size(740, 383);
+            this.detailView.TabIndex = 0;
+            this.detailView.UseCompatibleStateImageBehavior = false;
+            // 
+            // messageList
+            // 
+            this.messageList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.messageList.FormattingEnabled = true;
+            this.messageList.ItemHeight = 12;
+            this.messageList.Location = new System.Drawing.Point(0, 0);
+            this.messageList.Name = "messageList";
+            this.messageList.Size = new System.Drawing.Size(1017, 200);
+            this.messageList.TabIndex = 0;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // 编辑驱动类型ToolStripMenuItem
+            // 
+            this.编辑驱动类型ToolStripMenuItem.Name = "编辑驱动类型ToolStripMenuItem";
+            this.编辑驱动类型ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.编辑驱动类型ToolStripMenuItem.Text = "编辑驱动类型";
+            this.编辑驱动类型ToolStripMenuItem.Click += new System.EventHandler(this.编辑驱动类型ToolStripMenuItem_Click);
+            // 
             // FrmConnectorBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -284,5 +294,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton toolStripButton6;
         private System.Windows.Forms.ToolStripButton toolStripButton7;
+        private System.Windows.Forms.ToolStripMenuItem 编辑驱动类型ToolStripMenuItem;
     }
 }

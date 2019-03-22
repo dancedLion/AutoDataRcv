@@ -46,6 +46,12 @@ namespace CHQ.RD.ConnectorBase
             {
                 loadDataItems(conndriver);
             }
+            else
+            {
+                tbxid.Text = "-1";
+                
+            }
+            m_returnedvalue = conndriver;
             this.ShowDialog();
             return m_result;
         }
@@ -181,22 +187,26 @@ namespace CHQ.RD.ConnectorBase
             if (v.SelectDriver() == 1)
             {
                 AssemblyFile file = v.ReturnedValue;
-                Assembly asm = Assembly.LoadFile(file.FileName);
-                Type type = asm.GetType(file.ClassName);
-                if (m_file == null)
+                if (m_file==null||file.ClassName != m_file.ClassName)
                 {
-                    onDriverTypeChanged(type);
-                }
-                else
-                {
-                    if (file.ClassName != m_file.ClassName)
+                    Assembly asm = Assembly.LoadFile(file.FileName);
+                    Type type = asm.GetType(file.ClassName);
+                    if (m_file == null)
                     {
-                        if (MyMessageBox.ShowSelectionMessage("选择的驱动类型与原类型不同，是否继续？") == DialogResult.Yes)
+                        onDriverTypeChanged(type);
+                    }
+                    else
+                    {
+                        if (file.ClassName != m_file.ClassName)
                         {
-                            onDriverTypeChanged(type);
+                            if (MyMessageBox.ShowSelectionMessage("选择的驱动类型与原类型不同，是否继续？") == DialogResult.Yes)
+                            {
+                                onDriverTypeChanged(type);
+                            }
                         }
                     }
-                }               
+                    m_file = file;
+                }
             }
         }
 /// <summary>
@@ -268,6 +278,9 @@ namespace CHQ.RD.ConnectorBase
             }
         }
 
+
+
+
         void toAddNewRow()
         {
             DataRow dr = m_dt.NewRow();
@@ -281,12 +294,115 @@ namespace CHQ.RD.ConnectorBase
                 DataRowView drv = (DataRowView)vwDataItem.Rows[vwDataItem.SelectedCells[0].RowIndex].DataBoundItem;
             }
         }
+
+        int formToConnDriver()
+        {
+            int ret = -1;
+            try
+            {
+                if (string.IsNullOrEmpty(tbxid.Text) || tbxid.Text.Trim() == "-1")
+                {
+                    throw new Exception("未指定ID");
+                }
+                if (string.IsNullOrEmpty(tbxname.Text)) throw new Exception("未指定名称！");
+                if (string.IsNullOrEmpty(tbxdriverclass.Text) || m_file == null)
+                {
+                    throw new Exception("未指定驱动！");
+                }
+                if (string.IsNullOrEmpty(tbxdriverhost.Text)) throw new Exception("设备未指定！");
+
+                ConnDriverSetting m = new ConnDriverSetting();
+                m.Id = int.Parse(tbxid.Text);
+                m.Name = tbxname.Text;
+                m.ClassFile = m_file;
+                m.ReadInterval = int.Parse(tbxconndriverreadinterval.Text);
+                m.ReadMode = cboconndriverreadmode.SelectedIndex;
+                m.TransMode = cbxconndriversendmode.SelectedIndex;
+                DriverSetting md = new DriverSetting
+                {
+                    Host = tbxdriverhost.Text,
+                    ReadInterval = int.Parse(tbxdriverreadinterval.Text),
+                    ReadMode = cbxdriverreadmode.SelectedIndex,
+                    TransMode = cbxdriversendmode.SelectedIndex
+                };
+                m.DriverSet = md;
+                //检测多项对比，有值不同提示不同的保存值 
+                FieldInfo[] flds = typeof(ConnDriverSetting).GetFields();
+                for(int i = 0; i < flds.Length; i++)
+                {
+                    if (m_result == 1 || m_result == 3) break;
+                    if (flds[i].FieldType == typeof(AssemblyFile)||flds[i].FieldType==typeof(DriverSetting))
+                    {
+                        FieldInfo[] subflds = typeof(AssemblyFile).GetFields();
+                        for (int j = 0; j < subflds.Length; j++)
+                        {
+                            if (subflds[j].GetValue(m_returnedvalue) != subflds[j].GetValue(m))
+                            {
+                                if (m_result == 2||m_result==3)
+                                {
+                                    m_result = 3;
+                                }
+                                else
+                                {
+                                    m_result = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (flds[i].GetValue(m_returnedvalue) != flds[i].GetValue(m))
+                        {
+                            if (m_result == 2 || m_result == 3)
+                            {
+                                m_result = 3;
+                            }
+                            else
+                            {
+                                m_result = 1;
+                            }
+                            break;
+                        }
+                    }
+                }
+                m_returnedvalue = m;
+                ret = 0;
+            }
+            catch(Exception ex)
+            {
+                MyMessageBox.ShowErrorMessage(ex.Message);
+            }
+            return ret;
+        }
+
+
         void toSave()
         {
             //保存需要多项处理
             //类的获取
             //表格行的字符化处理
-
+            //保存表格2 保存前面的1 最多为3
+            if (m_result == 1 || m_result == 3)
+            {
+                //保存主要设置
+                if (Ops.writeConnDriverSetting(m_returnedvalue) != 0)
+                {
+                    MyMessageBox.ShowErrorMessage("保存主要设置失败，请查看日志！");
+                }
+                if (Ops.writeDriverSetting(m_returnedvalue.Id, m_returnedvalue.DriverSet) != 0)
+                {
+                    MyMessageBox.ShowErrorMessage("保存驱动设置失败！");
+                }
+            }
+            if (m_result == 2 || m_result == 3)
+            {
+                //保存数据表设置
+                if (Ops.saveConnectorDataItems(m_returnedvalue.Id, m_dt) != 0)
+                {
+                    MyMessageBox.ShowErrorMessage("保存变量失败，请查看日志！");
+                }
+            }
         }
 
     }

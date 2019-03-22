@@ -25,6 +25,8 @@ using System.Threading;
 using System.Reflection;    //创建驱动实例用
 using GeneralOPs;
 using System.Data;
+using CHQ.RD.DataContract;
+using System.Reflection;
 namespace CHQ.RD.ConnectorBase
 {
     public class ConnDriverBase
@@ -151,7 +153,8 @@ namespace CHQ.RD.ConnectorBase
                 m_readmode = m_conndriverset.ReadMode;
                 m_readinterval = m_conndriverset.ReadInterval;
                 m_transmode = m_conndriverset.TransMode;
-                m_driverclass = Type.GetType(m_conndriverset.DriverType);
+                Assembly asm = Assembly.LoadFile(m_conndriverset.ClassFile.FileName);
+                m_driverclass = asm.GetType(m_conndriverset.ClassFile.ClassName);
             }
             return ret;
         }

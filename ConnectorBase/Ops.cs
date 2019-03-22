@@ -128,7 +128,8 @@ namespace CHQ.RD.ConnectorBase
                 }
                 //更新节点信息
                 node.SetAttribute("Id", setting.Id.ToString());
-                node.SetAttribute("Type", setting.DriverType);
+                //TODO: 类型如何处理
+                //node.SetAttribute("", );
                 node.SetAttribute("ReadInterval", setting.ReadInterval.ToString());
                 node.SetAttribute("ReadMode", setting.ReadMode.ToString());
                 node.SetAttribute("TransMode", setting.TransMode.ToString());
@@ -162,7 +163,8 @@ namespace CHQ.RD.ConnectorBase
                     {
                         ret = new ConnDriverSetting();
                         ret.Id = connDriverId;
-                        ret.DriverType = e.Attributes["Type"].Value;
+                        //TODO: 驱动连接器数据更新，类型如何处理
+                        //ret.DriverType = e.Attributes["Type"].Value;
                         ret.Name = e.Attributes["Name"].Value;
                         ret.ReadInterval = int.Parse(e.Attributes["ReadInterval"].Value);
                         ret.ReadMode = int.Parse(e.Attributes["ReadMode"].Value);
