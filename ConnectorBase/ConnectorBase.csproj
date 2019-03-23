@@ -51,6 +51,12 @@
     <Compile Include="FrmConnDriverEdit.Designer.cs">
       <DependentUpon>FrmConnDriverEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmConnDriverView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConnDriverView.Designer.cs">
+      <DependentUpon>FrmConnDriverView.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmConnectorBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +135,9 @@
   <ItemGroup>
     <EmbeddedResource Include="FrmConnDriverEdit.resx">
       <DependentUpon>FrmConnDriverEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmConnDriverView.resx">
+      <DependentUpon>FrmConnDriverView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmConnectorBase.resx">
       <DependentUpon>FrmConnectorBase.cs</DependentUpon>

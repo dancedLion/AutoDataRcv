@@ -46,14 +46,15 @@ namespace CHQ.RD.ConnectorBase
             foreach(AssemblyFile file in m_classes)
             {
                 ListViewItem item = new ListViewItem
-                {
-                    Text = file.Id.ToString(),
-                    Tag=file
-                };
-                item.SubItems[1].Text = file.DriverName;
-                item.SubItems[2].Text = file.ClassName;
-                item.SubItems[3].Text = file.AssemblyInfo;
-                item.SubItems[4].Text = file.FileName;
+                    (new string[]{
+                        file.Id.ToString(),
+                        file.DriverName,
+                        file.ClassName,
+                        file.AssemblyInfo,
+                        file.FileName
+                    }
+                    );
+                item.Tag = file;
                 viewFiles.Items.Add(item);
             }
         }
@@ -68,14 +69,15 @@ namespace CHQ.RD.ConnectorBase
                 {
                     AssemblyFile file=edit.ReturnedValue;
                     ListViewItem item = new ListViewItem
-                    {
-                        Text = file.Id.ToString(),
-                        Tag = file
-                    };
-                    item.SubItems[1].Text = file.DriverName;
-                    item.SubItems[2].Text = file.ClassName;
-                    item.SubItems[3].Text = file.AssemblyInfo;
-                    item.SubItems[4].Text = file.FileName;
+                    (new string[]{
+                        file.Id.ToString(),
+                        file.DriverName,
+                        file.ClassName,
+                        file.AssemblyInfo,
+                        file.FileName
+                    }
+                    );
+                    item.Tag = file;
                     viewFiles.Items.Add(item);
                 }
                 else
@@ -125,7 +127,15 @@ namespace CHQ.RD.ConnectorBase
         }
         void toSelectItem()
         {
-
+            if (m_selectmode)
+            {
+                if (viewFiles.SelectedItems != null && viewFiles.SelectedItems.Count > 0)
+                {
+                    m_returnedvalue = (AssemblyFile)viewFiles.SelectedItems[0].Tag;
+                    m_result = 0;
+                    this.DialogResult = DialogResult.OK;
+                }
+            }
         }
         void toAddNew()
         {
@@ -133,7 +143,26 @@ namespace CHQ.RD.ConnectorBase
         }
         void toUpdate()
         {
-
+            if (viewFiles.SelectedItems != null && viewFiles.SelectedItems.Count > 0)
+            {
+                AssemblyFile af = (AssemblyFile)viewFiles.SelectedItems[0].Tag;
+                FrmDriverClassEdit fe = new FrmDriverClassEdit();
+                if (fe.EditDriverClass(af) == 0)
+                {
+                    if (Ops.updateDriverClass(af, fe.ReturnedValue) != 0)
+                    {
+                        MyMessageBox.ShowErrorMessage("保存设置时出错，数据未保存，请查看日志！");
+                        return;
+                    }
+                    af = fe.ReturnedValue;
+                    viewFiles.SelectedItems[0].Tag = af;
+                    viewFiles.SelectedItems[0].Text = af.Id.ToString();
+                    viewFiles.SelectedItems[0].SubItems[1].Text = af.DriverName;
+                    viewFiles.SelectedItems[0].SubItems[2].Text = af.ClassName;
+                    viewFiles.SelectedItems[0].SubItems[3].Text = af.AssemblyInfo;
+                    viewFiles.SelectedItems[0].SubItems[4].Text = af.FileName;
+                }
+            }
         }
         void toRemove()
         {
@@ -143,6 +172,31 @@ namespace CHQ.RD.ConnectorBase
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             toAddNew();
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            toUpdate();
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            toRemove();
+        }
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            initVIEW();
+        }
+
+        private void toolStripButton6_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+        }
+
+        private void cmdOK_Click(object sender, EventArgs e)
+        {
+            toSelectItem();
         }
     }
 }

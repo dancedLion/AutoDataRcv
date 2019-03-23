@@ -67,7 +67,7 @@ namespace CHQ.RD.ConnectorBase
             Type[] tps = asm.GetTypes();
             for(int i = 0; i < tps.Length; i++)
             {
-                if (tps[i].IsAssignableFrom(typeof(IDriverBase)))
+                if (typeof(IDriverBase).IsAssignableFrom(tps[i]))
                 {
                     TreeNode node = new TreeNode();
                     node.Text = tps[i].FullName;

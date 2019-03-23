@@ -29,6 +29,46 @@ namespace CHQ.RD.ConnectorBase
 
         #region 驱动及驱动连接器
         /// <summary>
+        /// 获取驱动连接器设置列表
+        /// </summary>
+        /// <returns>驱动连接器设置列表</returns>
+        public static List<ConnDriverSetting> getConnDriverSettingList()
+        {
+            List<ConnDriverSetting> ret = new List<ConnDriverSetting>();
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList settings = doc.GetElementsByTagName("ConnDriver");
+                foreach(XmlElement e in settings)
+                {
+                    ConnDriverSetting set = new ConnDriverSetting
+                    {
+                        Id = int.Parse(e.Attributes["Id"].Value),
+                        Name = e.Attributes["Name"].Value,
+                        ReadMode = int.Parse(e.Attributes["ReadMode"].Value),
+                        ReadInterval = int.Parse(e.Attributes["ReadInterval"].Value),
+                        TransMode = int.Parse(e.Attributes["TransMode"].Value)
+                    };
+                    DriverSetting driver = new DriverSetting
+                    {
+                        Host=e.ChildNodes[0].Attributes["Host"].Value,
+                        ReadMode=int.Parse(e.ChildNodes[0].Attributes["ReadMode"].Value),
+                        ReadInterval=int.Parse(e.ChildNodes[0].Attributes["ReadInterval"].Value),
+                        TransMode=int.Parse(e.ChildNodes[0].Attributes["TransMode"].Value)
+                    };
+                    set.DriverSet = driver;
+                    set.ClassFile = getDriverClass(int.Parse(e.Attributes["AssemblyId"].Value));
+                    ret.Add(set);
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "GetConnDriverList():" + ex.Message);
+            }
+            return ret;
+        }
+        /// <summary>
         /// 保存驱动设置（用于修改驱动设置）
         /// </summary>
         /// <param name="connDriverId"></param>
