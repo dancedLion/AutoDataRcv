@@ -78,6 +78,12 @@ namespace CHQ.RD.ConnectorBase
             FrmDriverClassView v = new FrmDriverClassView();
             v.ViewDrivers();
         }
+
+        private void 驱动连接器管理ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmConnDriverView v = new FrmConnDriverView();
+            v.ViewConnDrivers();
+        }
     }
     class AllView
     {

@@ -32,6 +32,9 @@ namespace CHQ.RD.S7Sharp7Driver
 
         public S7Sharp7Driver()
         {
+            HostType = typeof(S7TCPHost);
+            AddressType = typeof(S7Address);
+
             //初始化列表
             m_itemlist = new List<S7SharpReadItem>();
             

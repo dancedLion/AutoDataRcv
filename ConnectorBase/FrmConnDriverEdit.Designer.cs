@@ -94,6 +94,7 @@
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(36, 22);
             this.toolStripButton1.Text = "保存";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripSeparator1
             // 
@@ -108,6 +109,7 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(36, 22);
             this.toolStripButton2.Text = "增行";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // toolStripButton3
             // 
@@ -117,6 +119,7 @@
             this.toolStripButton3.Name = "toolStripButton3";
             this.toolStripButton3.Size = new System.Drawing.Size(36, 22);
             this.toolStripButton3.Text = "删行";
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // toolStripSeparator2
             // 
@@ -194,6 +197,7 @@
             this.btnselectdriverclass.TabIndex = 33;
             this.btnselectdriverclass.Text = "选择";
             this.btnselectdriverclass.UseVisualStyleBackColor = true;
+            this.btnselectdriverclass.Click += new System.EventHandler(this.btnselectdriverclass_Click);
             // 
             // btneditdriversetting
             // 
@@ -203,10 +207,14 @@
             this.btneditdriversetting.TabIndex = 32;
             this.btneditdriversetting.Text = "编辑";
             this.btneditdriversetting.UseVisualStyleBackColor = true;
+            this.btneditdriversetting.Click += new System.EventHandler(this.btneditdriversetting_Click);
             // 
             // cbxdriverreadmode
             // 
             this.cbxdriverreadmode.FormattingEnabled = true;
+            this.cbxdriverreadmode.Items.AddRange(new object[] {
+            "等待读取",
+            "主动读取"});
             this.cbxdriverreadmode.Location = new System.Drawing.Point(65, 138);
             this.cbxdriverreadmode.Name = "cbxdriverreadmode";
             this.cbxdriverreadmode.Size = new System.Drawing.Size(121, 20);
@@ -215,6 +223,9 @@
             // cbxdriversendmode
             // 
             this.cbxdriversendmode.FormattingEnabled = true;
+            this.cbxdriversendmode.Items.AddRange(new object[] {
+            "不发送",
+            "主动发送"});
             this.cbxdriversendmode.Location = new System.Drawing.Point(484, 138);
             this.cbxdriversendmode.Name = "cbxdriversendmode";
             this.cbxdriversendmode.Size = new System.Drawing.Size(121, 20);
@@ -223,6 +234,9 @@
             // cbxconndriversendmode
             // 
             this.cbxconndriversendmode.FormattingEnabled = true;
+            this.cbxconndriversendmode.Items.AddRange(new object[] {
+            "不送发",
+            "主动发送"});
             this.cbxconndriversendmode.Location = new System.Drawing.Point(484, 48);
             this.cbxconndriversendmode.Name = "cbxconndriversendmode";
             this.cbxconndriversendmode.Size = new System.Drawing.Size(121, 20);
@@ -231,6 +245,9 @@
             // cboconndriverreadmode
             // 
             this.cboconndriverreadmode.FormattingEnabled = true;
+            this.cboconndriverreadmode.Items.AddRange(new object[] {
+            "等待读取",
+            "主动读取"});
             this.cboconndriverreadmode.Location = new System.Drawing.Point(65, 48);
             this.cboconndriverreadmode.Name = "cboconndriverreadmode";
             this.cboconndriverreadmode.Size = new System.Drawing.Size(121, 20);
@@ -391,6 +408,7 @@
             // 
             // vwDataItem
             // 
+            this.vwDataItem.AllowUserToAddRows = false;
             this.vwDataItem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.vwDataItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vwDataItem.Location = new System.Drawing.Point(3, 3);

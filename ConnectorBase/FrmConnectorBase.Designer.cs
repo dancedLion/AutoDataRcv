@@ -42,13 +42,14 @@
             this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.编辑驱动类型ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.briefView = new System.Windows.Forms.TreeView();
             this.detailView = new System.Windows.Forms.ListView();
             this.messageList = new System.Windows.Forms.ListBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.编辑驱动类型ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.驱动连接器管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -165,10 +166,18 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.编辑驱动类型ToolStripMenuItem});
+            this.编辑驱动类型ToolStripMenuItem,
+            this.驱动连接器管理ToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
             this.toolStripMenuItem1.Text = "文件";
+            // 
+            // 编辑驱动类型ToolStripMenuItem
+            // 
+            this.编辑驱动类型ToolStripMenuItem.Name = "编辑驱动类型ToolStripMenuItem";
+            this.编辑驱动类型ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.编辑驱动类型ToolStripMenuItem.Text = "编辑驱动类型";
+            this.编辑驱动类型ToolStripMenuItem.Click += new System.EventHandler(this.编辑驱动类型ToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -239,12 +248,12 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // 编辑驱动类型ToolStripMenuItem
+            // 驱动连接器管理ToolStripMenuItem
             // 
-            this.编辑驱动类型ToolStripMenuItem.Name = "编辑驱动类型ToolStripMenuItem";
-            this.编辑驱动类型ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.编辑驱动类型ToolStripMenuItem.Text = "编辑驱动类型";
-            this.编辑驱动类型ToolStripMenuItem.Click += new System.EventHandler(this.编辑驱动类型ToolStripMenuItem_Click);
+            this.驱动连接器管理ToolStripMenuItem.Name = "驱动连接器管理ToolStripMenuItem";
+            this.驱动连接器管理ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.驱动连接器管理ToolStripMenuItem.Text = "驱动连接器管理";
+            this.驱动连接器管理ToolStripMenuItem.Click += new System.EventHandler(this.驱动连接器管理ToolStripMenuItem_Click);
             // 
             // FrmConnectorBase
             // 
@@ -295,5 +304,6 @@
         private System.Windows.Forms.ToolStripButton toolStripButton6;
         private System.Windows.Forms.ToolStripButton toolStripButton7;
         private System.Windows.Forms.ToolStripMenuItem 编辑驱动类型ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 驱动连接器管理ToolStripMenuItem;
     }
 }

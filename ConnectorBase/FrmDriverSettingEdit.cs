@@ -14,6 +14,7 @@ namespace CHQ.RD.ConnectorBase
         public FrmDriverSettingEdit()
         {
             InitializeComponent();
+            initTable();
         }
         DataTable dt;
         int m_result = -1;
@@ -28,7 +29,7 @@ namespace CHQ.RD.ConnectorBase
             dt = new DataTable("dt");
             dt.Columns.Add("propName", typeof(string));
             dt.Columns.Add("propValue", typeof(string));
-            dt.PrimaryKey[0] = dt.Columns["propName"];
+            dt.PrimaryKey =new DataColumn[] { dt.Columns[0] };
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.DataSource = dt;
         }
@@ -87,9 +88,9 @@ namespace CHQ.RD.ConnectorBase
                 foreach(DataRow dr in dt.Rows)
                 {
                     if (!string.IsNullOrEmpty(m_returnedvalue)) m_returnedvalue += ";";
-                    m_returnedvalue = dr[0].ToString() + "=" + dr[1].ToString();
+                    m_returnedvalue += dr[0].ToString() + "=" + dr[1].ToString();
                 }
-                m_result = 1;
+                m_result = 0;
                 this.DialogResult = DialogResult.OK;
             }
             catch(Exception ex)

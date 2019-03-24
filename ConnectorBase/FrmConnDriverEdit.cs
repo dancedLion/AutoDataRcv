@@ -16,6 +16,7 @@ namespace CHQ.RD.ConnectorBase
         public FrmConnDriverEdit()
         {
             InitializeComponent();
+            initTable();
         }
 
         AssemblyFile m_file=null;
@@ -65,6 +66,7 @@ namespace CHQ.RD.ConnectorBase
             m_dt.Columns.Add("TransSig", typeof(string));
             m_dt.Columns.Add("ValueType", typeof(string));
             m_dt.Columns.Add("Address", typeof(string));
+            vwDataItem.DataSource = m_dt;
         }
         /// <summary>
         /// 加载数据表
@@ -76,25 +78,25 @@ namespace CHQ.RD.ConnectorBase
             {
                 m_dt.Rows.Clear();
                 DataTable items = Ops.getConnDriverDataItems(conndriver.Id);
-                Type type = null;
+                Type addressType = null;
                 if (conndriver.ClassFile != null)
                 {
                     AssemblyFile file = Ops.getDriverClass(conndriver.ClassFile.Id);
                     Assembly asm = Assembly.LoadFile(file.FileName);
-                    type = asm.GetType(file.ClassName).GetField("AddressType").FieldType;
+                    addressType = (Type)asm.GetType(file.ClassName).GetProperty("AddressType").GetValue(asm.CreateInstance(file.ClassName),null);
                 }
                 foreach (DataRow r in items.Rows)
                 {
 
                     DataRow dr = m_dt.NewRow();
-                    if (type != null)
+                    if (addressType != null)
                     {
-                        object o = Ops.ParsingAddress(type, dr["Address"].ToString());
-                        FieldInfo[] flds = type.GetFields();
+                        object o = Ops.ParsingAddress(addressType, dr["Address"].ToString());
+                        FieldInfo[] flds = addressType.GetFields();
                         for (int i = 0; i < flds.Length; i++)
                         {
                             //TODO: 不知道如何取值 
-                            dr[flds[i].Name] = flds[i].GetValue(Convert.ChangeType(o, type));
+                            dr[flds[i].Name] = flds[i].GetValue(Convert.ChangeType(o, addressType));
                         }
                     }
                     dr["Id"] = r["Id"];
@@ -122,12 +124,14 @@ namespace CHQ.RD.ConnectorBase
             {
                 //删除当前driver的地址列
                 //如果类型一致，无需变更
-                if (m_driver != null && type == m_driver.GetField("AddressType").FieldType) return;
+                PropertyInfo addProps=null;
+                if (m_driver != null) { addProps = m_driver.GetProperty("AddressType"); }
+                if (m_driver != null && type == (Type)addProps.GetValue(m_driver.Assembly.CreateInstance(m_driver.FullName),null)) return;
                 FieldInfo[] flds;
                 //如果原类型不存在或者是地址类型不存在就不需要处理
-                if (m_driver != null && m_driver.GetField("AddressType").FieldType != null)
+                if (m_driver != null && (Type)addProps.GetValue(m_driver.Assembly.CreateInstance(m_driver.FullName), null)!= null)
                 {
-                    flds = m_driver.GetField("AddressType").FieldType.GetFields();
+                    flds = ((Type)addProps.GetValue(m_driver.Assembly.CreateInstance(m_driver.FullName), null)).GetFields();
                     List<DataColumn> dcs = new List<DataColumn>();
                     for (int i = 0; i < flds.Length; i++)
                     {
@@ -142,9 +146,9 @@ namespace CHQ.RD.ConnectorBase
                     foreach (DataColumn dc in dcs)
                     {
                         m_dt.Columns.Remove(dc);
-                        vwDataItem.Columns.Remove(
-                            vwDataItem.Columns[dc.ColumnName]
-                            );
+                        //vwDataItem.Columns.Remove(
+                        //    vwDataItem.Columns[dc.ColumnName]
+                        //    );
                     }
                 }
                 //添加新的driver的地址列
@@ -152,11 +156,11 @@ namespace CHQ.RD.ConnectorBase
                 for (int i = 0; i < flds.Length; i++)
                 {
                     m_dt.Columns.Add(flds[i].Name, flds[i].FieldType);
-                    vwDataItem.Columns.Add(new DataGridViewColumn
-                    {
-                        DataPropertyName = flds[i].Name,
-                        Name = flds[i].Name
-                    });
+                    //vwDataItem.Columns.Add(new DataGridViewColumn
+                    //{
+                    //    DataPropertyName = flds[i].Name,
+                    //    Name = flds[i].Name
+                    //});
                 }
                 foreach (DataRow dr in m_dt.Rows)
                 {
@@ -218,21 +222,29 @@ namespace CHQ.RD.ConnectorBase
             //当类型更改时将
             //如果HOST不同，将空白HOST
             //如果地址设置不同，将空白ADDRESS
+            //PropertyInfo[] props=newDriver.GetProperties();
+            PropertyInfo hostProps = newDriver.GetProperty("HostType");
+            PropertyInfo addressProps = newDriver.GetProperty("AddressType");
+            object o = newDriver.Assembly.CreateInstance(newDriver.FullName);
             try
             {
                 if (m_driver == null)
                 {
-                    changeTable(newDriver.GetField("AddressType").FieldType);
+                    Type tp =(Type)addressProps.GetValue(o,null);
+                    changeTable(tp);
                 }
                 else
                 {
-                    if (m_driver.GetField("HostType").FieldType != newDriver.GetField("HostType").FieldType)
+                    if (hostProps.GetValue(m_driver.Assembly.CreateInstance(m_driver.FullName),null) != 
+                        hostProps.GetValue(o,null))    
+         
                     {
                         tbxdriverhost.Text = "";
                     }
-                    if (m_driver.GetField("AddressType").FieldType != newDriver.GetField("AddressType").FieldType)
+                    if (addressProps.GetValue(m_driver.Assembly.CreateInstance(m_driver.FullName), null) !=
+                       addressProps.GetValue(o, null))
                     {
-                        changeTable(newDriver.GetField("AddressType").FieldType);
+                        changeTable((Type)addressProps.GetValue(o, null));
                     }
                 }
                 //更新driver
@@ -243,8 +255,19 @@ namespace CHQ.RD.ConnectorBase
                 MyMessageBox.ShowErrorMessage(ex.Message);
             }
         }
-        
 
+        void toEditDriverHost()
+        {
+            if (m_driver != null)
+            {
+                PropertyInfo prop = m_driver.GetProperty("HostType");
+                FrmDriverSettingEdit edit = new FrmDriverSettingEdit();
+                if (edit.EditDriverSetting((Type)prop.GetValue(m_driver.Assembly.CreateInstance(m_driver.FullName),null),tbxdriverhost.Text) == 0)
+                {
+                    tbxdriverhost.Text = edit.ReturnedValue;
+                }
+            }
+        }
 
         void loadConnDriver(ConnDriverSetting conndriver)
         {
@@ -256,6 +279,7 @@ namespace CHQ.RD.ConnectorBase
                     //需要设置变更
                     onDriverTypeChanged(asm.GetType(conndriver.ClassFile.ClassName));
                     tbxdriverclass.Text = conndriver.ClassFile.DriverName.ToString();
+                    m_file = conndriver.ClassFile;
                 }
                 tbxid.Text = conndriver.Id.ToString();
                 tbxname.Text = conndriver.Name;
@@ -264,9 +288,11 @@ namespace CHQ.RD.ConnectorBase
                 cboconndriverreadmode.SelectedIndex = conndriver.ReadMode;
                 if (conndriver.DriverSet != null)
                 {
-                    tbxconndriverreadinterval.Text = conndriver.DriverSet.ReadInterval.ToString();
+                    tbxdriverreadinterval.Text = conndriver.DriverSet.ReadInterval.ToString();
                     cbxdriverreadmode.SelectedIndex = conndriver.DriverSet.ReadMode;
                     cbxdriversendmode.SelectedIndex = conndriver.DriverSet.TransMode;
+                    //设置主机值 
+                    tbxdriverhost.Text = conndriver.DriverSet.Host;
                 }
                 //加载变量设置
                 loadDataItems(conndriver);
@@ -379,6 +405,8 @@ namespace CHQ.RD.ConnectorBase
 
         void toSave()
         {
+            //预处理不成功则返回
+            if (formToConnDriver() != 0) return;
             //保存需要多项处理
             //类的获取
             //表格行的字符化处理
@@ -405,5 +433,29 @@ namespace CHQ.RD.ConnectorBase
             }
         }
 
+        private void btnselectdriverclass_Click(object sender, EventArgs e)
+        {
+            toSelectDriver();
+        }
+
+        private void btneditdriversetting_Click(object sender, EventArgs e)
+        {
+            toEditDriverHost();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            toSave();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            toAddNewRow();
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            toRemoveRow();
+        }
     }
 }

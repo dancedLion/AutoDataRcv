@@ -24,6 +24,7 @@ namespace CHQ.RD.ConnectorBase
     public class Ops
     {
         static string xmlfile = AppDomain.CurrentDomain.BaseDirectory + "\\connectorsettings.xml";
+        static string dataitemsfile = AppDomain.CurrentDomain.BaseDirectory + "\\ConnectorDataItems.xml";
         static string logfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\ConnectorBasetracelog.log";
         static string errorfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\ConnectorBaseerrorlog.log";
 
@@ -58,7 +59,7 @@ namespace CHQ.RD.ConnectorBase
                         TransMode=int.Parse(e.ChildNodes[0].Attributes["TransMode"].Value)
                     };
                     set.DriverSet = driver;
-                    set.ClassFile = getDriverClass(int.Parse(e.Attributes["AssemblyId"].Value));
+                    set.ClassFile = getDriverClass(int.Parse(e.Attributes["AssemblieId"].Value));
                     ret.Add(set);
                 }
             }
@@ -168,8 +169,7 @@ namespace CHQ.RD.ConnectorBase
                 }
                 //更新节点信息
                 node.SetAttribute("Id", setting.Id.ToString());
-                //TODO: 类型如何处理
-                //node.SetAttribute("", );
+                node.SetAttribute("AssemblieId",setting.ClassFile.Id.ToString());
                 node.SetAttribute("ReadInterval", setting.ReadInterval.ToString());
                 node.SetAttribute("ReadMode", setting.ReadMode.ToString());
                 node.SetAttribute("TransMode", setting.TransMode.ToString());
@@ -203,13 +203,12 @@ namespace CHQ.RD.ConnectorBase
                     {
                         ret = new ConnDriverSetting();
                         ret.Id = connDriverId;
-                        //TODO: 驱动连接器数据更新，类型如何处理
-                        //ret.DriverType = e.Attributes["Type"].Value;
                         ret.Name = e.Attributes["Name"].Value;
                         ret.ReadInterval = int.Parse(e.Attributes["ReadInterval"].Value);
                         ret.ReadMode = int.Parse(e.Attributes["ReadMode"].Value);
                         ret.TransMode = int.Parse(e.Attributes["TransMode"].Value);
                         ret.DriverSet = getDriverSetting(connDriverId);
+                        ret.ClassFile = getDriverClass(int.Parse(e.Attributes["AssemblieId"].Value));
                     }
                 }
             }
@@ -220,6 +219,34 @@ namespace CHQ.RD.ConnectorBase
             }
             return ret;
         }
+
+        public static int removeConnDriverSetting(int connDriverId)
+        {
+            int ret = -1;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                //TODO:判断数据项是否存在
+                XmlNodeList nodes = doc.GetElementsByTagName("ConnDriver");
+                foreach(XmlElement e in nodes)
+                {
+                    if (e.Attributes["Id"].Value == connDriverId.ToString())
+                    {
+                        e.ParentNode.RemoveChild(e);
+                        ret = 0;
+                        break;
+                    }
+                }
+                doc.Save(xmlfile);
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "RemoveConnDriverSetting(" + connDriverId.ToString() + "):" + ex.Message);
+            }
+            return ret;
+        }
+
         /// <summary>
         /// 获取驱动设置
         /// </summary>
@@ -305,7 +332,7 @@ namespace CHQ.RD.ConnectorBase
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlfile);
-                XmlNodeList nodes = doc.GetElementsByTagName("Assemblies");
+                XmlNodeList nodes = doc.GetElementsByTagName("Assemblie");
                 foreach(XmlElement e in nodes)
                 {
                     if (e.Attributes["Id"].Value == id.ToString())
@@ -471,7 +498,7 @@ namespace CHQ.RD.ConnectorBase
             try
             {
                 XmlDocument doc = new XmlDocument();
-                doc.Load(xmlfile);
+                doc.Load(dataitemsfile);
                 //是否有dataitems页签
                 XmlNodeList dataitems = doc.GetElementsByTagName("DataItems");
                 if (dataitems == null)
@@ -531,7 +558,7 @@ namespace CHQ.RD.ConnectorBase
                             break;
                     }
                 }
-                doc.Save(xmlfile);
+                doc.Save(dataitemsfile);
             }
             catch(Exception ex)
             {
@@ -550,7 +577,7 @@ namespace CHQ.RD.ConnectorBase
             try
             {
                 XmlDocument doc = new XmlDocument();
-                doc.Load(xmlfile);
+                doc.Load(dataitemsfile);
                 XmlNodeList nodes = doc.GetElementsByTagName("DataItems");
                 if (nodes != null)
                 {
@@ -581,7 +608,7 @@ namespace CHQ.RD.ConnectorBase
             try
             {
                 XmlDocument doc = new XmlDocument();
-                doc.Load(xmlfile);
+                doc.Load(dataitemsfile);
                 XmlNodeList nodes = doc.GetElementsByTagName("DataItems");
                 if (nodes != null)
                 {
@@ -699,7 +726,7 @@ namespace CHQ.RD.ConnectorBase
             }
             catch(Exception ex)
             {
-
+                TxtLogWriter.WriteErrorMessage(errorfile, "CreateClassDataTable(" + type.Name + "):" + ex.Message);
             }
             return ret;
         }
@@ -707,11 +734,49 @@ namespace CHQ.RD.ConnectorBase
         public static object ParsingHost(Type hosttype,string hoststring)
         {
             object ret = null;
+            try
+            {
+                ret = hosttype.Assembly.CreateInstance(hosttype.FullName);
+                string[] keyvalues = hoststring.Split(';');
+                for(int i = 0; i < keyvalues.Length; i++)
+                {
+                    string[] keyvalue = keyvalues[i].Split('=');
+                    if (keyvalue.Length > 1)
+                    {
+                        hosttype.GetField(keyvalue[0]).SetValue(ret, keyvalue[1]);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "ParsingHost(" + hosttype.Name + "," + hoststring + "):" + ex.Message);
+            }
             return ret;
         }
         public static object ParsingAddress(Type addresstype,string address)
         {
             object ret = null;
+            try
+            {
+                ret = addresstype.Assembly.CreateInstance(addresstype.FullName);
+                string[] add = address.Split(';');
+                FieldInfo[] flds = addresstype.GetFields();
+                for (int i = 0; i < flds.Length; i++)
+                {
+                    for (int j = 0; j < add.Length; j++)
+                    {
+                        string[] keyvalue = add[j].Split('=');
+                        if (keyvalue[0] == flds[i].Name && keyvalue.Length > 1)
+                        {
+                            flds[i].SetValue(ret, Convert.ChangeType(keyvalue[1], flds[i].FieldType));
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "ParsingAddress(" + addresstype.Name + "," + address + "):" + ex.Message);
+            }
             return ret;
         }
 

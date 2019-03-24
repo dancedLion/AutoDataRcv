@@ -143,7 +143,7 @@ namespace CHQ.RD.ConnectorBase
             {
                 if (MyMessageBox.ShowSelectionMessage("是否确认要删除选中的驱动连接器？") == DialogResult.Yes)
                 {
-                    if (Ops.removeConnDriverSetting((ConnDriverSetting)vwConnDriver.SelectedItems[0].Tag) != 0)
+                    if (Ops.removeConnDriverSetting(((ConnDriverSetting)vwConnDriver.SelectedItems[0].Tag).Id) != 0)
                     {
                         MyMessageBox.ShowErrorMessage("删除设置时发生错误，请查看日志！");
                     }

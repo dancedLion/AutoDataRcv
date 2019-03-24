@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE DataItems[
+  <!ELEMENT DataItems ANY>
+  <!ELEMENT Item ANY>
+  <!ATTLIST Item Id ID #REQUIRED>
+  <!ATTLIST Item ConnId CDATA #REQUIRED>
+]>
+<DataItems>
+  <Item Id="1" ConnId="1" Name="" ValueType="" TransSig="" Address=""/>
+</DataItems>

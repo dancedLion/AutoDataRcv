@@ -108,6 +108,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="ConnDriverSettings.xml" />
+    <None Include="ConnectorDataItems.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

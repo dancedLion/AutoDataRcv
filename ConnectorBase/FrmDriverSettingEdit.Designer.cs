@@ -93,6 +93,7 @@
             // 
             // propName
             // 
+            this.propName.DataPropertyName = "propName";
             this.propName.HeaderText = "属性名称";
             this.propName.Name = "propName";
             this.propName.ReadOnly = true;
@@ -100,6 +101,7 @@
             // 
             // propValue
             // 
+            this.propValue.DataPropertyName = "propValue";
             this.propValue.HeaderText = "值";
             this.propValue.Name = "propValue";
             // 
