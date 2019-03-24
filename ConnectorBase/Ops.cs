@@ -219,7 +219,11 @@ namespace CHQ.RD.ConnectorBase
             }
             return ret;
         }
-
+        /// <summary>
+        /// 删除驱动连接器设置
+        /// </summary>
+        /// <param name="connDriverId">整型，驱动连接器ID</param>
+        /// <returns></returns>
         public static int removeConnDriverSetting(int connDriverId)
         {
             int ret = -1;
@@ -228,6 +232,13 @@ namespace CHQ.RD.ConnectorBase
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlfile);
                 //TODO:判断数据项是否存在
+                XmlDocument dataitems = new XmlDocument();
+                doc.Load(dataitemsfile);
+                XmlNodeList items = doc.GetElementsByTagName("DataItems");
+                if (items[0].SelectNodes("Item[@ConnId=" + connDriverId.ToString() + "]") != null)
+                {
+                    throw new Exception("数据变量尚未处理！");
+                }
                 XmlNodeList nodes = doc.GetElementsByTagName("ConnDriver");
                 foreach(XmlElement e in nodes)
                 {
@@ -432,8 +443,15 @@ namespace CHQ.RD.ConnectorBase
                 doc.Load(xmlfile);
                 XmlNodeList nodes = doc.GetElementsByTagName("DriverAssemblies");
                 bool isfound = false;
-                //TODO:先找有没有被引用
-
+                //先找有没有被引用
+                XmlNodeList conndrivers = doc.GetElementsByTagName("ConnDriver");
+                foreach(XmlElement e in conndrivers)
+                {
+                    if (e.Attributes["AssemblieId"].Value == driverclass.Id.ToString())
+                    {
+                        throw new Exception("指定的驱动类型已经被引用，无法删除！");
+                    }
+                }
                 //再找是否存在
                 isfound = false;
                 foreach(XmlElement e in nodes[0].ChildNodes)
@@ -475,7 +493,30 @@ namespace CHQ.RD.ConnectorBase
             //已引用的要变更为新的ID
             try
             {
-                //TODO:加入更新代码
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList files = doc.GetElementsByTagName("ConnDriver");
+                foreach(XmlElement e in files)
+                {
+                    if (e.Attributes["AssemblieId"].Value == olddriver.Id.ToString())
+                    {
+                        e.SetAttribute("AssemblieId", newdriver.Id.ToString());
+                    }
+                }
+                doc.Save(xmlfile);
+                //加入更新代码
+                XmlNodeList asms = doc.GetElementsByTagName("Assemblie");
+                foreach(XmlElement e in asms)
+                {
+                    if (e.Attributes["Id"].Value == olddriver.Id.ToString())
+                    {
+                        e.SetAttribute("Id", newdriver.Id.ToString());
+                        e.SetAttribute("DriverName", newdriver.DriverName);
+                        break;
+                    }
+                }
+                doc.Save(xmlfile);
+                ret = 0;
             }
             catch(Exception ex)
             {

@@ -95,7 +95,6 @@ namespace CHQ.RD.ConnectorBase
                         FieldInfo[] flds = addressType.GetFields();
                         for (int i = 0; i < flds.Length; i++)
                         {
-                            //TODO: 不知道如何取值 
                             dr[flds[i].Name] = flds[i].GetValue(Convert.ChangeType(o, addressType));
                         }
                     }
