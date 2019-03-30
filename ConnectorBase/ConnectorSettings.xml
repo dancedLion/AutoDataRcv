@@ -10,6 +10,14 @@
   <DataItems>
     <Item Id="1" ConnId="1" Name="" ValueType="" TransSig="" Address=""/>
   </DataItems>
+  <CustomViews>
+    <View Name="西门子测试PLC">
+      <CD Id="1"/>
+      <View Name="Prodave连接器">
+        
+      </View>
+    </View>
+  </CustomViews>
   <AppSettings>
     <AppSet>
       <Sending Id="" Server="" Port="" Via="UDP" UsingSig="1" Items="" Interval="2000"/>

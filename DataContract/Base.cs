@@ -59,8 +59,8 @@ namespace CHQ.RD.DataContract
     {
         public int Id;      //唯一ID
         public string Name;
-        public int ReadInterval;    //
         public int ReadMode;    //
+        public int ReadInterval;    //
         public int TransMode;   //传送模式
         public AssemblyFile ClassFile;    //驱动编辑及类型
         public List<ConnectorDataItem> DataItems;
@@ -81,10 +81,10 @@ namespace CHQ.RD.DataContract
     }
     public class ConnectorDataItem
     {
+        public int Id;
+        public string Name;
         public int ConnId;
         public string TransSig;
-        public string Name;
-        public int Id;
         public string Address;
         public string ValueType;
     }

@@ -69,6 +69,12 @@
     <Compile Include="FrmConnectorEditBase.Designer.cs">
       <DependentUpon>FrmConnectorEditBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmConnectorManagerBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConnectorManagerBase.Designer.cs">
+      <DependentUpon>FrmConnectorManagerBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmDataItemsView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +98,12 @@
     </Compile>
     <Compile Include="FrmDriverSettingEdit.Designer.cs">
       <DependentUpon>FrmDriverSettingEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmInputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmInputBox.Designer.cs">
+      <DependentUpon>FrmInputBox.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmSelectClassFromFile.cs">
       <SubType>Form</SubType>
@@ -148,6 +160,9 @@
     <EmbeddedResource Include="FrmConnectorEditBase.resx">
       <DependentUpon>FrmConnectorEditBase.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmConnectorManagerBase.resx">
+      <DependentUpon>FrmConnectorManagerBase.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmDriverClassEdit.resx">
       <DependentUpon>FrmDriverClassEdit.cs</DependentUpon>
     </EmbeddedResource>
@@ -156,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmDriverSettingEdit.resx">
       <DependentUpon>FrmDriverSettingEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmInputBox.resx">
+      <DependentUpon>FrmInputBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmSelectClassFromFile.resx">
       <DependentUpon>FrmSelectClassFromFile.cs</DependentUpon>
