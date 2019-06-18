@@ -64,6 +64,7 @@ namespace CHQ.RD.ConnectorBase
             m_dt.Columns.Add("Name", typeof(string));
             m_dt.Columns.Add("ConnId", typeof(int));
             m_dt.Columns.Add("TransSig", typeof(string));
+            //值类型来自于某个枚举
             m_dt.Columns.Add("ValueType", typeof(string));
             m_dt.Columns.Add("Address", typeof(string));
             vwDataItem.DataSource = m_dt;
@@ -351,6 +352,34 @@ namespace CHQ.RD.ConnectorBase
                     TransMode = cbxdriversendmode.SelectedIndex
                 };
                 m.DriverSet = md;
+                //数据行的处理
+                //m_driver的addresstype属性
+                Type addressType=null;
+                if (m_driver != null)
+                {
+                    PropertyInfo addressProp = m_driver.GetProperty("AddressType");
+                    addressType = (Type)addressProp.GetValue(m_driver.Assembly.CreateInstance(m_driver.FullName),null);
+                }
+                if (addressType != null) {
+                    foreach (DataRow dr in m_dt.Rows)
+                    {
+                        //根据类的数据表述来生成address字符串
+                        if (dr.RowState == DataRowState.Added || dr.RowState == DataRowState.Modified)
+                        {
+                            m_result = 2;
+                            //IHostDataAddress add = (IHostDataAddress)addressType.Assembly.CreateInstance(addressType.FullName);
+                            FieldInfo[] addflds = addressType.GetFields();
+                            //TODO:如何赋默认值
+                            string s = "";
+                            for(int i = 0; i < addflds.Length; i++)
+                            {
+                                s += addflds[i].Name + "="+dr[addflds[i].Name].ToString();
+                                s += ((i == addflds.Length - 1) ? "" : ";");
+                            }
+                            dr["Address"] = s;
+                        }
+                    }
+                }
                 //检测多项对比，有值不同提示不同的保存值 
                 FieldInfo[] flds = typeof(ConnDriverSetting).GetFields();
                 for(int i = 0; i < flds.Length; i++)

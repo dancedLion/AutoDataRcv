@@ -125,7 +125,7 @@ namespace CHQ.RD.ConnectorBase
                     ds.ReadMode.ToString(),
                     ds.ReadInterval.ToString(),
                     ds.TransMode.ToString(),
-                    ds.ClassFile.DriverName,
+                    ds.ClassFile==null?"":ds.ClassFile.DriverName,
                     "",
                     ds.DriverSet.ToString()
                 });

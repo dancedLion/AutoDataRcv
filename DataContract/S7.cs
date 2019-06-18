@@ -32,13 +32,44 @@ namespace CHQ.RD.DataContract
         RUN,
         PAUSE
     }
-    public class S7Address
+    public class S7Address:IHostDataAddress
     {
         public S7BlockType BlockType;
         public int BlockNo;
         public int Start;
         public int DataLen;
         public int WordLen;
+        public override string ToString()
+        {
+            return "BlockType=" + BlockType.ToString() + ";BlockNo=" + BlockNo.ToString() + ";Start=" + Start.ToString() + ";DataLen=" + DataLen.ToString() + ";WordLen=" + WordLen.ToString();
+        }
+        //通过解析字符串获取地址值 
+        public void Parsing(string addressString)
+        {
+            string[] flds = addressString.Split(';');
+            for(int i = 0; i < flds.Length; i++)
+            {
+                string[] keyvalue = flds[i].Split('=');
+                switch (keyvalue[0])
+                {
+                    case "BlockType":
+                        BlockType = (S7BlockType)Enum.Parse(typeof(S7BlockType), keyvalue[1]);
+                        break;
+                    case "BlockNo":
+                        BlockNo = int.Parse(keyvalue[1]);
+                        break;
+                    case "Start":
+                        Start = int.Parse(keyvalue[1]);
+                        break;
+                    case "DataLen":
+                        DataLen = int.Parse(keyvalue[1]);
+                        break;
+                    case "WordLen":
+                        WordLen = int.Parse(keyvalue[1]);
+                        break;
+                }
+            }
+        }
     }
     public class S7TCPHost
     {
@@ -51,5 +82,8 @@ namespace CHQ.RD.DataContract
             return "IPAddress=" + IPAddress + ";Port=" + Port.ToString() + ";RackNo=" + RackNo.ToString() + ";SlotNo=" + SlotNo.ToString();
         }
     }
+
+
+    //主机地址接口，要求主机地址均可实现从字符串解析；
 
 }

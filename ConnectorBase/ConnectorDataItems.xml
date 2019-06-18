@@ -6,5 +6,5 @@
   <!ATTLIST Item ConnId CDATA #REQUIRED>
 ]>
 <DataItems>
-  <Item Id="1" ConnId="1" Name="" ValueType="" TransSig="" Address=""/>
+  <Item Id="1" ConnId="1" Name="123" ValueType="" TransSig="" Address=""/>
 </DataItems>

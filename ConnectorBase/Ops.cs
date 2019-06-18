@@ -578,7 +578,7 @@ namespace CHQ.RD.ConnectorBase
                             }
                             else
                             {
-                                data =(XmlElement)dataitems[0].SelectNodes("Item[@Id=" + dr["id"].ToString() + "]").Item(0).FirstChild;
+                                data =(XmlElement)dataitems[0].SelectNodes("Item[@Id=" + dr["Id"].ToString() + " and @ConnId=" + connDriverId + "]").Item(0);
                                 data.SetAttribute("Name", dr["name"].ToString());
                                 data.SetAttribute("TransSig", dr["TransSig"].ToString());
                                 data.SetAttribute("Address", dr["Address"].ToString());
