@@ -32,13 +32,14 @@ namespace CHQ.RD.DataContract
 
     public enum ConnDriverStatus
     {
-        None,
-        Inited,
-        Running,
-        Pausing,
-        Stoped,
-        Closed,
-        Error
+        None,   //只是定义
+        Inited, //初始化
+        Running,    //运行中
+        Pausing,    //暂停中，已经弃用
+        Stoped,     //已停止，
+        Closed,     //已关闭，比停止多出来释放变量
+        AutoErrorTransacting,   //如果驱动错误计数在10次及以上，将停止并且开始重连
+        Error       //错误，手工操作时才会有，运行中的只会有上一选项
     }
 
     public enum DriverStatus
@@ -73,6 +74,7 @@ namespace CHQ.RD.DataContract
     {
         public int Id;
         public string Hosts;
+        public int Port;
         public List<ConnDriverSetting> ConnDriverSet;
         public List<ConnectorDataItem> DataItems;
     }
@@ -99,5 +101,17 @@ namespace CHQ.RD.DataContract
         public string ClassName;
         public string AssemblyInfo;
         public string FileName;
+    }
+
+    public class DataSendingSet
+    {
+        public int Id;
+        public string Name;
+        public string Host;
+        public int HostPort;
+        public int SendInterval;    //如果为零，则表示有变化就发送；
+        public string Memo;
+        public string ConnDrivers;  //预留，为了不同驱动连接器的数据发送给不同的主机
+        public int Via;     //发送方式 0-Socket,1-TCP 2-UDP
     }
 }

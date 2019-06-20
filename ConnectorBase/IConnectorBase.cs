@@ -36,7 +36,7 @@ namespace CHQ.RD.ConnectorBase
         /// </summary>
         /// <returns>0-成功</returns>
         int Restart();
-        object AcceptValue();
+        object AcceptValue(object state);
         //object ConnectDriver();
         void ReadData(object state);
     }

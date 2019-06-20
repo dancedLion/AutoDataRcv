@@ -20,6 +20,7 @@ namespace CHQ.RD.DriverBase
         DriverStatus Status { get; set; }
         Type HostType { get; }
         Type AddressType { get; }
+        Dictionary<int,int> ErrorCount { get; set; }
         /// <summary>
         /// 从设备读取数据
         /// </summary>

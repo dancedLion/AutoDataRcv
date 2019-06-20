@@ -65,6 +65,11 @@ namespace CHQ.RD.DriverBase
             get { return m_addresstype; }
             set { m_addresstype = value; }
         }
+        public Dictionary<int,int> ErrorCount
+        {
+            get { return m_errorCount; }
+            set { m_errorCount = value; }
+        }
         #endregion
         public DriverBase()
         {

@@ -21,7 +21,7 @@ namespace CHQ.RD.S7Sharp7Driver
         Dictionary<string, int> m_valuetype;
         Dictionary<string, int> m_dbtype;
         Dictionary<string, int> m_datalen;
-        Dictionary<int, int> m_errorcount;
+        //Dictionary<int, int> m_errorcount;
         string errorfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\S7Sharp7DriverError.log";
         string logfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\S7Sharp7Driver.log";
 
@@ -71,7 +71,7 @@ namespace CHQ.RD.S7Sharp7Driver
             m_valuetype.Clear();
             m_dbtype.Clear();
             m_datalen.Clear();
-            m_errorcount.Clear();
+            ErrorCount.Clear();
             if (m_itemlist != null)
             {
                 m_itemlist.Clear();
@@ -86,7 +86,7 @@ namespace CHQ.RD.S7Sharp7Driver
             m_datalen = null;
             m_host = null;
             m_itemlist = null;
-            m_errorcount = null;
+            ErrorCount = null;
         }
         /// <summary>
         /// 对传入的设置进行转化
@@ -256,12 +256,12 @@ namespace CHQ.RD.S7Sharp7Driver
                         );
                 if (i != 0)
                 {
-                    if (m_errorcount.ContainsKey(i)){
-                        m_errorcount[i] += 1;
+                    if (ErrorCount.ContainsKey(i)){
+                        ErrorCount[i] += 1;
                     }
                     else
                     {
-                        m_errorcount.Add(i, 1);
+                        ErrorCount.Add(i, 1);
                     }
                     throw new Exception("read data error, item id=" + t.ToString() + "!");
                 }

@@ -79,7 +79,7 @@ namespace CHQ.RD.ConnectorBase
         //读取间隔
         int m_readinterval = -1;
         //检测异常时间间隔
-        int m_errortransactinterval = 100000;
+        int m_errortransactinterval = 10000;
         //驱动连接器ID
         int m_id = -1;
         int m_readmode = -1;
@@ -452,12 +452,12 @@ namespace CHQ.RD.ConnectorBase
         {
             try
             {
-                foreach (KeyValuePair<int, int> m in m_errorCount)
+                foreach (KeyValuePair<int, int> m in Driver.ErrorCount)
                 {
                     if (m.Value >= 10)
                     {
                         //置状态
-
+                        m_status = ConnDriverStatus.AutoErrorTransacting;
                         //
                         if (m_datareader != null)
                         {
@@ -465,15 +465,25 @@ namespace CHQ.RD.ConnectorBase
                             m_datareader = null;
                         }
                         //准备重新启动并初始化驱动
-                        if (TryDriver() == 0)
+                        //TODO:停止errortransact，在timer启动的进程中杀掉timer，不知道会不会可行
+                        m_errortransact.Dispose();
+                        bool m_issuccess = false;
+                        while (!m_issuccess)
                         {
-                            Restart();
-                            break;
+                            if (TryDriver() == 0)
+                            {
+                                if (Restart() == 0)
+                                {
+                                    Driver.ErrorCount.Clear();
+                                    m_issuccess = true;
+                                }
+                                
+                            }
+                            Thread.Sleep(m_errortransactinterval);
                         }
-                        else
-                        {
-                            throw new Exception("尝试连接驱动失败！");
-                        }
+                        //重新启动
+                        m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
+                        break;
                     }
                 }
             }
@@ -482,8 +492,13 @@ namespace CHQ.RD.ConnectorBase
                 TxtLogWriter.WriteErrorMessage(errorfile, "ConnDriverBase.ErrorTransact(" + m_id.ToString() + "):"+ex.Message);
             }
         }
-
-        public virtual object AcceptValue()
+        /// <summary>
+        /// 当驱动为主动模式下，需要使用该进程来接收传入的数据并处理
+        /// 读取序列中的所有变量，并写入到Connector的值列表中
+        /// 读取并写入一个则需要清除一个
+        /// </summary>
+        /// <returns></returns>
+        public virtual object AcceptValue(object state)
         {
             return null;
         }

@@ -27,6 +27,7 @@ namespace CHQ.RD.ConnectorBase
         static string dataitemsfile = AppDomain.CurrentDomain.BaseDirectory + "\\ConnectorDataItems.xml";
         static string logfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\ConnectorBasetracelog.log";
         static string errorfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\ConnectorBaseerrorlog.log";
+        
 
         #region 驱动及驱动连接器
         /// <summary>
@@ -751,6 +752,53 @@ namespace CHQ.RD.ConnectorBase
         public static ConnectorSetting getConnectorSetting(string type)
         {
             return null;
+        }
+        #endregion
+
+        #region 发送数据设置
+        /// <summary>
+        /// 获取发送设置列表
+        /// </summary>
+        /// <returns>发送设置列表</returns>
+        public static List<DataSendingSet> getDataSendingList()
+        {
+            List<DataSendingSet> ret = new List<DataSendingSet>();
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList nodes = doc.GetElementsByTagName("Sending");
+                if (nodes != null)
+                {
+                    foreach(XmlElement e in nodes)
+                    {
+                        DataSendingSet dss = new DataSendingSet
+                        {
+                            Id = int.Parse(e.Attributes["Id"].Value),
+                            Host = e.Attributes["Host"].Value,
+                            HostPort = int.Parse(e.Attributes["HostPort"].Value),
+                            Name = e.Attributes["Name"].Value,
+                            Memo = e.Attributes["Memo"].Value,
+                            SendInterval = int.Parse(e.Attributes["SendInterval"].Value),
+                            ConnDrivers = e.Attributes["ConnDrivers"].Value,
+                            Via=int.Parse(e.Attributes["Via"].Value)
+                        };
+                        ret.Add(dss);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "getDataSendingList Error:" + ex.Message);
+            }
+            return ret;
+        }
+        
+        public static int saveDataSending(DataSendingSet dss)
+        {
+            int ret = 0;
+
+            return ret;
         }
         #endregion
 
