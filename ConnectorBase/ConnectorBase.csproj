@@ -111,6 +111,18 @@
     <Compile Include="FrmSelectClassFromFile.Designer.cs">
       <DependentUpon>FrmSelectClassFromFile.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmSendingEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSendingEdit.Designer.cs">
+      <DependentUpon>FrmSendingEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSendingSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSendingSetting.Designer.cs">
+      <DependentUpon>FrmSendingSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="IConnectorBase.cs" />
     <Compile Include="Ops.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -177,6 +189,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmSelectClassFromFile.resx">
       <DependentUpon>FrmSelectClassFromFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSendingEdit.resx">
+      <DependentUpon>FrmSendingEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSendingSetting.resx">
+      <DependentUpon>FrmSendingSetting.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
