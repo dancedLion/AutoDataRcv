@@ -92,7 +92,7 @@ namespace CHQ.RD.ConnectorBase
                     DataRow dr = m_dt.NewRow();
                     if (addressType != null)
                     {
-                        object o = Ops.ParsingAddress(addressType, dr["Address"].ToString());
+                        object o = Ops.ParsingAddress(addressType, r["Address"].ToString());
                         FieldInfo[] flds = addressType.GetFields();
                         for (int i = 0; i < flds.Length; i++)
                         {
@@ -162,9 +162,35 @@ namespace CHQ.RD.ConnectorBase
                     //    Name = flds[i].Name
                     //});
                 }
+                //尝试解析当前ADDRESS对应的列的值 
                 foreach (DataRow dr in m_dt.Rows)
                 {
-                    dr["Address"] = "";
+                    string adr = dr["Address"].ToString();
+                    if (!string.IsNullOrEmpty(adr))
+                    {
+                        string[] padr = adr.Split(';');
+                        for(int j = 0; j < padr.Length; j++)
+                        {
+                            string[] pair = padr[j].Split('=');
+                            if (!string.IsNullOrEmpty(pair[1]))
+                            {
+                                for(int k = 0; k < flds.Length; k++)
+                                {
+                                    if (pair[0].ToUpper() == flds[k].Name.ToUpper())
+                                    {
+                                        try
+                                        {
+                                            dr[flds[k].Name] = Convert.ChangeType(pair[1], flds[k].FieldType);
+                                        }
+                                        catch
+                                        {
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             catch(Exception ex)
@@ -311,6 +337,7 @@ namespace CHQ.RD.ConnectorBase
         {
             DataRow dr = m_dt.NewRow();
             dr["Id"] =(int)m_dt.Compute("max(Id)", "true")+1;
+            dr["ConnId"] = int.Parse(tbxid.Text);
             m_dt.Rows.Add(dr);
         }
         void toRemoveRow()

@@ -1,27 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Connector>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ConnectorSetting>
   <DriverAssemblies>
+    <Assemblie Id="1" DriverName="S7Sharp7驱动" ClassName="CHQ.RD.S7Sharp7Driver.S7Sharp7Driver" AssemblyInfo="CHQ.RD.S7Sharp7Driver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" FileName="E:\vsprojs\CHQ.AUTODATA\Console\S7Sharp7Driver\bin\Debug\CHQ.RD.S7Sharp7Driver.dll" />
   </DriverAssemblies>
   <ConnDrivers>
     <ConnDriver Id="1" Name="某个连接" AssemblieId="1" ReadInterval="1000" ReadMode="1" TransMode="1">
-      <Driver Host="IpAddress=192.168.1.4;Port=102;RackNo=0;SlotNo=1" ReadInterval="1000" ReadMode="1" TransMode="1"/>
+      <Driver Host="IpAddress=192.168.1.4;Port=102;RackNo=0;SlotNo=1" ReadInterval="1000" ReadMode="1" TransMode="1" />
     </ConnDriver>
   </ConnDrivers>
-  <DataItems>
-    <Item Id="1" ConnId="1" Name="" ValueType="" TransSig="" Address=""/>
-  </DataItems>
   <CustomViews>
     <View Name="西门子测试PLC">
-      <CD Id="1"/>
+      <CD Id="1" />
       <View Name="Prodave连接器">
-        
       </View>
     </View>
   </CustomViews>
   <AppSettings>
     <AppSet>
-      <Sending Id="" Server="" Port="" Via="UDP" UsingSig="1" Items="" Interval="2000"/>
-      <Listening Id="" Ip="" Port="" MaxConnection=""/>
+      <Sending Id="" Server="" Port="" Via="UDP" UsingSig="1" Items="" Interval="2000" />
+      <Listening Id="" Ip="" Port="" MaxConnection="" />
     </AppSet>
+    <RunningConnector Id="1" />
   </AppSettings>
-</Connector>
+  <Connectors>
+    <Connector Id="1" Name="测试机">
+      <Sendings>
+        <!--发送-->
+        <Sending Via="UDP" Target="192.168.6.7" Port="8000" Id="1" />
+      </Sendings>
+      <Host Via="" Port="8000" />
+      <!--本地服务端口-->
+    </Connector>
+  </Connectors>
+</ConnectorSetting>

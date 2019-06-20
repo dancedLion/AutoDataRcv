@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using System.Reflection;
 using CHQ.RD.DataContract;
@@ -102,6 +103,7 @@ namespace CHQ.RD.ConnectorBase
                     dr["ValueType"].ToString()
                 });
                 item.Tag = dr["Id"];
+                detailView.Items.Add(item);
             }
         }
         void showConnDrivers()
@@ -129,7 +131,7 @@ namespace CHQ.RD.ConnectorBase
                     "",
                     ds.DriverSet.ToString()
                 });
-                item.Tag = ds.Id;
+                item.Tag =ds;
                 detailView.Items.Add(item);
             }
         }
@@ -272,8 +274,42 @@ namespace CHQ.RD.ConnectorBase
         {
 
         }
+        /// <summary>
+        /// 测试驱动连接器设置
+        /// 1、传设置
+        /// 2、尝试连接
+        /// 3、尝试读取所有变量
+        /// </summary>
+        /// <param name="conndriver"></param>
+        void testConnDriver(ConnDriverSetting conndriver)
+        {
+            //创建connDriver实例
+            if (conndriver.ClassFile ==null)
+            {
+                addMessage("类文件未设置无法启动测试");
+                return;
+            }
+            addMessage("开始初始化驱动连接器实例！");
+            ConnectorBase tmpbase = new ConnectorBase(-1);
+            //创建Driver实例
+            tmpbase.TestConnDriver(new ConnDriverBase(conndriver.Id,tmpbase));
+            //传入设置
+            Thread.Sleep(conndriver.ReadInterval);
+            foreach(KeyValuePair<int,object> pr in tmpbase.ValueList)
+            {
+                addMessage(pr.Key.ToString() + ":" + pr.Value.ToString());
+            }
+            //准备读取值 
+            //测试完成
+            tmpbase = null;
+        }
         #endregion
-
+        #region 公用操作
+        void addMessage(string msg)
+        {
+            messageList.Items.Insert(0, msg);
+        }
+        #endregion
         #region 服务器操作
         #endregion
         private void 编辑驱动类型ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -293,6 +329,22 @@ namespace CHQ.RD.ConnectorBase
             if (briefView.SelectedNode != null)
             {
                 onNodeSelect(briefView.SelectedNode);
+            }
+        }
+
+        private void toolStripButton6_Click(object sender, EventArgs e)
+        {
+            if (detailView.SelectedItems != null && detailView.SelectedItems.Count > 0)
+            {
+                try
+                {
+                    ConnDriverSetting conn = (ConnDriverSetting)detailView.SelectedItems[0].Tag;
+                    testConnDriver(conn);
+                }
+                catch
+                {
+                    MyMessageBox.ShowErrorMessage("请在详细信息中选择驱动连接器");
+                }
             }
         }
     }

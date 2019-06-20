@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using CHQ.RD.DataContract;
 namespace CHQ.RD.ConnectorBase
 {
     public interface IConnectorBase
@@ -22,5 +22,22 @@ namespace CHQ.RD.ConnectorBase
         //int ConnectDriverInstance();
         //int SetDriverInstanceItems();
         //int DropDriverInstance();
+    }
+
+    public interface IConnDriverBase
+    {
+        ConnDriverStatus Status{ get; set; }
+        int Init();
+        int Start();
+        int Stop();
+        int Close();
+        /// <summary>
+        /// 重新初始化并启动
+        /// </summary>
+        /// <returns>0-成功</returns>
+        int Restart();
+        object AcceptValue();
+        //object ConnectDriver();
+        void ReadData(object state);
     }
 }

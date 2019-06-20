@@ -43,12 +43,12 @@ namespace CHQ.RD.DataContract
 
     public enum DriverStatus
     {
-        None,
-        Inited,
-        Running,
-        Stoped,
-        Closed,
-        Error
+        None,       //只定义不初始化
+        Inited,     //初始化
+        Running,    //主动读取模式下，运行中
+        Stoped,     //主动读取模式下，停止中
+        Closed,     //已关闭,不起作用
+        Error       //错误状态中
     }
     public class DriverSetting
     {

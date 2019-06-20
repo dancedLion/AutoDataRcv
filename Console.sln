@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectorBase", "ConnectorB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialDriver", "SerialDriver\SerialDriver.csproj", "{89A00632-3401-4958-A581-ABFE4E5CD364}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectorRunTime", "ConnectorRunTime\ConnectorRunTime.csproj", "{F4FAEE95-32AF-4001-90AD-6AA7252E71EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{89A00632-3401-4958-A581-ABFE4E5CD364}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89A00632-3401-4958-A581-ABFE4E5CD364}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89A00632-3401-4958-A581-ABFE4E5CD364}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4FAEE95-32AF-4001-90AD-6AA7252E71EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4FAEE95-32AF-4001-90AD-6AA7252E71EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4FAEE95-32AF-4001-90AD-6AA7252E71EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4FAEE95-32AF-4001-90AD-6AA7252E71EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

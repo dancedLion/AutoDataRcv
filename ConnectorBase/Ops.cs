@@ -211,6 +211,22 @@ namespace CHQ.RD.ConnectorBase
                         ret.ClassFile = getDriverClass(int.Parse(e.Attributes["AssemblieId"].Value));
                     }
                 }
+                //获取数据项
+                List<ConnectorDataItem> dataitems = new List<ConnectorDataItem>();
+                DataTable tbitems= getConnDriverDataItems(connDriverId);
+                foreach(DataRow dr in tbitems.Rows)
+                {
+                    dataitems.Add(new ConnectorDataItem
+                    {
+                        Id = int.Parse(dr["Id"].ToString()),
+                        Name=dr["Name"].ToString(),
+                        ConnId = int.Parse(dr["ConnId"].ToString()),
+                        TransSig=dr["TransSig"].ToString(),
+                        ValueType=dr["ValueType"].ToString(),
+                        Address=dr["Address"].ToString()
+                    });
+                }
+                ret.DataItems = dataitems;
             }
             catch (Exception ex)
             {
@@ -273,7 +289,7 @@ namespace CHQ.RD.ConnectorBase
                 XmlNodeList nodes = doc.GetElementsByTagName("ConnDriver");
                 foreach (XmlElement e in nodes)
                 {
-                    if (e.Attributes["Id"].ToString() == connDriverId.ToString())
+                    if (e.Attributes["Id"].Value == connDriverId.ToString())
                     {
                         foreach (XmlElement ec in e.ChildNodes)
                         {
@@ -284,7 +300,7 @@ namespace CHQ.RD.ConnectorBase
                             ret = new DriverSetting();
                             ret.Host = ec.Attributes["Host"].Value;
                             ret.ReadInterval = int.Parse(ec.Attributes["ReadInterval"].Value);
-                            ret.ReadMode = int.Parse(ec.Attributes["ReadMove"].Value);
+                            ret.ReadMode = int.Parse(ec.Attributes["ReadMode"].Value);
                             ret.TransMode = int.Parse(ec.Attributes["TransMode"].Value);
                         }
                     }
@@ -558,7 +574,7 @@ namespace CHQ.RD.ConnectorBase
                     {
                         case DataRowState.Added:
                             //查检是否存在同一ID
-                            if(dataitems.Item(0).SelectNodes("Item[@Id=" + dr["Id"].ToString() + "]") != null)
+                            if(dataitems.Item(0).SelectNodes("Item[@Id=" + dr["Id"].ToString() + "]").Count>0)
                             {
                                 throw new Exception("指定ID的数据项已经存在，不能新增相同ID的数据项");
                             }
@@ -572,7 +588,7 @@ namespace CHQ.RD.ConnectorBase
                             data.SetAttribute("ValueType", dr["ValueType"].ToString());
                             break;
                         case DataRowState.Modified:
-                            if(dataitems.Item(0).SelectNodes("Item[@Id="+dr["Id"].ToString()+" and @ConnId=" + connDriverId + "]") == null)
+                            if(dataitems.Item(0).SelectNodes("Item[@Id="+dr["Id"].ToString()+ "]").Count==0)
                             {
                                 throw new Exception("该ID对应的驱动连接器ID并不存在，修改失败！");
                             }
@@ -586,7 +602,7 @@ namespace CHQ.RD.ConnectorBase
                             }
                             break;
                         case DataRowState.Deleted:
-                            if (dataitems.Item(0).SelectNodes("Item[@Id=" + dr["Id"].ToString() + " and @ConnId=" + connDriverId + "]") == null)
+                            if (dataitems.Item(0).SelectNodes("Item[@Id=" + dr["Id",DataRowVersion.Original].ToString()+ "]") == null)
                             {
                                 throw new Exception("该ID对应的驱动连接器ID并不存在，删除失败！");
                             }
@@ -809,7 +825,14 @@ namespace CHQ.RD.ConnectorBase
                         string[] keyvalue = add[j].Split('=');
                         if (keyvalue[0] == flds[i].Name && keyvalue.Length > 1)
                         {
-                            flds[i].SetValue(ret, Convert.ChangeType(keyvalue[1], flds[i].FieldType));
+                            if (typeof(System.Enum).IsAssignableFrom(flds[i].FieldType)) {
+                                //TODO:以后修改此处，适应字符串保存的是啥值，目前可适用于数据行自动的值 
+                                flds[i].SetValue(ret,int.Parse(keyvalue[1]));
+                            }
+                            else
+                            {
+                                flds[i].SetValue(ret, Convert.ChangeType(keyvalue[1], flds[i].FieldType));
+                            }
                         }
                     }
                 }

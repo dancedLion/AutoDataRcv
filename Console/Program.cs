@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CHQ.RD.ConnectorBase;
+using CHQ.RD.ConnectorRunTime;
 namespace Console
 {
     static class Program
@@ -16,7 +17,7 @@ namespace Console
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmConnectorBase());
+            Application.Run(new Form1());
         }
     }
 }

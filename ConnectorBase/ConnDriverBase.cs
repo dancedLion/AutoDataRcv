@@ -29,12 +29,14 @@ using CHQ.RD.DataContract;
 using System.Reflection;
 namespace CHQ.RD.ConnectorBase
 {
-    public class ConnDriverBase
+    public class ConnDriverBase:IConnDriverBase
     {
-        public ConnDriverBase(int id, ConnectorBase host)
+        public ConnDriverBase(int id,ConnectorBase host)
         {
             m_id = id;
             m_host = host;
+            m_dataitems = new List<ConnDriverDataItem>();
+            GetSettings();
         }
 
         #region 局部变量及相关属性设置
@@ -82,6 +84,11 @@ namespace CHQ.RD.ConnectorBase
         int m_id = -1;
         int m_readmode = -1;
         int m_transmode = -1;
+        public ConnDriverSetting ConnDriverSet
+        {
+            get { return m_conndriverset; }
+        }
+
         /// <summary>
         /// 驱动连接器ID，初始化时赋值
         /// </summary>
@@ -112,7 +119,10 @@ namespace CHQ.RD.ConnectorBase
             get { return m_status; }
             set { SetStatus(value); }
         }
-
+        public List<ConnDriverDataItem> DataItems
+        {
+            get { return m_dataitems; }
+        }
         /// <summary>
         /// 读取数据的间隔
         /// </summary>
@@ -153,6 +163,18 @@ namespace CHQ.RD.ConnectorBase
                 m_readmode = m_conndriverset.ReadMode;
                 m_readinterval = m_conndriverset.ReadInterval;
                 m_transmode = m_conndriverset.TransMode;
+                //数据行的获取
+                foreach(ConnectorDataItem cditem in m_conndriverset.DataItems)
+                {
+                    m_dataitems.Add(
+                        new ConnDriverDataItem
+                        {
+                            Id = cditem.Id,
+                            ValueType = cditem.ValueType,
+                            Address = cditem.Address
+                        }
+                    );
+                }
                 Assembly asm = Assembly.LoadFile(m_conndriverset.ClassFile.FileName);
                 m_driverclass = asm.GetType(m_conndriverset.ClassFile.ClassName);
             }
@@ -257,9 +279,6 @@ namespace CHQ.RD.ConnectorBase
             {
                 TxtLogWriter.WriteErrorMessage(errorfile, "ConnDriverBase.ReadData(" + m_id.ToString() + "):" + ex.Message);
             }
-                //Thread.Sleep(m_readinterval);
-            
-            //return null;
         }
         public virtual object ReadData(int itemid)
         {
@@ -289,12 +308,13 @@ namespace CHQ.RD.ConnectorBase
         {
             //加载驱动
             int ret = -1;
-            m_driver = (IDriverBase)m_driverclass.Assembly.CreateInstance(m_driverclass.ToString());
+            m_driver = (IDriverBase)m_driverclass.Assembly.CreateInstance(m_driverclass.FullName);
             ret=m_driver.AcceptSetting(m_conndriverset.DriverSet.Host, m_dataitems);
             //设置状态
             if (ret != 0)
             {
                 TxtLogWriter.WriteErrorMessage("ConnDriverBase.Init(" + m_id.ToString() + "):初始化失败");
+                m_status = ConnDriverStatus.Error;
             }
             else
             {
@@ -312,24 +332,27 @@ namespace CHQ.RD.ConnectorBase
         {
             int ret = 0;
             try {
+                if (m_status == ConnDriverStatus.None || m_status == ConnDriverStatus.Closed||m_status==ConnDriverStatus.Error)
+                {
+                    Init();
+                    if (m_status != ConnDriverStatus.Inited)
+                    {
+                        throw new Exception("尝试初始化失败！");
+                    }
+                }
+
                 m_datareader = new Timer(ReadData, null, m_readinterval, m_readinterval);
+                m_status = ConnDriverStatus.Running;
                 //m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
             
             }
             catch(Exception ex)
             {
-
+                ret = -1;
+                TxtLogWriter.WriteErrorMessage(this.GetType().ToString() + ":Start Error:" + ex.Message);
+                m_status = ConnDriverStatus.Error;
             }
             return ret; 
-        }
-        /// <summary>
-        /// 暂停驱动读数
-        /// </summary>
-        /// <returns></returns>
-        public virtual int Pause()
-        {
-            int ret = -1;
-            return ret;
         }
         /// <summary>
         /// 停止驱动取数，主要是为了变更变量列表
@@ -337,7 +360,22 @@ namespace CHQ.RD.ConnectorBase
         /// <returns></returns>
         public virtual int Stop()
         {
-            return -1;
+            int ret = 0;
+            try
+            {
+                if (m_status != ConnDriverStatus.Running)
+                {
+                    throw new Exception("当前状态为："+m_status.ToString()+",无法执行停止操作！");
+                }
+                m_datareader.Dispose();
+                m_status = ConnDriverStatus.Stoped;
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(this.GetType().ToString() + ":Stop Error:" + ex.Message);
+                ret = -1;
+            }
+            return ret;
         }
         /// <summary>
         /// 关闭驱动，所有的设置均可进行（主机、变量列表）
@@ -345,15 +383,64 @@ namespace CHQ.RD.ConnectorBase
         /// <returns></returns>
         public virtual int Close()
         {
-            return -1;
+            int ret = 0;
+            try
+            {
+                if (m_status == ConnDriverStatus.Running)
+                {
+                    if (Stop() < 0)
+                    {
+                        throw new Exception("关闭时出错！");
+                    }
+                }
+                if (m_status == ConnDriverStatus.Error)
+                {
+                    throw new Exception("当前状态为Error，无需执行操作");
+                }
+                m_datareader = null;
+                m_driverset = null;
+                m_driverclass = null;
+
+            }
+            catch(Exception ex)
+            {
+                ret = -1;
+                TxtLogWriter.WriteErrorMessage(this.GetType().ToString() + ":Close Error:" + ex.Message);
+            }
+            return ret;
         }
         /// <summary>
-        /// 这个功能待考虑，应该可以不用，也许就是不管状态，只管是否可以运行
+        /// 重新初始化并启动
+        /// stop close init start
         /// </summary>
-        /// <returns></returns>
-        public virtual int Run()
+        /// <returns>0-成功</returns>
+        public virtual int Restart()
         {
-            return -1;
+            int ret = 0;
+            try {
+                if (m_status == ConnDriverStatus.Running)
+                {
+                    Stop();
+                }
+                if (m_status == ConnDriverStatus.Stoped)
+                {
+                    Close();
+                }
+                if (Init() < 0)
+                {
+                    throw new Exception("初始化失败");
+                }
+                if (Start() < 0)
+                {
+                    throw new Exception("启动失败！");
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(this.GetType().ToString() + ":Restart Error:" + ex.Message);
+                ret = -1;
+            }
+            return ret;
         }
 
         /// <summary>
@@ -380,18 +467,7 @@ namespace CHQ.RD.ConnectorBase
                         //准备重新启动并初始化驱动
                         if (TryDriver() == 0)
                         {
-                            this.Stop();
-                            this.Close();
-                            this.Init();
-                            this.Start();
-                            if (m_status == ConnDriverStatus.Running)
-                            {
-                                m_errorCount[m.Key] = 0;
-                            }
-                            else
-                            {
-                                throw new Exception("尝试连接驱动成功，但重新初始化时发生错误！");
-                            }
+                            Restart();
                             break;
                         }
                         else
@@ -405,6 +481,11 @@ namespace CHQ.RD.ConnectorBase
             {
                 TxtLogWriter.WriteErrorMessage(errorfile, "ConnDriverBase.ErrorTransact(" + m_id.ToString() + "):"+ex.Message);
             }
+        }
+
+        public virtual object AcceptValue()
+        {
+            return null;
         }
 
         #region 内部事件和方法

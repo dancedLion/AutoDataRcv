@@ -102,7 +102,15 @@ namespace CHQ.RD.S7Sharp7Driver
                 m_itemlist.Clear();
                 m_host = (S7TCPHost)ParsingHost(host.ToString());
                 IPAddress hostip = IPAddress.Parse(m_host.IPAddress);
-                List<S7SharpItem> tmp_list = (List<S7SharpItem>)list;
+                List<S7SharpItem> tmp_list = new List<S7SharpItem>();
+                foreach (ConnDriverDataItem cditem in (List<ConnDriverDataItem>)list) {
+                    tmp_list.Add(new S7SharpItem
+                    {
+                        Id = cditem.Id,
+                        ValueType = cditem.ValueType,
+                        Address = cditem.Address
+                    });
+                }
                 ret = m_client.ConnectTo(m_host.IPAddress, m_host.RackNo, m_host.SlotNo);
                 if (ret != 0)
                 {
@@ -111,13 +119,15 @@ namespace CHQ.RD.S7Sharp7Driver
                 foreach(S7SharpItem ssi in tmp_list)
                 {
                     S7SharpReadItem ssri = new S7SharpReadItem();
+                    ssri.Address = new S7SharpReadAddress();
                     ssri.Id = ssi.Id;
                     ssri.ValueType =(S7DataType)Enum.Parse(typeof(S7DataType), ssi.ValueType);
-                    ssri.Address.BlockArea = m_dbtype[((S7Address)ParsingAddress(ssi.Address)).BlockType.ToString()];
-                    ssri.Address.BlockNo = ((S7Address)ParsingAddress(ssi.Address)).BlockNo;
-                    ssri.Address.Start = ((S7Address)ParsingAddress(ssi.Address)).Start;
+                    S7Address s7add = (S7Address)ParsingAddress(ssi.Address);
+                    ssri.Address.BlockArea = m_dbtype[s7add.BlockType.ToString()];
+                    ssri.Address.BlockNo = s7add.BlockNo;
+                    ssri.Address.Start = s7add.Start;
                     ssri.Address.WordLen = m_valuetype[ssi.ValueType.ToString()];
-                    ssri.Address.DataLen = ssri.ValueType == S7DataType.BIT ? 1 : (((S7Address)ParsingAddress(ssi.Address)).DataLen / S7.DataSizeByte(m_valuetype[ssi.ValueType.ToString()]));
+                    ssri.Address.DataLen = (ssri.ValueType == S7DataType.BIT ? 1 : s7add.DataLen / S7.DataSizeByte(m_valuetype[ssi.ValueType.ToString()]));
                     m_itemlist.Add(ssri);
                 }
                 //每个值的试读
@@ -308,7 +318,7 @@ namespace CHQ.RD.S7Sharp7Driver
                     string[] row = settings[i].Split('=');
                     switch (row[0].ToLower())
                     {
-                        case "host":
+                        case "ipaddress":
                             IPAddress.Parse(row[1]);
                             ret.IPAddress = row[1];
                             break;
@@ -343,7 +353,33 @@ namespace CHQ.RD.S7Sharp7Driver
         /// <returns>null-不成功</returns>
         public override object ParsingAddress(string address)
         {
-            S7Address ret = (S7Address)GeneralOps.ParsingS7Address(address);
+            S7Address ret = new S7Address();
+            string[] rows = address.Split(';');
+            for(int i = 0; i < rows.Length; i++)
+            {
+                string[] kvp = rows[i].Split('=');
+                if (!string.IsNullOrEmpty(kvp[1]))
+                {
+                    switch (kvp[0])
+                    {
+                        case "BlockType":
+                            ret.BlockType = (S7BlockType)int.Parse(kvp[1]);
+                            break;
+                        case "Start":
+                            ret.Start = int.Parse(kvp[1]);
+                            break;
+                        case "BlockNo":
+                            ret.BlockNo = int.Parse(kvp[1]);
+                            break;
+                        case "WordLen":
+                            ret.WordLen = int.Parse(kvp[1]);
+                            break;
+                        case "DataLen":
+                            ret.DataLen = int.Parse(kvp[1]);
+                            break;
+                    }
+                }
+            }
             if (ret == null)
             {
                 TxtLogWriter.WriteErrorMessage(errorfile, "ParsingAddress("+address+"):解释地址出错！");

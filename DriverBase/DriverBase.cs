@@ -53,7 +53,7 @@ namespace CHQ.RD.DriverBase
         public DriverStatus Status
         {
             get { return m_status; }
-            set { SetStatus(value); }
+            set { m_status = value; }
         }
         public Type HostType
         {
@@ -90,14 +90,7 @@ namespace CHQ.RD.DriverBase
                 {
                     //未初始状态下，只能置于错误
                     case DriverStatus.None:
-                        if (status != DriverStatus.Error)
-                        {
-                            throw new Exception("None=>Error Only!");
-                        }
-                        else
-                        {
-                            m_status = DriverStatus.Error;
-                        }
+                        Status = status;
                         break;
                     case DriverStatus.Inited:
                         if (status == DriverStatus.Running || status == DriverStatus.Stoped)
@@ -145,10 +138,15 @@ namespace CHQ.RD.DriverBase
                     throw new Exception("加载设置应用失败！");
                 }
                 m_status = DriverStatus.Inited;
+                if (m_readmode == 1)
+                {
+                    //TODO:如果是主动读取，则直接开始取数
+                }
             }
             catch(Exception ex)
             {
                 TxtLogWriter.WriteErrorMessage(errorfile, "DriverBase.Init(" + m_host.ToString() + "):" + ex.Message);
+                SetStatus(DriverStatus.Error);
             }
             return ret;
         }
@@ -183,6 +181,28 @@ namespace CHQ.RD.DriverBase
         public virtual int Stop()
         {
             int ret = -1;
+            try
+            {
+                if (m_readmode != 1)
+                {
+                    throw new Exception("非主动读取模式下不需要停止读取！");
+                }
+                else
+                {
+                    if (m_status != DriverStatus.Running)
+                    {
+                        throw new Exception(m_status.ToString() + "=>" + DriverStatus.Running.ToString() + " 错误，不支持的状态");
+                    }
+                    else
+                    {
+                        //TODO:停止读取
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "DriverBase.Stop(" + m_host.ToString() + "):" + ex.Message);
+            }
             return ret;
         }
         public virtual int Restart()
@@ -198,35 +218,35 @@ namespace CHQ.RD.DriverBase
         }
         public virtual int AcceptSetting(object host,object list)
         {
-            int ret = -1;
+            int ret = 0;
             return ret;
         }
 
         public virtual int TryConnectToDevice()
         {
-            int ret = -1;
+            int ret = 0;
             return ret;
         }
         public virtual object ReadData(int ItemId)
         {
-            object ret = -1;
+            object ret = 0;
             return ret;
         }
 
         public virtual object ReadDeviceData(object Item)
         {
-            object ret = -1;
+            object ret = 0;
             return ret;
         }
         public virtual int SetStatus(object status)
         {
-            int ret = -1;
+            int ret = 0;
             return ret;
         }
 
         public virtual int SendData(object value)
         {
-            int ret = -1;
+            int ret = 0;
             return ret;
         }
         public virtual object ParsingHost(string host)
