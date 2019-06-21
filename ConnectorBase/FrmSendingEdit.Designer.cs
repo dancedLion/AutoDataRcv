@@ -33,18 +33,22 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbxid = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tbxName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.tbxHost = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.tbxHostPort = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.tbxSendInterval = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tbxMemo = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tbxConnDrivers = new System.Windows.Forms.TextBox();
+            this.cbxVia = new System.Windows.Forms.ComboBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,6 +72,7 @@
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(36, 22);
             this.toolStripButton1.Text = "保存";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripSeparator1
             // 
@@ -82,13 +87,14 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(36, 22);
             this.toolStripButton2.Text = "取消";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
-            // textBox1
+            // tbxid
             // 
-            this.textBox1.Location = new System.Drawing.Point(117, 32);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(213, 21);
-            this.textBox1.TabIndex = 1;
+            this.tbxid.Location = new System.Drawing.Point(117, 32);
+            this.tbxid.Name = "tbxid";
+            this.tbxid.Size = new System.Drawing.Size(213, 21);
+            this.tbxid.TabIndex = 1;
             // 
             // label1
             // 
@@ -108,12 +114,12 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "名称：";
             // 
-            // textBox2
+            // tbxName
             // 
-            this.textBox2.Location = new System.Drawing.Point(117, 59);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(213, 21);
-            this.textBox2.TabIndex = 3;
+            this.tbxName.Location = new System.Drawing.Point(117, 59);
+            this.tbxName.Name = "tbxName";
+            this.tbxName.Size = new System.Drawing.Size(213, 21);
+            this.tbxName.TabIndex = 3;
             // 
             // label3
             // 
@@ -124,12 +130,12 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "主机地址：";
             // 
-            // textBox3
+            // tbxHost
             // 
-            this.textBox3.Location = new System.Drawing.Point(117, 86);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(213, 21);
-            this.textBox3.TabIndex = 5;
+            this.tbxHost.Location = new System.Drawing.Point(117, 86);
+            this.tbxHost.Name = "tbxHost";
+            this.tbxHost.Size = new System.Drawing.Size(213, 21);
+            this.tbxHost.TabIndex = 5;
             // 
             // label4
             // 
@@ -140,12 +146,12 @@
             this.label4.TabIndex = 8;
             this.label4.Text = "端口号：";
             // 
-            // textBox4
+            // tbxHostPort
             // 
-            this.textBox4.Location = new System.Drawing.Point(117, 115);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(213, 21);
-            this.textBox4.TabIndex = 7;
+            this.tbxHostPort.Location = new System.Drawing.Point(117, 115);
+            this.tbxHostPort.Name = "tbxHostPort";
+            this.tbxHostPort.Size = new System.Drawing.Size(213, 21);
+            this.tbxHostPort.TabIndex = 7;
             // 
             // label5
             // 
@@ -156,13 +162,6 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "方式：";
             // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(117, 143);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(213, 21);
-            this.textBox5.TabIndex = 9;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -172,30 +171,78 @@
             this.label6.TabIndex = 12;
             this.label6.Text = "发送频率：";
             // 
-            // textBox6
+            // tbxSendInterval
             // 
-            this.textBox6.Location = new System.Drawing.Point(117, 171);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(213, 21);
-            this.textBox6.TabIndex = 11;
+            this.tbxSendInterval.Location = new System.Drawing.Point(117, 171);
+            this.tbxSendInterval.Name = "tbxSendInterval";
+            this.tbxSendInterval.Size = new System.Drawing.Size(213, 21);
+            this.tbxSendInterval.TabIndex = 11;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(75, 204);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(41, 12);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "备注：";
+            // 
+            // tbxMemo
+            // 
+            this.tbxMemo.Location = new System.Drawing.Point(117, 198);
+            this.tbxMemo.Name = "tbxMemo";
+            this.tbxMemo.Size = new System.Drawing.Size(213, 21);
+            this.tbxMemo.TabIndex = 13;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(39, 233);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(77, 12);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "驱动连接器：";
+            // 
+            // tbxConnDrivers
+            // 
+            this.tbxConnDrivers.Location = new System.Drawing.Point(117, 227);
+            this.tbxConnDrivers.Name = "tbxConnDrivers";
+            this.tbxConnDrivers.Size = new System.Drawing.Size(213, 21);
+            this.tbxConnDrivers.TabIndex = 15;
+            // 
+            // cbxVia
+            // 
+            this.cbxVia.FormattingEnabled = true;
+            this.cbxVia.Items.AddRange(new object[] {
+            "Socket",
+            "UDP",
+            "TCP"});
+            this.cbxVia.Location = new System.Drawing.Point(117, 142);
+            this.cbxVia.Name = "cbxVia";
+            this.cbxVia.Size = new System.Drawing.Size(213, 20);
+            this.cbxVia.TabIndex = 17;
             // 
             // FrmSendingEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(386, 231);
+            this.ClientSize = new System.Drawing.Size(386, 270);
+            this.Controls.Add(this.cbxVia);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.tbxConnDrivers);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.tbxMemo);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.tbxSendInterval);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.textBox5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.tbxHostPort);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.tbxHost);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.tbxName);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tbxid);
             this.Controls.Add(this.toolStrip1);
             this.Name = "FrmSendingEdit";
             this.Text = "发送设置编辑";
@@ -212,17 +259,21 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbxid;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tbxName;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox tbxHost;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox tbxHostPort;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox tbxSendInterval;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox tbxMemo;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox tbxConnDrivers;
+        private System.Windows.Forms.ComboBox cbxVia;
     }
 }

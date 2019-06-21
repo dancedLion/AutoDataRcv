@@ -724,6 +724,128 @@ namespace CHQ.RD.ConnectorBase
 
         #region 连接管理器的操作
         /// <summary>
+        /// 获取当前指定运行的连接管理器的ID
+        /// </summary>
+        /// <returns>0,-1，获取失败，连接管理器的ID</returns>
+        public static int getCurrentConnector()
+        {
+            int ret = 0;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList node = doc.DocumentElement.SelectNodes("AppSettings");
+                if (node == null || node.Count == 0)
+                {
+                    XmlElement e = doc.CreateElement("AppSettings");
+                    doc.DocumentElement.AppendChild(e);
+                    XmlElement r = doc.CreateElement("RunningConnector");
+                    r.SetAttribute("Id", "");
+                    e.AppendChild(r);
+                    doc.Save(xmlfile);
+                    throw new Exception("未选择当前运行的连接管理器");
+                }
+                else
+                {
+                    XmlNodeList rcs = node[0].SelectNodes("RunningConnector");
+                    if (rcs == null || rcs.Count == 0)
+                    {
+                        XmlElement e = doc.CreateElement("RunningConnector");
+                        e.SetAttribute("Id", "");
+                        node[0].AppendChild(e);
+                        doc.Save(xmlfile);
+                        throw new Exception("未选择当前运行的连接管理器");
+                    }
+                    else
+                    {
+                        ret = int.Parse(rcs[0].Attributes["Id"].Value);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "getCurrentConnector Error:" + ex.Message);
+                ret = -1;
+            }
+            return ret;
+        }
+        /// <summary>
+        /// 设置当前指定运行的连接管理器
+        /// </summary>
+        /// <param name="connectorId">连接管理器ID</param>
+        /// <returns>0-成功，1-失败</returns>
+        public static int saveCurrentConnector(int connectorId)
+        {
+            int ret = 0;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList node = doc.DocumentElement.SelectNodes("AppSettings");
+                XmlElement r = null;
+                if (node == null || node.Count == 0)
+                {
+                    XmlElement e = doc.CreateElement("AppSettings");
+                    doc.DocumentElement.AppendChild(e);
+                    r = doc.CreateElement("RunningConnector");
+                    r.SetAttribute("Id", "");
+                    e.AppendChild(r);
+                }
+                else
+                {
+                    XmlNodeList rcs = node[0].SelectNodes("RunningConnector");
+                    if (rcs == null || rcs.Count == 0)
+                    {
+                        r = doc.CreateElement("RunningConnector");
+                        r.SetAttribute("Id", "");
+                        node[0].AppendChild(r);
+                    }
+                    else
+                    {
+                        r = (XmlElement)rcs[0];
+                    }
+                }
+                r.SetAttribute("Id", connectorId.ToString());
+                doc.Save(xmlfile);
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "saveCurrentConnector Error:" + ex.Message);
+                ret = -1;
+            }
+            return ret;
+        }
+
+
+        /// <summary>
+        /// 准备连接管理器要素节点
+        /// </summary>
+        /// <returns></returns>
+        public static int prepareConnectorsNode()
+        {
+            int ret = 0;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList nodes = doc.GetElementsByTagName("Connectors");
+                if (nodes == null || nodes.Count == 0)
+                {
+                    //不存在，则创建第一要素
+                    XmlElement e = doc.CreateElement("Connectors");
+                    doc.DocumentElement.AppendChild(e);
+                    //没有任何Connector，无需其他操作
+                    doc.Save(xmlfile);
+                }
+            }
+            catch (Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "prepareSendingSettings Error:" + ex.Message);
+                ret = -1;
+            }
+            return ret;
+        }
+        /// <summary>
         /// 写连接管理器的设置
         /// 该管理器的设置较多，暂时还未决定如何处理
         /// </summary>
@@ -756,35 +878,46 @@ namespace CHQ.RD.ConnectorBase
         #endregion
 
         #region 发送数据设置
+        
+
         /// <summary>
         /// 获取发送设置列表
         /// </summary>
         /// <returns>发送设置列表</returns>
-        public static List<DataSendingSet> getDataSendingList()
+        public static List<DataSendingSet> getDataSendingList(int connectorId)
         {
             List<DataSendingSet> ret = new List<DataSendingSet>();
             try
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlfile);
-                XmlNodeList nodes = doc.GetElementsByTagName("Sending");
-                if (nodes != null)
+                XmlNodeList nodes = doc.DocumentElement.SelectNodes("Connectors/Connector[@Id=" + connectorId.ToString() + "]");
+                if (nodes != null&&nodes.Count>0)
                 {
-                    foreach(XmlElement e in nodes)
+                    XmlNodeList sendings = nodes[0].SelectNodes("Sendings/Sending");
+                    if (sendings != null)
                     {
-                        DataSendingSet dss = new DataSendingSet
+                        foreach (XmlElement e in sendings)
                         {
-                            Id = int.Parse(e.Attributes["Id"].Value),
-                            Host = e.Attributes["Host"].Value,
-                            HostPort = int.Parse(e.Attributes["HostPort"].Value),
-                            Name = e.Attributes["Name"].Value,
-                            Memo = e.Attributes["Memo"].Value,
-                            SendInterval = int.Parse(e.Attributes["SendInterval"].Value),
-                            ConnDrivers = e.Attributes["ConnDrivers"].Value,
-                            Via=int.Parse(e.Attributes["Via"].Value)
-                        };
-                        ret.Add(dss);
+
+                            DataSendingSet dss = new DataSendingSet
+                            {
+                                Id = int.Parse(e.Attributes["Id"].Value),
+                                Host = e.Attributes["Host"].Value,
+                                HostPort = int.Parse(e.Attributes["HostPort"].Value),
+                                Name = e.Attributes["Name"].Value,
+                                Memo = e.Attributes["Memo"].Value,
+                                SendInterval = int.Parse(e.Attributes["SendInterval"].Value),
+                                ConnDrivers = e.Attributes["ConnDrivers"].Value,
+                                Via = int.Parse(e.Attributes["Via"].Value)
+                            };
+                            ret.Add(dss);
+                        }
                     }
+                }
+                else
+                {
+                    throw new Exception("指定的连接管理器未设置！");
                 }
             }
             catch(Exception ex)
@@ -793,11 +926,66 @@ namespace CHQ.RD.ConnectorBase
             }
             return ret;
         }
-        
-        public static int saveDataSending(DataSendingSet dss)
+        /// <summary>
+        /// 保存数据发送设置
+        /// </summary>
+        /// <param name="connectorId">连接管理器ID</param>
+        /// <param name="dss">连接管理器设置，DataSendingSet类型</param>
+        /// <returns></returns>
+        public static int saveDataSending(int connectorId,DataSendingSet dss)
         {
             int ret = 0;
-
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList ctors = doc.DocumentElement.SelectNodes("Connectors/Connector[@Id=" + connectorId + "]");
+                if (ctors != null && ctors.Count > 0)
+                {
+                    XmlNodeList sendings = ctors[0].SelectNodes("Sendings");
+                    XmlElement e=null;
+                    if (sendings == null || sendings.Count == 0)
+                    {
+                        e = doc.CreateElement("Sendings");
+                        ctors[0].AppendChild(e);
+                    }
+                    else
+                    {
+                        e = (XmlElement)sendings[0];
+                    }
+                    sendings = e.SelectNodes("Sending[@Id=" + dss.Id + "]");
+                    XmlElement dse = null;
+                    if (sendings == null || sendings.Count == 0)
+                    {
+                        //新增
+                        dse = doc.CreateElement("Sending");
+                        dse.SetAttribute("Id", dss.Id.ToString());
+                    }
+                    else
+                    {
+                        //修改
+                        dse = (XmlElement)sendings[0];
+                    }
+                    //属性节点
+                    dse.SetAttribute("Via", dss.Via.ToString());
+                    dse.SetAttribute("Name", dss.Name);
+                    dse.SetAttribute("Host", dss.Host);
+                    dse.SetAttribute("HostPort", dss.HostPort.ToString());
+                    dse.SetAttribute("Memo", dss.Memo);
+                    dse.SetAttribute("SendInterval", dss.SendInterval.ToString());
+                    dse.SetAttribute("ConnDrivers", dss.ConnDrivers);
+                    doc.Save(xmlfile);
+                }
+                else
+                {
+                    throw new Exception("指定的连接管理器未设置！");
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "saveDataSening Error:" + ex.Message);
+                ret = -1;
+            }
             return ret;
         }
         #endregion

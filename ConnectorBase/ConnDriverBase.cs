@@ -508,6 +508,7 @@ namespace CHQ.RD.ConnectorBase
         {
             //写值
             m_host.ValueList[e.ItemId] = e.Value;
+            m_host.SendData(m_conndriverset.DataItems.Find(x => x.Id == e.ItemId), e.Value);
             //触发handler
             if(m_datachangehandler!=null)
             {

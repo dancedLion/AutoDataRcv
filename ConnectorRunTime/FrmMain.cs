@@ -12,17 +12,24 @@ namespace CHQ.RD.ConnectorRunTime
 {
     public partial class FrmMain : Form
     {
-        public FrmMain()
+        public FrmMain(int runningConnectorId)
         {
             InitializeComponent();
-            Init();
+            m_rcId = runningConnectorId;
+        }
+
+        ConnectorRunTime m_runtime;
+        public ConnectorRunTime RunTimeHost
+        {
+            get { return m_runtime; }
+            set { m_runtime = value; }
         }
         ConnectorBase.ConnectorBase m_connector;
-
-        int Init()
+        int m_rcId = -1;
+        public int Init()
         {
             int ret = 0;
-            m_connector = new ConnectorBase.ConnectorBase(1);
+            m_connector = m_runtime.ConnectorBaseRunning;
             ret = m_connector.Init();
             //在列表中加载
             foreach(ConnDriverBase cd in m_connector.ConnDrivers)

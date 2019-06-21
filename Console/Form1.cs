@@ -20,14 +20,12 @@ namespace Console
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FrmConnectorBase frm = new FrmConnectorBase();
-            frm.Show();
+            CHQ.RD.ConnectorBase.Start start = new Start();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FrmMain frm = new FrmMain();
-            frm.ShowDialog();
+            ConnectorRunTime rt = new ConnectorRunTime();
         }
     }
 }

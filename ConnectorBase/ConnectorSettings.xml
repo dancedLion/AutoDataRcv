@@ -5,7 +5,7 @@
   </DriverAssemblies>
   <ConnDrivers>
     <ConnDriver Id="1" Name="某个连接" AssemblieId="1" ReadInterval="1000" ReadMode="1" TransMode="1">
-      <Driver Host="IpAddress=192.168.1.4;Port=102;RackNo=0;SlotNo=1" ReadInterval="1000" ReadMode="1" TransMode="1" />
+      <Driver Host="IPAddress=192.168.1.44;Port=102;RackNo=0;SlotNo=2" ReadInterval="1000" ReadMode="1" TransMode="1" />
     </ConnDriver>
   </ConnDrivers>
   <CustomViews>
@@ -26,7 +26,7 @@
     <Connector Id="1" Name="测试机">
       <Sendings>
         <!--发送-->
-        <Sending Via="UDP" Target="192.168.6.7" Port="8000" Id="1" />
+        <Sending Via="0" Target="192.168.6.7" Port="8000" Id="1" Name="接收测试机" Host="192.168.1.145" HostPort="802" Memo="" SendInterval="10000" ConnDrivers="" />
       </Sendings>
       <Host Via="" Port="8000" />
       <!--本地服务端口-->

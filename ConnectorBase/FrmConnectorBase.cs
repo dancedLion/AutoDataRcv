@@ -18,10 +18,21 @@ namespace CHQ.RD.ConnectorBase
             InitializeComponent();
             initForm();
         }
+        #region variables and properties
         protected List<AssemblyFile> m_driverclasses;
         protected ConnectorBase m_connector;
         protected List<ConnDriverSetting> m_conndrivers;
         protected Type currentView;
+
+        int m_rcId = -1;
+        public int RunningConnectorId
+        {
+            get { return m_rcId; }
+            set { m_rcId = value; }
+        }
+        #endregion
+
+
         void initForm()
         {
             initTree();
@@ -29,6 +40,7 @@ namespace CHQ.RD.ConnectorBase
             //变量在使用时添加
         }
 
+        
         #region 界面方法
         void onNodeSelect(TreeNode node)
         {
@@ -79,7 +91,14 @@ namespace CHQ.RD.ConnectorBase
                     break;
                 case "ServerSetting":
                     //显示设置或者设置清单
+                    if(node.Tag.ToString()== "DataSendingSetting")
+                    {
+                        showSendingSettings();
+                    }
                     break;
+                //case "DataSendingSetting":
+                //    showSendingSettings();
+                //    break;
             }
         }
         /// <summary>
@@ -263,6 +282,47 @@ namespace CHQ.RD.ConnectorBase
                 node.Nodes.Add(subnode);
             }
             //加载可设置项
+            node = briefView.Nodes[3];
+            node.Nodes.Add(new TreeNode
+            {
+                Text = "发送设置",
+                Tag = "DataSendingSetting",
+                ImageIndex = 31
+            });
+        }
+
+        void AddNew()
+        {
+            if (briefView.SelectedNode != null)
+            {
+                switch (briefView.SelectedNode.Tag.ToString())
+                {
+                    case "DataSendingSetting":
+                        toAddDataSendingSet();
+                        break;
+                }
+            }
+        }
+        /// <summary>
+        /// 显示当前管理器下的发送设置
+        /// </summary>
+        void showSendingSettings()
+        {
+            detailView.Items.Clear();
+            defineColumns(typeof(DataSendingSet));
+            List<DataSendingSet> list = Ops.getDataSendingList(m_rcId);
+            foreach(DataSendingSet l in list)
+            {
+                ListViewItem item = new ListViewItem(new string[]
+                {
+                    l.Id.ToString(),l.Name,
+                    l.Host,l.HostPort.ToString(),
+                    l.SendInterval.ToString(),l.Memo,
+                    l.ConnDrivers,l.Via.ToString()
+                });
+                item.Tag = l;
+                detailView.Items.Add(item);
+            }
         }
         #endregion
         #region 驱动连接器操作
@@ -303,6 +363,27 @@ namespace CHQ.RD.ConnectorBase
             //测试完成
             tmpbase = null;
         }
+        /// <summary>
+        /// 添加新的发送设置
+        /// </summary>
+        void toAddDataSendingSet()
+        {
+            FrmSendingEdit frm = new FrmSendingEdit();
+            if (frm.EditDataSendingSet(m_rcId) >= 0)
+            {
+                DataSendingSet dss = frm.ReturnedValue;
+                ListViewItem item = new ListViewItem(new string[]
+                {
+                    dss.Id.ToString(),dss.Name,
+                    dss.Host,dss.HostPort.ToString(),
+                    dss.SendInterval.ToString(),dss.Memo,
+                    dss.ConnDrivers,dss.Via.ToString()
+                });
+                item.Tag = dss;
+                detailView.Items.Add(item);
+            }
+        }
+
         #endregion
         #region 公用操作
         void addMessage(string msg)
@@ -346,6 +427,11 @@ namespace CHQ.RD.ConnectorBase
                     MyMessageBox.ShowErrorMessage("请在详细信息中选择驱动连接器");
                 }
             }
+        }
+
+        private void toolStripButton10_Click(object sender, EventArgs e)
+        {
+            AddNew();
         }
     }
     class AllView

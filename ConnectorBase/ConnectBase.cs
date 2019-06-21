@@ -15,6 +15,8 @@ namespace CHQ.RD.ConnectorBase
     /// </summary>
     public class ConnectorBase:IConnectorBase
     {
+
+        #region variables and properties
         protected string XmlSettingFile =AppDomain.CurrentDomain.BaseDirectory+ "\\ConnectorSetting.xml";
         string errorlogfile = AppDomain.CurrentDomain.BaseDirectory + "\\log\\connectorError.log";
         protected Thread readingThread;
@@ -35,14 +37,26 @@ namespace CHQ.RD.ConnectorBase
         {
             get { return m_id; }
         }
-
+        List<DataSendingSet> m_sendins;
+        public List<DataSendingSet> DataSendingHosts
+        {
+            get { return m_sendins; }
+            set { m_sendins = value; }
+        }
+        #endregion
         public ConnectorBase(int id)
         {
             m_id = id;
             ValueList = new Dictionary<int, object>();
             connDriverList = new List<ConnDriverBase>();
         }
-
+        /// <summary>
+        /// 初始化
+        /// 1、自身建立host
+        /// 2、加载驱动连接器
+        /// 3、加载接收数据主机
+        /// </summary>
+        /// <returns></returns>
         public virtual int Init()
         {
             int ret = 0;
@@ -66,6 +80,7 @@ namespace CHQ.RD.ConnectorBase
                 //TODO:初始化自己，以供外部程序取数
 
                 //TODO:初始化数据读取
+                m_sendins = Ops.getDataSendingList(m_id);
                 //TODO:初始化数据发送
             }
             catch(Exception ex)
@@ -138,6 +153,11 @@ namespace CHQ.RD.ConnectorBase
             return ret;
         }
 
+        public virtual int SendData(ConnectorDataItem item,object value)
+        {
+            int ret = 0;
 
+            return ret;
+        }
     }
 }
