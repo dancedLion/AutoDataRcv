@@ -84,6 +84,7 @@ namespace CHQ.RD.ConnectorBase
         int m_id = -1;
         int m_readmode = -1;
         int m_transmode = -1;
+        protected Thread m_thread;
         public ConnDriverSetting ConnDriverSet
         {
             get { return m_conndriverset; }
@@ -332,19 +333,29 @@ namespace CHQ.RD.ConnectorBase
         {
             int ret = 0;
             try {
-                if (m_status == ConnDriverStatus.None || m_status == ConnDriverStatus.Closed||m_status==ConnDriverStatus.Error)
+                if (m_readmode == 0)
                 {
-                    Init();
-                    if (m_status != ConnDriverStatus.Inited)
+                    if (m_status == ConnDriverStatus.None || m_status == ConnDriverStatus.Closed || m_status == ConnDriverStatus.Error)
                     {
-                        throw new Exception("尝试初始化失败！");
+                        Init();
+                        if (m_status != ConnDriverStatus.Inited)
+                        {
+                            throw new Exception("尝试初始化失败！");
+                        }
                     }
-                }
 
-                m_datareader = new Timer(ReadData, null, m_readinterval, m_readinterval);
+                    m_datareader = new Timer(ReadData, null, m_readinterval, m_readinterval);
+                    
+                    m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
+                }
+                else
+                {
+                    m_driver.Start();
+                    m_thread = new Thread(AcceptValue);
+                    m_thread.Start();
+                    //TODO:加上m_driver的东西
+                }
                 m_status = ConnDriverStatus.Running;
-                m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
-            
             }
             catch(Exception ex)
             {
@@ -367,7 +378,15 @@ namespace CHQ.RD.ConnectorBase
                 {
                     throw new Exception("当前状态为："+m_status.ToString()+",无法执行停止操作！");
                 }
-                m_datareader.Dispose();
+                //如果是被动读取就搞事，否则将驱动的线程停下来
+                if (m_readmode == 0)
+                {
+                    m_datareader.Dispose();
+                }
+                else
+                {
+                    m_driver.Stop();
+                }
                 m_status = ConnDriverStatus.Stoped;
             }
             catch(Exception ex)
@@ -397,7 +416,15 @@ namespace CHQ.RD.ConnectorBase
                 {
                     throw new Exception("当前状态为Error，无需执行操作");
                 }
-                m_datareader = null;
+                //加入主被判断
+                if (m_readmode == 0)
+                {
+                    m_datareader = null;
+                }
+                else
+                {
+                    m_thread.Abort();
+                }
                 //m_driverset = null;
                 //m_driverclass = null;
 
@@ -499,9 +526,46 @@ namespace CHQ.RD.ConnectorBase
         /// 读取并写入一个则需要清除一个
         /// </summary>
         /// <returns></returns>
-        public virtual object AcceptValue(object state)
+        public virtual void AcceptValue()
         {
-            return null;
+            object ret = null;
+
+            if (m_readmode == 1)   //主动接收模式，
+            {
+                while (true)
+                {
+                    if (m_driver.ValueList.Count > 0)
+                    {
+                        //取值
+                        ListKeyValue lkv = m_driver.ValueList.Peek();
+                        //去除
+                        m_driver.ValueList.Dequeue();
+                        object curvalue = m_host.ValueList[lkv.Id];
+                        if (curvalue == null)
+                        {
+                            if (lkv.Value != null)
+                            {
+                                onDataChanged(this, new DataChangeEventArgs(lkv.Id, lkv.Value));
+                            }
+                        }
+                        else
+                        {
+                            if (lkv.Value == null)
+                            {
+                                onDataChanged(this, new DataChangeEventArgs(lkv.Id, lkv.Value));
+                            }
+                            else
+                            {
+                                if (!object.Equals(lkv.Value, curvalue))
+                                {
+                                    onDataChanged(this, new DataChangeEventArgs(lkv.Id, lkv.Value));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return;
         }
 
         #region 内部事件和方法

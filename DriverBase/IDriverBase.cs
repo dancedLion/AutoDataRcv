@@ -21,6 +21,7 @@ namespace CHQ.RD.DriverBase
         Type HostType { get; }
         Type AddressType { get; }
         Dictionary<int,int> ErrorCount { get; set; }
+        Queue<ListKeyValue> ValueList { get; set; }
         /// <summary>
         /// 从设备读取数据
         /// </summary>
@@ -51,6 +52,8 @@ namespace CHQ.RD.DriverBase
         object ParsingAddress(string address);
 
         void StartListener();
+        int Start();
+        int Stop();
     }
 
 }

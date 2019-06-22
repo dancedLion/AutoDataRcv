@@ -115,6 +115,12 @@ namespace CHQ.RD.DataContract
         public int Via;     //发送方式 0-Socket,1-TCP 2-UDP
     }
 
+    public class ListKeyValue
+    {
+        public int Id;
+        public object Value;
+    }
+
     public class NetworkListenerHostType
     {
         public int Via; //方式，0-socket 1-udp 2-tcp
