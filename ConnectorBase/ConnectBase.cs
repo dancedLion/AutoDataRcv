@@ -6,6 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using CHQ.RD.DataContract;
 using GeneralOPs;
+using System.Net;
+using System.Net.Sockets;
 namespace CHQ.RD.ConnectorBase
 {
     /// <summary>
@@ -81,6 +83,7 @@ namespace CHQ.RD.ConnectorBase
 
                 //TODO:初始化数据读取
                 m_sendins = Ops.getDataSendingList(m_id);
+
                 //TODO:初始化数据发送
             }
             catch(Exception ex)
@@ -156,8 +159,58 @@ namespace CHQ.RD.ConnectorBase
         public virtual int SendData(ConnectorDataItem item,object value)
         {
             int ret = 0;
-
+            foreach(DataSendingSet dss in m_sendins)
+            {
+                //本发送只发送有变化的数据
+                if (dss.SendInterval == 0)
+                {
+                    switch (dss.Via)
+                    {
+                        case 0: //socket
+                            sendViaSocket(dss, item, value);
+                            break;
+                        case 1: //UDP
+                            sendViaUDP(dss, item, value);
+                            break;
+                        case 2: //TCP
+                            sendViaTCP(dss, item, value);
+                            break;
+                    }
+                }
+            }
             return ret;
         }
+
+        #region datasending
+        void sendViaUDP(DataSendingSet dss,ConnectorDataItem item,object value)
+        {
+
+        }
+        void sendViaSocket(DataSendingSet dss, ConnectorDataItem item, object value)
+        {
+            try
+            {
+                IPEndPoint iep = new IPEndPoint(IPAddress.Parse(dss.Host), dss.HostPort);
+                Socket sck = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+                sck.Connect(iep);
+                byte[] buffer = Encoding.UTF8.GetBytes(item.ConnId+";"+item.Id.ToString() + ";" + value.ToString()+";"+DateTime.Now.ToString());
+                sck.Send(buffer);
+                sck.Close();
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorlogfile, this.GetType().ToString() + ".SendViaSocket(" + dss.Name + ") Error:" + ex.Message);
+            }
+        }
+        void sendViaTCP(DataSendingSet dss, ConnectorDataItem item, object value)
+        {
+
+        }
+        #endregion
+
+
+
+        //TODO:数据变化时的事件
+        //附加的事件
     }
 }

@@ -49,6 +49,8 @@ namespace CHQ.RD.DriverBase
 
         object ParsingHost(string host);
         object ParsingAddress(string address);
+
+        void StartListener();
     }
 
 }

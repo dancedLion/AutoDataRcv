@@ -74,7 +74,7 @@ namespace CHQ.RD.ConnectorBase
             FrmConnDriverEdit edit = new FrmConnDriverEdit();
             if (tvDriverClass.SelectedNode != null)
             {
-                if (edit.AddNewConnDriver((DriverSetting)tvDriverClass.SelectedNode.Tag) == 0)
+                if (edit.AddNewConnDriver((AssemblyFile)tvDriverClass.SelectedNode.Tag) == 0)
                 {
                     m_cd.Add(edit.ReturnedValue);
                     toAddnewConnDriver(edit.ReturnedValue);

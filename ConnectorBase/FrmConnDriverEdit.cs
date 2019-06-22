@@ -40,6 +40,14 @@ namespace CHQ.RD.ConnectorBase
                 DriverSet = driver
             });
         }
+        public int AddNewConnDriver(AssemblyFile af)
+        {
+            return EditConnDriver(new ConnDriverSetting
+            {
+                Id = -1,
+                ClassFile = af
+            });
+        }
         public int EditConnDriver(ConnDriverSetting conndriver)
         {
             loadConnDriver(conndriver);
@@ -336,7 +344,17 @@ namespace CHQ.RD.ConnectorBase
         void toAddNewRow()
         {
             DataRow dr = m_dt.NewRow();
-            dr["Id"] =(int)m_dt.Compute("max(Id)", "true")+1;
+            int i = 0;
+            try
+            {
+                //避免无行计算出错了
+                i = (int)m_dt.Compute("max(Id)", "true");
+            }
+            catch
+            {
+
+            }
+            dr["Id"] =i+1;
             dr["ConnId"] = int.Parse(tbxid.Text);
             m_dt.Rows.Add(dr);
         }

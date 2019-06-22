@@ -30,14 +30,13 @@ namespace CHQ.RD.S7Sharp7Driver
             return base.SetStatus(status);
         }
 
-        public S7Sharp7Driver()
+        public S7Sharp7Driver():base()
         {
             HostType = typeof(S7TCPHost);
             AddressType = typeof(S7Address);
 
             //初始化列表
             m_itemlist = new List<S7SharpReadItem>();
-            
             //m_items = new List<IAddressSetting>();
             m_host = new S7TCPHost();
             m_client = new S7Client();

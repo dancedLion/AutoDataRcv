@@ -12,13 +12,15 @@ namespace CHQ.RD.DriverBase
     {
         #region 变量和属性
         protected Thread m_thread;
+
         protected object m_host;
         protected object m_datalist;
+
         protected Dictionary<int, object> m_valuelist;
         int m_transmode=0;
         int m_readmode=0;
         int m_readinterval=2000;
-        Timer m_reader;
+
         string errorfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\DriverBaseError.log";
         string logfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\DriverBase.log";
         public string ErrorFile
@@ -73,7 +75,7 @@ namespace CHQ.RD.DriverBase
         #endregion
         public DriverBase()
         {
-            
+            m_errorCount = new Dictionary<int, int>();
         }
 
 
@@ -145,7 +147,8 @@ namespace CHQ.RD.DriverBase
                 m_status = DriverStatus.Inited;
                 if (m_readmode == 1)
                 {
-                    //TODO:如果是主动读取，则直接开始取数
+                    //TODO:如果是主动读取，则初始化reader
+                    
                 }
             }
             catch(Exception ex)
@@ -169,6 +172,7 @@ namespace CHQ.RD.DriverBase
                     if (m_status == DriverStatus.Stoped || m_status == DriverStatus.Inited)
                     {
                         //TODO:启动自动读取
+
                     }
                     else
                     {
@@ -243,10 +247,10 @@ namespace CHQ.RD.DriverBase
             object ret = 0;
             return ret;
         }
-        public virtual int SetStatus(object status)
+
+        public virtual void StartListener()
         {
-            int ret = 0;
-            return ret;
+
         }
 
         public virtual int SendData(object value)

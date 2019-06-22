@@ -151,6 +151,10 @@
       <Project>{1c37dead-2077-44d4-8ea6-4a19217706e4}</Project>
       <Name>GeneralOPs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetworkListner\NetworkListener.csproj">
+      <Project>{2198ab47-6635-41e7-846f-13fed63b47cc}</Project>
+      <Name>NetworkListener</Name>
+    </ProjectReference>
     <ProjectReference Include="..\S7Sharp7Driver\S7Sharp7Driver.csproj">
       <Project>{340315dd-849a-43f6-b9e7-f277d4baf7a0}</Project>
       <Name>S7Sharp7Driver</Name>

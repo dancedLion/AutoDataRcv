@@ -114,4 +114,14 @@ namespace CHQ.RD.DataContract
         public string ConnDrivers;  //预留，为了不同驱动连接器的数据发送给不同的主机
         public int Via;     //发送方式 0-Socket,1-TCP 2-UDP
     }
+
+    public class NetworkListenerHostType
+    {
+        public int Via; //方式，0-socket 1-udp 2-tcp
+        public int HostPort;    //监听端口
+    }
+    public class NetworkListenerAddressType
+    {
+        public int VarId;
+    }
 }

@@ -216,7 +216,7 @@ namespace CHQ.RD.ConnectorBase
                 {
                     if (m_driverclass != null)
                     {
-                        ret = tmp.AcceptSetting(m_driverset.Host, m_dataitems);
+                        ret = tmp.AcceptSetting(m_conndriverset.DriverSet.Host, m_dataitems);
                         if (ret != 0)
                         {
                             throw new Exception("尝试连接时错误！");
@@ -267,7 +267,7 @@ namespace CHQ.RD.ConnectorBase
                         {
                             continue;
                         }
-                        if (curvalue == null || curvalue != value)
+                        if (curvalue == null || !object.Equals( curvalue,value))
                         {
                             //引起值变化
                             onDataChanged(this, new DataChangeEventArgs(item.Id, value));
@@ -343,7 +343,7 @@ namespace CHQ.RD.ConnectorBase
 
                 m_datareader = new Timer(ReadData, null, m_readinterval, m_readinterval);
                 m_status = ConnDriverStatus.Running;
-                //m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
+                m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
             
             }
             catch(Exception ex)
@@ -398,8 +398,8 @@ namespace CHQ.RD.ConnectorBase
                     throw new Exception("当前状态为Error，无需执行操作");
                 }
                 m_datareader = null;
-                m_driverset = null;
-                m_driverclass = null;
+                //m_driverset = null;
+                //m_driverclass = null;
 
             }
             catch(Exception ex)
@@ -467,6 +467,7 @@ namespace CHQ.RD.ConnectorBase
                         //准备重新启动并初始化驱动
                         //TODO:停止errortransact，在timer启动的进程中杀掉timer，不知道会不会可行
                         m_errortransact.Dispose();
+                        m_errortransact = null;
                         bool m_issuccess = false;
                         while (!m_issuccess)
                         {
@@ -474,7 +475,7 @@ namespace CHQ.RD.ConnectorBase
                             {
                                 if (Restart() == 0)
                                 {
-                                    Driver.ErrorCount.Clear();
+                                    Driver.ErrorCount[m.Key]=0;
                                     m_issuccess = true;
                                 }
                                 

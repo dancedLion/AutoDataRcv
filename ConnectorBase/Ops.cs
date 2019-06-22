@@ -102,10 +102,10 @@ namespace CHQ.RD.ConnectorBase
                     //更新节点
                     if (node.ChildNodes.Count == 1)
                     {
-                        node.ChildNodes[0].Attributes["ReadInterval"].Value = setting.ReadInterval.ToString();
-                        node.ChildNodes[0].Attributes["ReadMode"].Value = setting.ReadMode.ToString();
-                        node.ChildNodes[0].Attributes["TransMode"].Value = setting.TransMode.ToString();
-                        node.ChildNodes[0].Attributes["Host"].Value = setting.Host;
+                        ((XmlElement)node.ChildNodes[0]).SetAttribute("ReadInterval", setting.ReadInterval.ToString());
+                        ((XmlElement)node.ChildNodes[0]).SetAttribute("ReadMode", setting.ReadMode.ToString());
+                        ((XmlElement)node.ChildNodes[0]).SetAttribute("TransMode",setting.TransMode.ToString());
+                        ((XmlElement)node.ChildNodes[0]).SetAttribute("Host",setting.Host);
                     }
                     else
                     {
