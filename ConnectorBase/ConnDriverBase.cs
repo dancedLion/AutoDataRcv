@@ -25,6 +25,7 @@ using System.Threading;
 using System.Reflection;    //创建驱动实例用
 using GeneralOPs;
 using System.Data;
+using CHQ.RD.DataContract;
 using System.Reflection;
 namespace CHQ.RD.ConnectorBase
 {
@@ -38,7 +39,6 @@ namespace CHQ.RD.ConnectorBase
             GetSettings();
         }
 
-        static ManualResetEvent mre = new ManualResetEvent(false);
         #region 局部变量及相关属性设置
         //驱动数据读取时的错误标记
         public const string ErrorString = "ERROR";
@@ -84,12 +84,7 @@ namespace CHQ.RD.ConnectorBase
         int m_id = -1;
         int m_readmode = -1;
         int m_transmode = -1;
-        /// <summary>
-        /// 主动模式下的侦听线程
-        /// </summary>
         protected Thread m_thread;
-
-
         public ConnDriverSetting ConnDriverSet
         {
             get { return m_conndriverset; }
@@ -192,23 +187,23 @@ namespace CHQ.RD.ConnectorBase
         /// 添加第三方标识列
         /// </summary>
         /// <returns></returns>
-        //public virtual int EstableItemList()
-        //{
-        //    int ret = 0;
-        //    DataTable dt = Ops.getConnDriverDataItems(m_id);
-        //    m_dataitems = new List<ConnDriverDataItem>();
-        //    foreach(DataRow dr in dt.Rows)
-        //    {
-        //        ConnDriverDataItem item = new ConnDriverDataItem
-        //        {
-        //            Id = int.Parse(dr["id"].ToString()),
-        //            Address = dr["address"].ToString(),
-        //            ValueType = dr["valuetype"].ToString()
-        //        };
-        //        m_dataitems.Add(item);
-        //    }
-        //    return ret; ;
-        //}
+        public virtual int EstableItemList()
+        {
+            int ret = 0;
+            DataTable dt = Ops.getConnDriverDataItems(m_id);
+            m_dataitems = new List<ConnDriverDataItem>();
+            foreach(DataRow dr in dt.Rows)
+            {
+                ConnDriverDataItem item = new ConnDriverDataItem
+                {
+                    Id = int.Parse(dr["id"].ToString()),
+                    Address = dr["address"].ToString(),
+                    ValueType = dr["valuetype"].ToString()
+                };
+                m_dataitems.Add(item);
+            }
+            return ret; ;
+        }
         /// <summary>
         /// 连接到驱动
         /// </summary>
@@ -227,15 +222,10 @@ namespace CHQ.RD.ConnectorBase
                         {
                             throw new Exception("尝试连接时错误！");
                         }
-
-                        //20190624 如果不是侦听模式，就读个值试试
-                        if (m_readmode == 0)
+                        object value = tmp.ReadData(m_dataitems[0].Id);
+                        if (value.ToString() == ErrorString )
                         {
-                            object value = tmp.ReadData(m_dataitems[0].Id);
-                            if (value.ToString() == ErrorString)
-                            {
-                                throw new Exception("试读数据时出错！");
-                            }
+                            throw new Exception("试读数据时出错！");
                         }
                     }
                     else
@@ -258,8 +248,6 @@ namespace CHQ.RD.ConnectorBase
         /// <returns></returns>
         public virtual void ReadData(object state)
         {
-            //侦听模式，不需要读取
-            if (m_readmode == 1) return;
             try
             {
                 foreach (ConnDriverDataItem item in m_dataitems)
@@ -333,10 +321,6 @@ namespace CHQ.RD.ConnectorBase
             {
                 m_status = ConnDriverStatus.Inited;
             }
-            if (m_readmode == 1)
-            {
-
-            }
             //m_driver.AcceptSetting()
             return ret;
 
@@ -349,25 +333,27 @@ namespace CHQ.RD.ConnectorBase
         {
             int ret = 0;
             try {
-                if (m_status == ConnDriverStatus.None || m_status == ConnDriverStatus.Closed||m_status==ConnDriverStatus.Error)
-                {
-                    Init();
-                    if (m_status != ConnDriverStatus.Inited)
-                    {
-                        throw new Exception("尝试初始化失败！");
-                    }
-                }
                 if (m_readmode == 0)
                 {
-                    m_datareader = new Timer(ReadData, null, m_readinterval, m_readinterval);
+                    if (m_status == ConnDriverStatus.None || m_status == ConnDriverStatus.Closed || m_status == ConnDriverStatus.Error)
+                    {
+                        Init();
+                        if (m_status != ConnDriverStatus.Inited)
+                        {
+                            throw new Exception("尝试初始化失败！");
+                        }
+                    }
 
+                    m_datareader = new Timer(ReadData, null, m_readinterval, m_readinterval);
+                    
                     m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
                 }
                 else
                 {
+                    m_driver.Start();
                     m_thread = new Thread(AcceptValue);
                     m_thread.Start();
-                    startListener();
+                    //TODO:加上m_driver的东西
                 }
                 m_status = ConnDriverStatus.Running;
             }
@@ -392,13 +378,14 @@ namespace CHQ.RD.ConnectorBase
                 {
                     throw new Exception("当前状态为："+m_status.ToString()+",无法执行停止操作！");
                 }
+                //如果是被动读取就搞事，否则将驱动的线程停下来
                 if (m_readmode == 0)
                 {
                     m_datareader.Dispose();
                 }
                 else
                 {
-                    stopListener();
+                    m_driver.Stop();
                 }
                 m_status = ConnDriverStatus.Stoped;
             }
@@ -429,18 +416,18 @@ namespace CHQ.RD.ConnectorBase
                 {
                     throw new Exception("当前状态为Error，无需执行操作");
                 }
+                //加入主被判断
                 if (m_readmode == 0)
                 {
                     m_datareader = null;
-                    //m_driverset = null;
-                    //m_driverclass = null;
                 }
                 else
                 {
-                    stopListener();
                     m_thread.Abort();
                 }
-                m_status = ConnDriverStatus.Closed;
+                //m_driverset = null;
+                //m_driverclass = null;
+
             }
             catch(Exception ex)
             {
@@ -499,38 +486,31 @@ namespace CHQ.RD.ConnectorBase
                         //置状态
                         m_status = ConnDriverStatus.AutoErrorTransacting;
                         //
-                        if (m_readmode == 0)
+                        if (m_datareader != null)
                         {
-                            if (m_datareader != null)
+                            m_datareader.Dispose();
+                            m_datareader = null;
+                        }
+                        //准备重新启动并初始化驱动
+                        //TODO:停止errortransact，在timer启动的进程中杀掉timer，不知道会不会可行
+                        m_errortransact.Dispose();
+                        m_errortransact = null;
+                        bool m_issuccess = false;
+                        while (!m_issuccess)
+                        {
+                            if (TryDriver() == 0)
                             {
-                                m_datareader.Dispose();
-                                m_datareader = null;
-                            }
-                            //准备重新启动并初始化驱动
-                            //TODO:停止errortransact，在timer启动的进程中杀掉timer，不知道会不会可行
-                            m_errortransact.Dispose();
-                            m_errortransact = null;
-                            bool m_issuccess = false;
-                            while (!m_issuccess)
-                            {
-                                if (TryDriver() == 0)
+                                if (Restart() == 0)
                                 {
-                                    if (Restart() == 0)
-                                    {
-                                        Driver.ErrorCount[m.Key] = 0;
-                                        m_issuccess = true;
-                                    }
-
+                                    Driver.ErrorCount[m.Key]=0;
+                                    m_issuccess = true;
                                 }
-                                Thread.Sleep(m_errortransactinterval);
+                                
                             }
-                            //重新启动
-                            m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
+                            Thread.Sleep(m_errortransactinterval);
                         }
-                        else
-                        {
-                            //TODO:主动侦听模式下，就没有写ERRORCOUNT，所以暂时无须处理
-                        }
+                        //重新启动
+                        m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
                         break;
                     }
                 }
@@ -540,8 +520,6 @@ namespace CHQ.RD.ConnectorBase
                 TxtLogWriter.WriteErrorMessage(errorfile, "ConnDriverBase.ErrorTransact(" + m_id.ToString() + "):"+ex.Message);
             }
         }
-
-        #region Listener Mode code
         /// <summary>
         /// 当驱动为主动模式下，需要使用该进程来接收传入的数据并处理
         /// 读取序列中的所有变量，并写入到Connector的值列表中
@@ -550,23 +528,45 @@ namespace CHQ.RD.ConnectorBase
         /// <returns></returns>
         public virtual void AcceptValue()
         {
-            while (true)
+            object ret = null;
+
+            if (m_readmode == 1)   //主动接收模式，
             {
-                mre.WaitOne();
-                if((Queue< m_driver.)
+                while (true)
+                {
+                    if (m_driver.ValueList.Count > 0)
+                    {
+                        //取值
+                        ListKeyValue lkv = m_driver.ValueList.Peek();
+                        //去除
+                        m_driver.ValueList.Dequeue();
+                        object curvalue = m_host.ValueList[lkv.Id];
+                        if (curvalue == null)
+                        {
+                            if (lkv.Value != null)
+                            {
+                                onDataChanged(this, new DataChangeEventArgs(lkv.Id, lkv.Value));
+                            }
+                        }
+                        else
+                        {
+                            if (lkv.Value == null)
+                            {
+                                onDataChanged(this, new DataChangeEventArgs(lkv.Id, lkv.Value));
+                            }
+                            else
+                            {
+                                if (!object.Equals(lkv.Value, curvalue))
+                                {
+                                    onDataChanged(this, new DataChangeEventArgs(lkv.Id, lkv.Value));
+                                }
+                            }
+                        }
+                    }
+                }
             }
+            return;
         }
-
-        void startListener()
-        {
-            mre.Set();
-        }
-        void stopListener()
-        {
-            mre.Reset();
-        }
-        #endregion
-
 
         #region 内部事件和方法
         void onDataChanged(object sender,DataChangeEventArgs e)
