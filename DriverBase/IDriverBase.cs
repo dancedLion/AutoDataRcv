@@ -21,6 +21,7 @@ namespace CHQ.RD.DriverBase
         Type HostType { get; }
         Type AddressType { get; }
         Dictionary<int,int> ErrorCount { get; set; }
+        object ValueList { get; set; }
         /// <summary>
         /// 从设备读取数据
         /// </summary>
