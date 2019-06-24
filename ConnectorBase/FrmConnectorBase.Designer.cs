@@ -48,13 +48,6 @@
             this.驱动连接器管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.服务器管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tCP服务设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.接收服务器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.本地缓存数据库设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.报警设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.其他设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.服务器操作ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.briefView = new System.Windows.Forms.TreeView();
@@ -185,9 +178,7 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.服务器管理ToolStripMenuItem,
-            this.服务器操作ToolStripMenuItem});
+            this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1017, 25);
@@ -229,54 +220,6 @@
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
             this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.退出ToolStripMenuItem.Text = "退出";
-            // 
-            // 服务器管理ToolStripMenuItem
-            // 
-            this.服务器管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tCP服务设置ToolStripMenuItem,
-            this.接收服务器设置ToolStripMenuItem,
-            this.本地缓存数据库设置ToolStripMenuItem,
-            this.报警设置ToolStripMenuItem,
-            this.其他设置ToolStripMenuItem});
-            this.服务器管理ToolStripMenuItem.Name = "服务器管理ToolStripMenuItem";
-            this.服务器管理ToolStripMenuItem.Size = new System.Drawing.Size(80, 21);
-            this.服务器管理ToolStripMenuItem.Text = "服务器管理";
-            // 
-            // tCP服务设置ToolStripMenuItem
-            // 
-            this.tCP服务设置ToolStripMenuItem.Name = "tCP服务设置ToolStripMenuItem";
-            this.tCP服务设置ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.tCP服务设置ToolStripMenuItem.Text = "TCP服务设置";
-            // 
-            // 接收服务器设置ToolStripMenuItem
-            // 
-            this.接收服务器设置ToolStripMenuItem.Name = "接收服务器设置ToolStripMenuItem";
-            this.接收服务器设置ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.接收服务器设置ToolStripMenuItem.Text = "接收服务器设置";
-            // 
-            // 本地缓存数据库设置ToolStripMenuItem
-            // 
-            this.本地缓存数据库设置ToolStripMenuItem.Name = "本地缓存数据库设置ToolStripMenuItem";
-            this.本地缓存数据库设置ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.本地缓存数据库设置ToolStripMenuItem.Text = "本地缓存数据库设置";
-            // 
-            // 报警设置ToolStripMenuItem
-            // 
-            this.报警设置ToolStripMenuItem.Name = "报警设置ToolStripMenuItem";
-            this.报警设置ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.报警设置ToolStripMenuItem.Text = "报警设置";
-            // 
-            // 其他设置ToolStripMenuItem
-            // 
-            this.其他设置ToolStripMenuItem.Name = "其他设置ToolStripMenuItem";
-            this.其他设置ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.其他设置ToolStripMenuItem.Text = "其他设置";
-            // 
-            // 服务器操作ToolStripMenuItem
-            // 
-            this.服务器操作ToolStripMenuItem.Name = "服务器操作ToolStripMenuItem";
-            this.服务器操作ToolStripMenuItem.Size = new System.Drawing.Size(80, 21);
-            this.服务器操作ToolStripMenuItem.Text = "服务器操作";
             // 
             // splitContainer1
             // 
@@ -400,13 +343,6 @@
         private System.Windows.Forms.ToolStripMenuItem 驱动连接器管理ToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton8;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem 服务器管理ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tCP服务设置ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 接收服务器设置ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 本地缓存数据库设置ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 报警设置ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 其他设置ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 服务器操作ToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton9;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;

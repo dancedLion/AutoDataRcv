@@ -14,15 +14,14 @@ namespace CHQ.RD.DriverBase
         protected Thread m_thread;
 
         protected object m_host;
-        protected object m_datalist;
+        protected List<ConnDriverDataItem> m_datalist;
 
-        protected Dictionary<int, object> m_valuelist;
         int m_transmode=0;
         int m_readmode=0;
         int m_readinterval=2000;
 
-        string errorfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\DriverBaseError.log";
-        string logfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\DriverBase.log";
+        string errorfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\DriverBaseError.log";
+        string logfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\DriverBase.log";
         public string ErrorFile
         {
             get { return errorfile; }
@@ -37,6 +36,14 @@ namespace CHQ.RD.DriverBase
         protected Timer m_datareader;
         protected Timer m_errortransact;
         DriverStatus m_status = DriverStatus.None;
+        
+
+        public virtual object ValueList
+        {
+            get;set;
+        }
+
+
         public int TransMode
         {
             get { return m_transmode; }
@@ -137,6 +144,7 @@ namespace CHQ.RD.DriverBase
         public virtual int Init()
         {
             int ret = -1;
+            //m_datalist = new List<ConnDriverDataItem>();
             try
             {
                 ret = AcceptSetting(m_host, m_datalist);

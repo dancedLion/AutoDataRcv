@@ -16,17 +16,16 @@
     </View>
   </CustomViews>
   <AppSettings>
-    <AppSet>
-      <Sending Id="" Server="" Port="" Via="UDP" UsingSig="1" Items="" Interval="2000" />
-      <Listening Id="" Ip="" Port="" MaxConnection="" />
-    </AppSet>
     <RunningConnector Id="1" />
+    <Listeners>
+      <Listener Id="1" Via="0" Port="12999" ReadMode="0" Desc=""/>
+    </Listeners>
   </AppSettings>
   <Connectors>
     <Connector Id="1" Name="测试机">
       <Sendings>
         <!--发送-->
-        <Sending Via="0" Target="192.168.6.7" Port="8000" Id="1" Name="接收测试机" Host="192.168.1.145" HostPort="802" Memo="" SendInterval="10000" ConnDrivers="" />
+        <Sending Via="0" Id="1" Name="接收测试机" Host="192.168.1.145" HostPort="802" Memo="" SendInterval="10000" ConnDrivers="" />
       </Sendings>
       <Host Via="" Port="8000" />
       <!--本地服务端口-->

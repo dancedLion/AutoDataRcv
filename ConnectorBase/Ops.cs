@@ -23,10 +23,10 @@ namespace CHQ.RD.ConnectorBase
 {
     public class Ops
     {
-        static string xmlfile = AppDomain.CurrentDomain.BaseDirectory + "\\connectorsettings.xml";
-        static string dataitemsfile = AppDomain.CurrentDomain.BaseDirectory + "\\ConnectorDataItems.xml";
-        static string logfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\ConnectorBasetracelog.log";
-        static string errorfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\ConnectorBaseerrorlog.log";
+        static string xmlfile = AppDomain.CurrentDomain.BaseDirectory + "connectorsettings.xml";
+        static string dataitemsfile = AppDomain.CurrentDomain.BaseDirectory + "ConnectorDataItems.xml";
+        static string logfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\ConnectorBasetracelog.log";
+        static string errorfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\ConnectorBaseerrorlog.log";
         
 
         #region 驱动及驱动连接器
@@ -988,6 +988,123 @@ namespace CHQ.RD.ConnectorBase
             }
             return ret;
         }
+        #endregion
+
+        #region 本地数据报备设置
+        public static List<ConnectorLocalData> getConnectorLocalDataList()
+        {
+            List<ConnectorLocalData> ret = new List<ConnectorLocalData>();
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList nodes = doc.DocumentElement.SelectNodes("AppSettings/LocalDatas");
+                if (nodes != null && nodes.Count > 0)
+                {
+                    foreach(XmlElement e in nodes[0].ChildNodes)
+                    {
+                        ConnectorLocalData d = new ConnectorLocalData
+                        {
+                            Id = int.Parse(e.Attributes["Id"].Value),
+                            Desc = e.Attributes["Desc"].Value,
+                            ConnectString = e.Attributes["ConnectString"].Value
+                        };
+                        ret.Add(d);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "getConnectorLocalDataList Error" + ex.Message);
+            }
+            return ret;
+        }
+        public static int saveConnectorLocalData(ConnectorLocalData cld)
+        {
+            int ret = -1;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList nodes = doc.DocumentElement.SelectNodes("AppSettings/LocalDatas");
+                XmlElement e=null;
+                if (nodes == null || nodes.Count == 0)
+                {
+                    XmlNodeList tmp = doc.DocumentElement.SelectNodes("AppSettings");
+                    if (tmp == null || tmp.Count == 0)
+                    {
+                        e = doc.CreateElement("AppSettings");
+                        doc.DocumentElement.AppendChild(e);
+                        XmlElement t = doc.CreateElement("LocalDatas");
+                        e.AppendChild(t);
+                        e = t;
+                        t = doc.CreateElement("LocalData");
+                        t.SetAttribute("Id", cld.Id.ToString());
+                        e.AppendChild(t);
+                        e = t;
+                    }
+                    else
+                    {
+                        e = (XmlElement)tmp[0];
+                        tmp = tmp[0].SelectNodes("LocalDatas");
+                        if (tmp == null || tmp.Count == 0)
+                        {
+                            XmlElement t = doc.CreateElement("LocalDatas");
+                            e.AppendChild(t);
+                            e = t;
+                            t = doc.CreateElement("LocalData");
+                            t.SetAttribute("Id", cld.Id.ToString());
+                            e = t;
+                        }
+                        else
+                        {
+                            e = (XmlElement)tmp[0];
+                            tmp = e.SelectNodes("LocalData[@Id=" + cld.Id + "]");
+                            if (tmp == null || tmp.Count == 0)
+                            {
+                                XmlElement t = doc.CreateElement("LocalData");
+                                t.SetAttribute("Id", cld.Id.ToString());
+                                e.AppendChild(t);
+                                e = t;
+                            }
+                            else
+                            {
+                                e = (XmlElement)tmp[0];
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    e =(XmlElement)nodes[0];
+                    nodes = e.SelectNodes("LocalData[@Id=" + cld.Id.ToString() + "]");
+                    if (nodes == null || nodes.Count == 0)
+                    {
+                        XmlElement t = doc.CreateElement("LocalData");
+                        t.SetAttribute("Id", cld.Id.ToString());
+                        e.AppendChild(t);
+                        e = t;
+                    }
+                    else
+                    {
+                        e = (XmlElement)nodes[0];
+                    }
+                }
+                e.SetAttribute("Desc", cld.Desc);
+                e.SetAttribute("ConnectString", cld.ConnectString);
+                doc.Save(xmlfile);
+                ret = 0;
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "saveConnectorLocalData Error("+cld.Desc+"):" + ex.Message);
+            }
+            return ret;
+        }
+        #endregion
+
+        #region 报警设置
+
         #endregion
 
         #region 其他一些方法

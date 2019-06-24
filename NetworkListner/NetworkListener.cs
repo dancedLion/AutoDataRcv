@@ -16,6 +16,7 @@ namespace CHQ.RD.NetworkListener
         int m_listenerType = 0;
         int m_port = 0;
         int m_via = -1;
+        List<ConnDriverDataItem> m_datalist = new List<ConnDriverDataItem>();
         Queue<ListKeyValue> m_listvalue;
         static ManualResetEvent mre = new ManualResetEvent(false);
         public NetworkListener() : base()
@@ -25,15 +26,16 @@ namespace CHQ.RD.NetworkListener
             m_listvalue = new Queue<ListKeyValue>();
         }
 
-        public Queue<ListKeyValue> ValueList
+        public override object ValueList
         {
-            get { return m_listvalue; }
-            set { m_listvalue = value; }
+            get { return (object)m_listvalue; }
+            set { m_listvalue = (Queue < ListKeyValue > )value; }
         }
 
         public override int Init()
         {
-            return base.Init();          
+            return base.Init();
+           
         }
         public override int Start()
         {
@@ -86,13 +88,27 @@ namespace CHQ.RD.NetworkListener
 
         public virtual void startSocketListener()
         {
-
+            Socket sck = new Socket(AddressFamily.InterNetwork  , SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint iep = new IPEndPoint(IPAddress.Any, m_port);
+            sck.Bind(iep);
+            sck.Listen(10);
+            while (true)
+            {   //启动接收
+                mre.WaitOne();
+                byte[] buff = new byte[1024];
+                Socket client = sck.Accept();
+                int datalen=client.Receive(buff);
+                string result = System.Text.Encoding.Default.GetString(buff,0,datalen);
+                ParsingValues(result);
+                client.Close();
+            }
         }
         public virtual void startUDPListener()
         {
             UdpClient client = new UdpClient(m_port);
             while (true)
             {
+                mre.WaitOne();
                 byte[] buffer = new byte[1024];
 
             }
@@ -115,7 +131,43 @@ namespace CHQ.RD.NetworkListener
         }
         public virtual void ParsingValues(string valuestring)
         {
+            try
+            {
+                string[] rows = valuestring.Split(';');
+                for(int i = 0; i < rows.Length; i++)
+                {
+                    string[] kvp = rows[i].Split('=');
+                    ListKeyValue v = new ListKeyValue();
+                    v.Id = int.Parse(kvp[0]);
+                    if (!string.IsNullOrEmpty(kvp[1]))
+                    {
+                        switch (m_datalist.Find(x => (x.Id == int.Parse(kvp[0]))).ValueType)
+                        {
+                            case "TEXT":
+                                v.Value = kvp[1];
+                                break;
+                            case "INT":
+                            case "INT32":
+                            case "BIT":
+                                v.Value = int.Parse(kvp[1]);
+                                break;
+                            case "REAL":
+                                v.Value = float.Parse(kvp[1]);
+                                break;
 
+                        }
+                    }
+                    else
+                    {
+                        v.Value = null;
+                    }
+                    m_listvalue.Enqueue(v);
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(ErrorFile, this.GetType().ToString() + ".ParsingValues(" + valuestring + ") Error" + ex.Message);
+            }
         }
         public override object ParsingHost(string host)
         {
@@ -152,6 +204,10 @@ namespace CHQ.RD.NetworkListener
             try
             {
                 ParsingHost(host.ToString());
+                foreach(ConnDriverDataItem item in (List<ConnDriverDataItem>)list)
+                {
+                    m_datalist.Add(item);
+                }
                 ret = 0;
             }
             catch(Exception ex)

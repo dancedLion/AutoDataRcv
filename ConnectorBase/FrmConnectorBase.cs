@@ -95,12 +95,40 @@ namespace CHQ.RD.ConnectorBase
                     {
                         showSendingSettings();
                     }
+                    if(node.Tag.ToString()== "HostDataServer")
+                    {
+                        showDataServerSetting();
+                    }
+                    if (node.Tag.ToString() == "LocalDataBaseSetting")
+                    {
+                        showLocalDataSetting();
+                    }
                     break;
                 //case "DataSendingSetting":
                 //    showSendingSettings();
                 //    break;
             }
         }
+        void showDataServerSetting()
+        {
+            detailView.Items.Clear();
+            defineColumns(typeof(ConnectorHost));
+            
+        }
+        void showLocalDataSetting()
+        {
+            detailView.Items.Clear();
+            defineColumns(typeof(ConnectorLocalData));
+            List<ConnectorLocalData> l = Ops.getConnectorLocalDataList();
+            foreach(ConnectorLocalData cld in l)
+            {
+                ListViewItem item = new ListViewItem(new string[]
+                {
+                    cld.Id.ToString(),cld.Desc,cld.ConnectString
+                });
+            }
+        }
+
         /// <summary>
         /// 显示指定驱动连接器下的数据变量
         /// </summary>
@@ -289,6 +317,24 @@ namespace CHQ.RD.ConnectorBase
                 Tag = "DataSendingSetting",
                 ImageIndex = 31
             });
+            node.Nodes.Add(new TreeNode
+            {
+                Text = "本地服务设置",
+                Tag = "HostDataServer",
+                ImageIndex = 31
+            });
+            node.Nodes.Add(new TreeNode
+            {
+                Text = "本地存储设置",
+                Tag = "LocalDataBaseSetting",
+                ImageIndex = 31
+            });
+            node.Nodes.Add(new TreeNode
+            {
+                Text = "报警设置",
+                Tag = "DataAlertSetting",
+                ImageIndex = 31
+            });
         }
 
         void AddNew()
@@ -300,6 +346,7 @@ namespace CHQ.RD.ConnectorBase
                     case "DataSendingSetting":
                         toAddDataSendingSet();
                         break;
+                    
                 }
             }
         }

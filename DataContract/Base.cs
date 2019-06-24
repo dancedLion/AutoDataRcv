@@ -114,7 +114,36 @@ namespace CHQ.RD.DataContract
         public string ConnDrivers;  //预留，为了不同驱动连接器的数据发送给不同的主机
         public int Via;     //发送方式 0-Socket,1-TCP 2-UDP
     }
+    /// <summary>
+    /// 连接管理器建立的数据服务，用于外部程序主动读取数据
+    /// </summary>
+    public class ConnectorHost
+    {
+        public int Id;
+        public int Via;
+        public int Port;
+        public int ReadMode;
+        public string Desc;
+    }
+    /// <summary>
+    /// 本地数据存储
+    /// </summary>
+    public class ConnectorLocalData
+    {
+        public int Id;
+        public string Desc;
+        public string ConnectString;
+    }
+    public class ConnectorDataAlert
+    {
+        public int Id;
+        public string Desc;
+        public string Host;
+        public string HostPort;
+        public System.Drawing.Color LowerLevelColor;
+        public System.Drawing.Color HigherLevelColor;
 
+    }
     public class ListKeyValue
     {
         public int Id;

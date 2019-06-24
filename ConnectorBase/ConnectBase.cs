@@ -19,18 +19,25 @@ namespace CHQ.RD.ConnectorBase
     {
 
         #region variables and properties
-        protected string XmlSettingFile =AppDomain.CurrentDomain.BaseDirectory+ "\\ConnectorSetting.xml";
-        string errorlogfile = AppDomain.CurrentDomain.BaseDirectory + "\\log\\connectorError.log";
+        protected string XmlSettingFile =AppDomain.CurrentDomain.BaseDirectory+ "ConnectorSetting.xml";
+        string errorlogfile = AppDomain.CurrentDomain.BaseDirectory + "log\\connectorError.log";
         protected Thread readingThread;
         protected Thread manageThread;
         protected Thread sendingThread;
         protected Thread listenThread;
+        DataChangeEventHandler m_dchandler;
         public Dictionary<int, object> ValueList;
         protected List<ConnDriverBase> connDriverList;
 
         public List<ConnDriverBase> ConnDrivers
         {
             get { return connDriverList; }
+        }
+
+        public event DataChangeEventHandler DataChange
+        {
+            add { m_dchandler += value; }
+            remove { m_dchandler -= value; }
         }
 
 
@@ -88,6 +95,7 @@ namespace CHQ.RD.ConnectorBase
             }
             catch(Exception ex)
             {
+                TxtLogWriter.WriteErrorMessage(errorlogfile, this.GetType().ToString() + ".Init Error:" + ex.Message);
                 ret = -1;
             }
             return ret;
@@ -184,7 +192,18 @@ namespace CHQ.RD.ConnectorBase
         #region datasending
         void sendViaUDP(DataSendingSet dss,ConnectorDataItem item,object value)
         {
-
+            try
+            {
+                UdpClient client = new UdpClient();
+                client.Connect(dss.Host, dss.HostPort);
+                byte[] buff = System.Text.Encoding.Default.GetBytes(item.ConnId + ";" + item.Id.ToString() + ";" + value.ToString() + ";" + DateTime.Now.ToString());
+                client.Send(buff, buff.Length);
+                client.Close();
+            }
+            catch (Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorlogfile, this.GetType().ToString() + ".sendViaUDP Error:" + ex.Message);
+            }
         }
         void sendViaSocket(DataSendingSet dss, ConnectorDataItem item, object value)
         {
@@ -204,7 +223,14 @@ namespace CHQ.RD.ConnectorBase
         }
         void sendViaTCP(DataSendingSet dss, ConnectorDataItem item, object value)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorlogfile, this.GetType().ToString() + ".sendViaUDP Error:" + ex.Message);
+            }
         }
         #endregion
 
@@ -212,5 +238,16 @@ namespace CHQ.RD.ConnectorBase
 
         //TODO:数据变化时的事件
         //附加的事件
+        #region 内部事件和方法
+        void onDataChanged(object sender, DataChangeEventArgs e)
+        {
+            //写值   
+            //触发handler
+            if (m_dchandler != null)
+            {
+                m_dchandler(sender, e);
+            }
+        }
+        #endregion
     }
 }
