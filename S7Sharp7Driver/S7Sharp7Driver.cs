@@ -22,8 +22,8 @@ namespace CHQ.RD.S7Sharp7Driver
         Dictionary<string, int> m_dbtype;
         Dictionary<string, int> m_datalen;
         //Dictionary<int, int> m_errorcount;
-        string errorfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\S7Sharp7DriverError.log";
-        string logfile = AppDomain.CurrentDomain.BaseDirectory + "\\logs\\S7Sharp7Driver.log";
+        string errorfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\S7Sharp7DriverError.log";
+        string logfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\S7Sharp7Driver.log";
 
         public override int SetStatus(DriverStatus status)
         {

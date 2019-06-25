@@ -32,7 +32,7 @@ namespace CHQ.RD.ConnectorRunTime
             m_connector = m_runtime.ConnectorBaseRunning;
             ret = m_connector.Init();
             //在列表中加载
-            foreach(ConnDriverBase cd in m_connector.ConnDrivers)
+            foreach(IConnDriverBase cd in m_connector.ConnDrivers)
             {
                 ListViewItem item = new ListViewItem(
                     new string[]
@@ -54,7 +54,7 @@ namespace CHQ.RD.ConnectorRunTime
             int ret = -1;
             if (listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)
             {
-                ConnDriverBase cd = (ConnDriverBase)listView1.SelectedItems[0].Tag;
+                IConnDriverBase cd = (IConnDriverBase)listView1.SelectedItems[0].Tag;
                 if (cd.Status != ConnDriverStatus.Running)
                 {
                     m_connector.RunConnDriver(cd);
@@ -79,7 +79,7 @@ namespace CHQ.RD.ConnectorRunTime
         {
             if (listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)
             {
-                List<ConnDriverBase> cdblist = new List<ConnDriverBase>();
+                List<IConnDriverBase> cdblist = new List<IConnDriverBase>();
                 foreach(ListViewItem item in listView1.SelectedItems)
                 {
                     cdblist.Add((ConnDriverBase)item.Tag);

@@ -38,7 +38,7 @@ namespace CHQ.RD.ConnectorBase
         void toSelectFromFile()
         {
             FrmSelectClassFromFile selform = new FrmSelectClassFromFile();
-            if (selform.SelectDriverClass() == 0)
+            if (selform.SelectDriverClass(typeof(CHQ.RD.DriverBase.IDriverBase)) == 0)
             {
                 tbxclassname.Text = selform.ReturnedValue.ClassName;
                 tbxassemblyinfo.Text = selform.ReturnedValue.AssemblyInfo;

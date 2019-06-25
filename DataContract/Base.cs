@@ -63,6 +63,7 @@ namespace CHQ.RD.DataContract
     {
         public int Id;      //唯一ID
         public string Name;
+        public Type ConnDriverClass;
         public int ReadMode;    //
         public int ReadInterval;    //
         public int TransMode;   //传送模式
@@ -132,6 +133,8 @@ namespace CHQ.RD.DataContract
     {
         public int Id;
         public string Desc;
+        public int RDType;  //0-实时数据 1-历史数据 2-条件数据
+        public int DBDriverType;    //0-SQLServer 1-Oralce 3-Access 4-DSN
         public string ConnectString;
     }
     public class ConnectorDataAlert

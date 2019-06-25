@@ -20,16 +20,16 @@ namespace CHQ.RD.ConnectorBase
 
         #region variables and properties
         protected string XmlSettingFile =AppDomain.CurrentDomain.BaseDirectory+ "ConnectorSetting.xml";
-        string errorlogfile = AppDomain.CurrentDomain.BaseDirectory + "log\\connectorError.log";
+        string errorlogfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\connectorError.log";
         protected Thread readingThread;
         protected Thread manageThread;
         protected Thread sendingThread;
         protected Thread listenThread;
         DataChangeEventHandler m_dchandler;
         public Dictionary<int, object> ValueList;
-        protected List<ConnDriverBase> connDriverList;
+        protected List<IConnDriverBase> connDriverList;
 
-        public List<ConnDriverBase> ConnDrivers
+        public List<IConnDriverBase> ConnDrivers
         {
             get { return connDriverList; }
         }
@@ -57,8 +57,12 @@ namespace CHQ.RD.ConnectorBase
         {
             m_id = id;
             ValueList = new Dictionary<int, object>();
-            connDriverList = new List<ConnDriverBase>();
+            connDriverList = new List<IConnDriverBase>();
         }
+
+
+
+        #region Connector Actions
         /// <summary>
         /// 初始化
         /// 1、自身建立host
@@ -77,7 +81,13 @@ namespace CHQ.RD.ConnectorBase
                 {
                     try
                     {
-                        ConnDriverBase cdb = new ConnDriverBase(cds.Id, this);
+                        IConnDriverBase cdb = 
+                            (IConnDriverBase)cds.ConnDriverClass.Assembly.
+                            CreateInstance(cds.ConnDriverClass.FullName,true,
+                            System.Reflection.BindingFlags.Default,null,
+                            new object[] {cds.Id,this},null,null
+                            );
+                            //new ConnDriverBase(cds.Id, this);
                         InitConnDriver(cdb);
                     }
                     catch(Exception ex)
@@ -107,7 +117,7 @@ namespace CHQ.RD.ConnectorBase
             return 1;
         }
 
-        public virtual int InitConnDriver(ConnDriverBase conn)
+        public virtual int InitConnDriver(IConnDriverBase conn)
         {
             int ret = -1;
             try
@@ -126,7 +136,7 @@ namespace CHQ.RD.ConnectorBase
             }
             return ret;
         }
-        public virtual int RunConnDriver(ConnDriverBase conn)
+        public virtual int RunConnDriver(IConnDriverBase conn)
         {
             int ret = -1;
             try
@@ -139,7 +149,7 @@ namespace CHQ.RD.ConnectorBase
             }
             return ret;
         }
-        public virtual int TestConnDriver(ConnDriverBase conn)
+        public virtual int TestConnDriver(IConnDriverBase conn)
         {
             int ret = -1;
             //ConnDriverBase cdb = new ConnDriverBase(conn.ID, this);
@@ -153,7 +163,7 @@ namespace CHQ.RD.ConnectorBase
             ret = 0;
             return ret;
         }
-        public virtual int StopConnDriver(ConnDriverBase conn)
+        public virtual int StopConnDriver(IConnDriverBase conn)
         {
             int ret = -1;
             return ret;
@@ -188,7 +198,7 @@ namespace CHQ.RD.ConnectorBase
             }
             return ret;
         }
-
+        #endregion
         #region datasending
         void sendViaUDP(DataSendingSet dss,ConnectorDataItem item,object value)
         {
@@ -234,7 +244,13 @@ namespace CHQ.RD.ConnectorBase
         }
         #endregion
 
-
+        public void Dispose()
+        {
+            foreach(IConnDriverBase icdb in connDriverList)
+            {
+                icdb.Dispose();
+            }
+        }
 
         //TODO:数据变化时的事件
         //附加的事件

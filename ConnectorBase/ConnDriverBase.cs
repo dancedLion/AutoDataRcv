@@ -25,7 +25,6 @@ using System.Threading;
 using System.Reflection;    //创建驱动实例用
 using GeneralOPs;
 using System.Data;
-using System.Reflection;
 namespace CHQ.RD.ConnectorBase
 {
     public class ConnDriverBase:IConnDriverBase
@@ -90,6 +89,7 @@ namespace CHQ.RD.ConnectorBase
         public ConnDriverSetting ConnDriverSet
         {
             get { return m_conndriverset; }
+            set { m_conndriverset = value; }
            
         }
 
@@ -99,6 +99,7 @@ namespace CHQ.RD.ConnectorBase
         public int ID
         {
             get { return m_id; }
+            set { m_id = value; }
         }
         /// <summary>
         /// 驱动器
@@ -126,6 +127,7 @@ namespace CHQ.RD.ConnectorBase
         public List<ConnDriverDataItem> DataItems
         {
             get { return m_dataitems; }
+            set { m_dataitems = value; }
         }
         /// <summary>
         /// 读取数据的间隔
@@ -135,12 +137,21 @@ namespace CHQ.RD.ConnectorBase
             get { return m_readinterval; }
             set { m_readinterval = value; }
         }
-        public event DataChangeEventHandler DataChanged{
+        /// <summary>
+        /// 很怪异的写法，实现扫口的事件句柄
+        /// </summary>
+        //public event DataChangeEventHandler DataChange;
+        event DataChangeEventHandler IConnDriverBase.DataChange{
             add { m_datachangehandler += value; }
             remove { m_datachangehandler -= value; }
         }
 
         #endregion
+
+        public ConnDriverBase()
+        {
+
+        }
 
         public virtual int SetStatus(ConnDriverStatus status)
         {
@@ -556,6 +567,23 @@ namespace CHQ.RD.ConnectorBase
             }
         }
         #endregion
+
+        public void Dispose()
+        {
+            if (m_status == ConnDriverStatus.Running)
+            {
+                Stop();
+            }
+            if (m_status == ConnDriverStatus.Stoped||m_status==ConnDriverStatus.Inited)
+            {
+                Close();
+            }
+            m_thread = null;
+            m_dataitems = null;
+            m_driverclass = null;
+            m_driver = null;
+            m_conndriverset = null;
+        }
 
 
         #region 内部事件和方法

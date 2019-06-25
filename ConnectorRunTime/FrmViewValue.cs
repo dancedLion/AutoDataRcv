@@ -18,7 +18,7 @@ namespace CHQ.RD.ConnectorRunTime
         }
         ConnectorBase.ConnectorBase m_host;
         DataTable varList;
-        public void ViewData(ConnectorBase.ConnectorBase host, List<ConnDriverBase> conndrivers)
+        public void ViewData(ConnectorBase.ConnectorBase host, List<IConnDriverBase> conndrivers)
         {
             if (conndrivers == null || conndrivers.Count == 0)
             {

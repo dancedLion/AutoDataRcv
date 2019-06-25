@@ -124,8 +124,10 @@ namespace CHQ.RD.ConnectorBase
             {
                 ListViewItem item = new ListViewItem(new string[]
                 {
-                    cld.Id.ToString(),cld.Desc,cld.ConnectString
+                    cld.Id.ToString(),cld.Desc,cld.RDType.ToString(),cld.DBDriverType.ToString(),cld.ConnectString
                 });
+                item.Tag = cld;
+                detailView.Items.Add(item);
             }
         }
 
@@ -346,6 +348,9 @@ namespace CHQ.RD.ConnectorBase
                     case "DataSendingSetting":
                         toAddDataSendingSet();
                         break;
+                    case "LocalDataBaseSetting":
+                        toAddLocalDataSetting();
+                        break;
                     
                 }
             }
@@ -427,6 +432,23 @@ namespace CHQ.RD.ConnectorBase
                     dss.ConnDrivers,dss.Via.ToString()
                 });
                 item.Tag = dss;
+                detailView.Items.Add(item);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        void toAddLocalDataSetting()
+        {
+            FrmDataStorage frm = new FrmDataStorage();
+            if (frm.EditConnectorLocalData() >= 0)
+            {
+                ConnectorLocalData cld = frm.ReturnedValue;
+                ListViewItem item = new ListViewItem(new string[]
+                {
+                    cld.Id.ToString(),cld.Desc,cld.RDType.ToString(),cld.DBDriverType.ToString(),cld.ConnectString
+                });
+                item.Tag = cld;
                 detailView.Items.Add(item);
             }
         }

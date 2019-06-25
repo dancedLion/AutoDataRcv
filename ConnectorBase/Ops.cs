@@ -48,6 +48,7 @@ namespace CHQ.RD.ConnectorBase
                     {
                         Id = int.Parse(e.Attributes["Id"].Value),
                         Name = e.Attributes["Name"].Value,
+                        ConnDriverClass = Type.GetType(e.Attributes["ConnDriverClass"].Value),
                         ReadMode = int.Parse(e.Attributes["ReadMode"].Value),
                         ReadInterval = int.Parse(e.Attributes["ReadInterval"].Value),
                         TransMode = int.Parse(e.Attributes["TransMode"].Value)
@@ -170,6 +171,7 @@ namespace CHQ.RD.ConnectorBase
                 }
                 //更新节点信息
                 node.SetAttribute("Id", setting.Id.ToString());
+                node.SetAttribute("ConnDriverClass", setting.ConnDriverClass.FullName);
                 node.SetAttribute("AssemblieId",setting.ClassFile.Id.ToString());
                 node.SetAttribute("ReadInterval", setting.ReadInterval.ToString());
                 node.SetAttribute("ReadMode", setting.ReadMode.ToString());
@@ -205,6 +207,7 @@ namespace CHQ.RD.ConnectorBase
                         ret = new ConnDriverSetting();
                         ret.Id = connDriverId;
                         ret.Name = e.Attributes["Name"].Value;
+                        ret.ConnDriverClass = Type.GetType(e.Attributes["ConnDriverClass"].Value);
                         ret.ReadInterval = int.Parse(e.Attributes["ReadInterval"].Value);
                         ret.ReadMode = int.Parse(e.Attributes["ReadMode"].Value);
                         ret.TransMode = int.Parse(e.Attributes["TransMode"].Value);
@@ -1007,7 +1010,9 @@ namespace CHQ.RD.ConnectorBase
                         {
                             Id = int.Parse(e.Attributes["Id"].Value),
                             Desc = e.Attributes["Desc"].Value,
-                            ConnectString = e.Attributes["ConnectString"].Value
+                            ConnectString = e.Attributes["ConnectString"].Value,
+                            DBDriverType = int.Parse(e.Attributes["DBDriverType"].Value),
+                            RDType=int.Parse(e.Attributes["RDType"].Value)
                         };
                         ret.Add(d);
                     }
@@ -1092,6 +1097,8 @@ namespace CHQ.RD.ConnectorBase
                 }
                 e.SetAttribute("Desc", cld.Desc);
                 e.SetAttribute("ConnectString", cld.ConnectString);
+                e.SetAttribute("RDType", cld.RDType.ToString());
+                e.SetAttribute("DBDriverType", cld.DBDriverType.ToString());
                 doc.Save(xmlfile);
                 ret = 0;
             }

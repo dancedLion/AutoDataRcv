@@ -64,6 +64,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.vwDataItem = new System.Windows.Forms.DataGridView();
+            this.btnSelectConnDriverType = new System.Windows.Forms.Button();
+            this.tbxConnDriverType = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -148,6 +151,9 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnSelectConnDriverType);
+            this.tabPage1.Controls.Add(this.tbxConnDriverType);
+            this.tabPage1.Controls.Add(this.label6);
             this.tabPage1.Controls.Add(this.btntestdriver);
             this.tabPage1.Controls.Add(this.btnselectdriverclass);
             this.tabPage1.Controls.Add(this.btneditdriversetting);
@@ -182,7 +188,7 @@
             // 
             // btntestdriver
             // 
-            this.btntestdriver.Location = new System.Drawing.Point(674, 174);
+            this.btntestdriver.Location = new System.Drawing.Point(474, 258);
             this.btntestdriver.Name = "btntestdriver";
             this.btntestdriver.Size = new System.Drawing.Size(48, 23);
             this.btntestdriver.TabIndex = 34;
@@ -191,7 +197,7 @@
             // 
             // btnselectdriverclass
             // 
-            this.btnselectdriverclass.Location = new System.Drawing.Point(615, 16);
+            this.btnselectdriverclass.Location = new System.Drawing.Point(474, 76);
             this.btnselectdriverclass.Name = "btnselectdriverclass";
             this.btnselectdriverclass.Size = new System.Drawing.Size(48, 23);
             this.btnselectdriverclass.TabIndex = 33;
@@ -201,7 +207,7 @@
             // 
             // btneditdriversetting
             // 
-            this.btneditdriversetting.Location = new System.Drawing.Point(616, 174);
+            this.btneditdriversetting.Location = new System.Drawing.Point(474, 229);
             this.btneditdriversetting.Name = "btneditdriversetting";
             this.btneditdriversetting.Size = new System.Drawing.Size(48, 23);
             this.btneditdriversetting.TabIndex = 32;
@@ -215,9 +221,9 @@
             this.cbxdriverreadmode.Items.AddRange(new object[] {
             "等待读取",
             "主动读取"});
-            this.cbxdriverreadmode.Location = new System.Drawing.Point(65, 138);
+            this.cbxdriverreadmode.Location = new System.Drawing.Point(112, 192);
             this.cbxdriverreadmode.Name = "cbxdriverreadmode";
-            this.cbxdriverreadmode.Size = new System.Drawing.Size(121, 20);
+            this.cbxdriverreadmode.Size = new System.Drawing.Size(103, 20);
             this.cbxdriverreadmode.TabIndex = 31;
             // 
             // cbxdriversendmode
@@ -226,9 +232,9 @@
             this.cbxdriversendmode.Items.AddRange(new object[] {
             "不发送",
             "主动发送"});
-            this.cbxdriversendmode.Location = new System.Drawing.Point(484, 138);
+            this.cbxdriversendmode.Location = new System.Drawing.Point(414, 190);
             this.cbxdriversendmode.Name = "cbxdriversendmode";
-            this.cbxdriversendmode.Size = new System.Drawing.Size(121, 20);
+            this.cbxdriversendmode.Size = new System.Drawing.Size(107, 20);
             this.cbxdriversendmode.TabIndex = 30;
             // 
             // cbxconndriversendmode
@@ -237,9 +243,9 @@
             this.cbxconndriversendmode.Items.AddRange(new object[] {
             "不送发",
             "主动发送"});
-            this.cbxconndriversendmode.Location = new System.Drawing.Point(484, 48);
+            this.cbxconndriversendmode.Location = new System.Drawing.Point(413, 106);
             this.cbxconndriversendmode.Name = "cbxconndriversendmode";
-            this.cbxconndriversendmode.Size = new System.Drawing.Size(121, 20);
+            this.cbxconndriversendmode.Size = new System.Drawing.Size(108, 20);
             this.cbxconndriversendmode.TabIndex = 29;
             // 
             // cboconndriverreadmode
@@ -248,36 +254,37 @@
             this.cboconndriverreadmode.Items.AddRange(new object[] {
             "等待读取",
             "主动读取"});
-            this.cboconndriverreadmode.Location = new System.Drawing.Point(65, 48);
+            this.cboconndriverreadmode.Location = new System.Drawing.Point(112, 106);
             this.cboconndriverreadmode.Name = "cboconndriverreadmode";
-            this.cboconndriverreadmode.Size = new System.Drawing.Size(121, 20);
+            this.cboconndriverreadmode.Size = new System.Drawing.Size(103, 20);
             this.cboconndriverreadmode.TabIndex = 28;
             // 
             // tbxconndriverreadinterval
             // 
-            this.tbxconndriverreadinterval.Location = new System.Drawing.Point(284, 47);
+            this.tbxconndriverreadinterval.Location = new System.Drawing.Point(289, 106);
             this.tbxconndriverreadinterval.Name = "tbxconndriverreadinterval";
-            this.tbxconndriverreadinterval.Size = new System.Drawing.Size(123, 21);
+            this.tbxconndriverreadinterval.Size = new System.Drawing.Size(57, 21);
             this.tbxconndriverreadinterval.TabIndex = 27;
             // 
             // tbxdriverreadinterval
             // 
-            this.tbxdriverreadinterval.Location = new System.Drawing.Point(274, 137);
+            this.tbxdriverreadinterval.Location = new System.Drawing.Point(288, 191);
             this.tbxdriverreadinterval.Name = "tbxdriverreadinterval";
-            this.tbxdriverreadinterval.Size = new System.Drawing.Size(123, 21);
+            this.tbxdriverreadinterval.Size = new System.Drawing.Size(58, 21);
             this.tbxdriverreadinterval.TabIndex = 26;
             // 
             // tbxdriverhost
             // 
-            this.tbxdriverhost.Location = new System.Drawing.Point(65, 174);
+            this.tbxdriverhost.Location = new System.Drawing.Point(112, 228);
+            this.tbxdriverhost.Multiline = true;
             this.tbxdriverhost.Name = "tbxdriverhost";
-            this.tbxdriverhost.Size = new System.Drawing.Size(540, 21);
+            this.tbxdriverhost.Size = new System.Drawing.Size(356, 73);
             this.tbxdriverhost.TabIndex = 25;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(8, 180);
+            this.label14.Location = new System.Drawing.Point(49, 231);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(65, 12);
             this.label14.TabIndex = 24;
@@ -286,7 +293,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(413, 145);
+            this.label11.Location = new System.Drawing.Point(349, 197);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(65, 12);
             this.label11.TabIndex = 23;
@@ -295,7 +302,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(8, 145);
+            this.label12.Location = new System.Drawing.Point(49, 199);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(65, 12);
             this.label12.TabIndex = 22;
@@ -304,7 +311,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(216, 145);
+            this.label13.Location = new System.Drawing.Point(221, 197);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(65, 12);
             this.label13.TabIndex = 21;
@@ -313,7 +320,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(413, 54);
+            this.label10.Location = new System.Drawing.Point(351, 112);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(65, 12);
             this.label10.TabIndex = 20;
@@ -322,7 +329,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 54);
+            this.label9.Location = new System.Drawing.Point(49, 112);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(65, 12);
             this.label9.TabIndex = 19;
@@ -330,30 +337,30 @@
             // 
             // tbxdriverclass
             // 
-            this.tbxdriverclass.Location = new System.Drawing.Point(384, 17);
+            this.tbxdriverclass.Location = new System.Drawing.Point(112, 77);
             this.tbxdriverclass.Name = "tbxdriverclass";
             this.tbxdriverclass.ReadOnly = true;
-            this.tbxdriverclass.Size = new System.Drawing.Size(225, 21);
+            this.tbxdriverclass.Size = new System.Drawing.Size(356, 21);
             this.tbxdriverclass.TabIndex = 12;
             // 
             // tbxname
             // 
-            this.tbxname.Location = new System.Drawing.Point(160, 18);
+            this.tbxname.Location = new System.Drawing.Point(288, 22);
             this.tbxname.Name = "tbxname";
-            this.tbxname.Size = new System.Drawing.Size(175, 21);
+            this.tbxname.Size = new System.Drawing.Size(233, 21);
             this.tbxname.TabIndex = 11;
             // 
             // tbxid
             // 
-            this.tbxid.Location = new System.Drawing.Point(38, 18);
+            this.tbxid.Location = new System.Drawing.Point(112, 22);
             this.tbxid.Name = "tbxid";
-            this.tbxid.Size = new System.Drawing.Size(74, 21);
+            this.tbxid.Size = new System.Drawing.Size(103, 21);
             this.tbxid.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 112);
+            this.label5.Location = new System.Drawing.Point(49, 173);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(65, 12);
             this.label5.TabIndex = 9;
@@ -362,7 +369,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(216, 54);
+            this.label4.Location = new System.Drawing.Point(221, 112);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 12);
             this.label4.TabIndex = 8;
@@ -371,16 +378,16 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(341, 24);
+            this.label3.Location = new System.Drawing.Point(49, 84);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 12);
+            this.label3.Size = new System.Drawing.Size(65, 12);
             this.label3.TabIndex = 7;
-            this.label3.Text = "驱动：";
+            this.label3.Text = "驱动类型：";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(117, 24);
+            this.label2.Location = new System.Drawing.Point(243, 28);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 6;
@@ -389,7 +396,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 22);
+            this.label1.Location = new System.Drawing.Point(85, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 12);
             this.label1.TabIndex = 5;
@@ -416,6 +423,33 @@
             this.vwDataItem.RowTemplate.Height = 23;
             this.vwDataItem.Size = new System.Drawing.Size(786, 393);
             this.vwDataItem.TabIndex = 0;
+            // 
+            // btnSelectConnDriverType
+            // 
+            this.btnSelectConnDriverType.Location = new System.Drawing.Point(474, 49);
+            this.btnSelectConnDriverType.Name = "btnSelectConnDriverType";
+            this.btnSelectConnDriverType.Size = new System.Drawing.Size(48, 23);
+            this.btnSelectConnDriverType.TabIndex = 37;
+            this.btnSelectConnDriverType.Text = "选择";
+            this.btnSelectConnDriverType.UseVisualStyleBackColor = true;
+            this.btnSelectConnDriverType.Click += new System.EventHandler(this.tbxSelectConnDriverType_Click);
+            // 
+            // tbxConnDriverType
+            // 
+            this.tbxConnDriverType.Location = new System.Drawing.Point(112, 50);
+            this.tbxConnDriverType.Name = "tbxConnDriverType";
+            this.tbxConnDriverType.ReadOnly = true;
+            this.tbxConnDriverType.Size = new System.Drawing.Size(356, 21);
+            this.tbxConnDriverType.TabIndex = 36;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(13, 57);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(101, 12);
+            this.label6.TabIndex = 35;
+            this.label6.Text = "驱动连接器类型：";
             // 
             // FrmConnDriverEdit
             // 
@@ -475,5 +509,8 @@
         private System.Windows.Forms.Button btneditdriversetting;
         private System.Windows.Forms.Button btnselectdriverclass;
         private System.Windows.Forms.Button btntestdriver;
+        private System.Windows.Forms.Button btnSelectConnDriverType;
+        private System.Windows.Forms.TextBox tbxConnDriverType;
+        private System.Windows.Forms.Label label6;
     }
 }

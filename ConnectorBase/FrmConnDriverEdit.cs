@@ -216,6 +216,17 @@ namespace CHQ.RD.ConnectorBase
         {
             get { return m_returnedvalue; }
         }
+
+        void toSelectConnDriverClass()
+        {
+            FrmSelectClassFromFile selform = new FrmSelectClassFromFile();
+            if (selform.SelectClass(typeof(IConnDriverBase)) == 0)
+            {
+                tbxConnDriverType.Text = selform.SelectedType.FullName.ToString();
+            }
+        }
+
+
         /// <summary>
         /// 选择类型
         /// </summary>
@@ -317,6 +328,7 @@ namespace CHQ.RD.ConnectorBase
                 }
                 tbxid.Text = conndriver.Id.ToString();
                 tbxname.Text = conndriver.Name;
+                tbxConnDriverType.Text = conndriver.ConnDriverClass.FullName;
                 tbxconndriverreadinterval.Text = conndriver.ReadInterval.ToString();
                 cbxconndriversendmode.SelectedIndex = conndriver.TransMode;
                 cboconndriverreadmode.SelectedIndex = conndriver.ReadMode;
@@ -386,6 +398,7 @@ namespace CHQ.RD.ConnectorBase
                 m.Id = int.Parse(tbxid.Text);
                 m.Name = tbxname.Text;
                 m.ClassFile = m_file;
+                m.ConnDriverClass = Type.GetType(tbxConnDriverType.Text);
                 m.ReadInterval = int.Parse(tbxconndriverreadinterval.Text);
                 m.ReadMode = cboconndriverreadmode.SelectedIndex;
                 m.TransMode = cbxconndriversendmode.SelectedIndex;
@@ -529,6 +542,11 @@ namespace CHQ.RD.ConnectorBase
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
             toRemoveRow();
+        }
+
+        private void tbxSelectConnDriverType_Click(object sender, EventArgs e)
+        {
+            toSelectConnDriverClass();
         }
     }
 }

@@ -20,17 +20,39 @@ namespace CHQ.RD.ConnectorBase
             InitializeComponent();
         }
 
+        Type m_type = null;
+        Type m_basetp = null;
+        public Type SelectedType
+        {
+            get { return m_type; }
+        }
+
         public AssemblyFile ReturnedValue
         {
             get { return m_returnedvalue; }
         }
 
-        public int SelectDriverClass()
+        public int SelectDriverClass(Type basetype)
         {
             if (openDllFile.ShowDialog() == DialogResult.OK)
             {
                 string filename = openDllFile.FileName;
+                m_basetp = basetype;
                 loadFile(filename);
+                this.ShowDialog();
+            }
+            else
+            {
+                return -1;
+            }
+            return m_result;
+        }
+        public int SelectClass(Type type)
+        {
+            if (openDllFile.ShowDialog() == DialogResult.OK)
+            {
+                string filename = openDllFile.FileName;
+                loadFile(filename, type);
                 this.ShowDialog();
             }
             else
@@ -46,6 +68,40 @@ namespace CHQ.RD.ConnectorBase
                 loadFile(openDllFile.FileName);
             }
         }
+        void loadFile(string filename,Type type)
+        {
+
+            //相同文件不再加载
+            Assembly asm = Assembly.LoadFile(filename);
+            foreach (TreeNode node in treeClasses.Nodes)
+            {
+                if ((Assembly)node.Tag == asm)
+                {
+                    //已加载过
+                    return;
+                }
+            }
+            //加载命名空间
+            TreeNode nd = new TreeNode();
+            nd.ImageIndex = 0;
+            nd.Text = asm.GetName().Name;
+            nd.Tag = asm;
+            //加载类
+            Type[] tps = asm.GetTypes();
+            for (int i = 0; i < tps.Length; i++)
+            {
+                if (type.IsAssignableFrom(tps[i]))
+                {
+                    TreeNode node = new TreeNode();
+                    node.Text = tps[i].FullName;
+                    node.Tag = tps[i];
+                    node.ImageIndex = 1;
+                    nd.Nodes.Add(node);
+                }
+            }
+            treeClasses.Nodes.Add(nd);
+        }
+
         void loadFile(string filename)
         {
             //相同文件不再加载
@@ -67,7 +123,7 @@ namespace CHQ.RD.ConnectorBase
             Type[] tps = asm.GetTypes();
             for(int i = 0; i < tps.Length; i++)
             {
-                if (typeof(IDriverBase).IsAssignableFrom(tps[i]))
+                if (m_basetp.IsAssignableFrom(tps[i]))
                 {
                     TreeNode node = new TreeNode();
                     node.Text = tps[i].FullName;
@@ -86,6 +142,7 @@ namespace CHQ.RD.ConnectorBase
                 if (treeClasses.SelectedNode.ImageIndex == 1)
                 {
                     Type tp = (Type)treeClasses.SelectedNode.Tag;
+                    m_type = tp;
                     m_returnedvalue = new AssemblyFile
                     {
                         ClassName = tp.FullName,
