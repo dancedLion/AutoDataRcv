@@ -35,6 +35,7 @@ namespace CHQ.RD.ConnectorBase
             m_host = host;
             m_dataitems = new List<ConnDriverDataItem>();
             GetSettings();
+ 
         }
 
         static ManualResetEvent mre = new ManualResetEvent(false);
@@ -45,6 +46,7 @@ namespace CHQ.RD.ConnectorBase
         ConnDriverSetting m_conndriverset;
         //数据项列表
         List<ConnDriverDataItem> m_dataitems;
+
         //连接管理器宿主
         ConnectorBase m_host;
         //数据发生变化事件
@@ -586,8 +588,11 @@ namespace CHQ.RD.ConnectorBase
         }
 
 
+
+
+
         #region 内部事件和方法
-        void onDataChanged(object sender,DataChangeEventArgs e)
+        public void onDataChanged(object sender,DataChangeEventArgs e)
         {
             //写值
             m_host.ValueList[e.ItemId] = e.Value;

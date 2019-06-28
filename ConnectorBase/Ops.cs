@@ -658,6 +658,37 @@ namespace CHQ.RD.ConnectorBase
             }
             return ret;
         }
+
+        public static List<ConnectorDataItem> getConnectorDataItemList()
+        {
+            List<ConnectorDataItem> ret = new List<ConnectorDataItem>();
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(dataitemsfile);
+                XmlNodeList nodes = doc.GetElementsByTagName("DataItems");
+                if (nodes != null)
+                {
+                    foreach (XmlElement e in nodes[0].ChildNodes) {
+                        ConnectorDataItem item = new ConnectorDataItem
+                        {
+                            Id = int.Parse(e.Attributes["Id"].Value),
+                            Name = e.Attributes["Name"].Value,
+                            ConnId = int.Parse(e.Attributes["ConnId"].Value),
+                            TransSig = e.Attributes["TransSig"].Value,
+                            ValueType = e.Attributes["ValueType"].Value,
+                            Address = e.Attributes["Address"].Value
+                        };
+                        ret.Add(item);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "getConnectorDataItemList Error:" + ex.Message);
+            }
+            return ret;
+        }
         /// <summary>
         /// 根据驱动连接器的ID返回所有该驱动连接器下的变量
         /// </summary>

@@ -34,12 +34,10 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton10 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton8 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton9 = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -72,12 +70,10 @@
             this.toolStripButton1,
             this.toolStripSeparator1,
             this.toolStripButton10,
-            this.toolStripButton4,
             this.toolStripButton5,
             this.toolStripButton8,
             this.toolStripSeparator2,
             this.toolStripButton6,
-            this.toolStripButton7,
             this.toolStripSeparator3,
             this.toolStripButton9});
             this.toolStrip1.Location = new System.Drawing.Point(0, 25);
@@ -110,23 +106,15 @@
             this.toolStripButton10.Text = "新增";
             this.toolStripButton10.Click += new System.EventHandler(this.toolStripButton10_Click);
             // 
-            // toolStripButton4
-            // 
-            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(60, 22);
-            this.toolStripButton4.Text = "所有驱动";
-            // 
             // toolStripButton5
             // 
             this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
             this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton5.Name = "toolStripButton5";
-            this.toolStripButton5.Size = new System.Drawing.Size(72, 22);
-            this.toolStripButton5.Text = "所有连接器";
+            this.toolStripButton5.Size = new System.Drawing.Size(36, 22);
+            this.toolStripButton5.Text = "修改";
+            this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
             // 
             // toolStripButton8
             // 
@@ -151,15 +139,6 @@
             this.toolStripButton6.Size = new System.Drawing.Size(60, 22);
             this.toolStripButton6.Text = "测试驱动";
             this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
-            // 
-            // toolStripButton7
-            // 
-            this.toolStripButton7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
-            this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton7.Name = "toolStripButton7";
-            this.toolStripButton7.Size = new System.Drawing.Size(48, 22);
-            this.toolStripButton7.Text = "查看值";
             // 
             // toolStripSeparator3
             // 
@@ -199,26 +178,26 @@
             // 编辑驱动类型ToolStripMenuItem
             // 
             this.编辑驱动类型ToolStripMenuItem.Name = "编辑驱动类型ToolStripMenuItem";
-            this.编辑驱动类型ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.编辑驱动类型ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.编辑驱动类型ToolStripMenuItem.Text = "编辑驱动类型";
             this.编辑驱动类型ToolStripMenuItem.Click += new System.EventHandler(this.编辑驱动类型ToolStripMenuItem_Click);
             // 
             // 驱动连接器管理ToolStripMenuItem
             // 
             this.驱动连接器管理ToolStripMenuItem.Name = "驱动连接器管理ToolStripMenuItem";
-            this.驱动连接器管理ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.驱动连接器管理ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.驱动连接器管理ToolStripMenuItem.Text = "驱动连接器管理";
             this.驱动连接器管理ToolStripMenuItem.Click += new System.EventHandler(this.驱动连接器管理ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(157, 6);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             // 
             // splitContainer1
@@ -334,11 +313,9 @@
         private System.Windows.Forms.ListView detailView;
         private System.Windows.Forms.ListBox messageList;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.ToolStripButton toolStripButton5;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton toolStripButton6;
-        private System.Windows.Forms.ToolStripButton toolStripButton7;
         private System.Windows.Forms.ToolStripMenuItem 编辑驱动类型ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 驱动连接器管理ToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton8;

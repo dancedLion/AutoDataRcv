@@ -46,6 +46,7 @@
     <Compile Include="ConnDriverBase.cs" />
     <Compile Include="ConnectBase.cs" />
     <Compile Include="ConnectorEvent.cs" />
+    <Compile Include="DataTransact.cs" />
     <Compile Include="FrmConnDriverEdit.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -28,6 +28,10 @@ namespace CHQ.RD.ConnectorBase
         DataChangeEventHandler m_dchandler;
         public Dictionary<int, object> ValueList;
         protected List<IConnDriverBase> connDriverList;
+        /// <summary>
+        /// 本地数据存储设置
+        /// </summary>
+        List<ConnectorLocalData> m_localdata;
 
         public List<IConnDriverBase> ConnDrivers
         {
@@ -58,6 +62,7 @@ namespace CHQ.RD.ConnectorBase
             m_id = id;
             ValueList = new Dictionary<int, object>();
             connDriverList = new List<IConnDriverBase>();
+            startDataTransact();
         }
 
 
@@ -196,6 +201,8 @@ namespace CHQ.RD.ConnectorBase
                     }
                 }
             }
+            //20190626添加，驱动连接器触发的实时数据变更产生的发送数据时，触发数据变更事件
+            onDataChanged(this, new DataChangeEventArgs(item.Id, value));
             return ret;
         }
         #endregion
@@ -251,7 +258,30 @@ namespace CHQ.RD.ConnectorBase
                 icdb.Dispose();
             }
         }
+        #region 本地数据存储处理
+        SqlRealTimeDataTransact m_tran = null;
+        int startDataTransact()
+        {
+            int ret = 0;
+            m_localdata = Ops.getConnectorLocalDataList();
+            foreach (ConnectorLocalData cld in m_localdata)
+            {
+                switch (cld.RDType)
+                {
+                    case 0:   //实时数据
+                              //TODO: 暂时只处理SQLSERVER
+                        m_tran = new SqlRealTimeDataTransact(cld.ConnectString);
+                        if (m_tran.startDataTransact() < 0)
+                        {
+                            m_tran = null;
+                        }
+                        break;
 
+                }
+            }
+            return ret;
+        }
+        #endregion
         //TODO:数据变化时的事件
         //附加的事件
         #region 内部事件和方法
@@ -262,6 +292,12 @@ namespace CHQ.RD.ConnectorBase
             if (m_dchandler != null)
             {
                 m_dchandler(sender, e);
+            }
+
+            //如果m_tran不为null,则处理数据
+            if (m_tran != null)
+            {
+                m_tran.TransactData(e.ItemId, e.Value);
             }
         }
         #endregion

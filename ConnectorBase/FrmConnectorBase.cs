@@ -355,6 +355,34 @@ namespace CHQ.RD.ConnectorBase
                 }
             }
         }
+
+        void Edit()
+        {
+            if (detailView.SelectedItems == null || detailView.SelectedItems.Count == 0)
+            {
+                return;
+            }
+            if (briefView.SelectedNode != null)
+            {
+                
+                switch (briefView.SelectedNode.Tag.ToString())
+                {
+                    case "DataSendingSetting":
+                        toEditDataSendingSet();
+                        break;
+
+                }
+            }
+        }
+        void toEditDataSendingSet()
+        {
+            FrmSendingEdit frm = new FrmSendingEdit();
+            if (frm.EditDataSendingSet(m_rcId, (DataSendingSet)detailView.SelectedItems[0].Tag) > -1)
+            {
+                //更新
+
+            }
+        }
         /// <summary>
         /// 显示当前管理器下的发送设置
         /// </summary>
@@ -502,30 +530,10 @@ namespace CHQ.RD.ConnectorBase
         {
             AddNew();
         }
-    }
-    class AllView
-    {
-        public string Id;
-        public string Type;
-        public string Name;
-        public string Memo;
-    }
 
-    class ConnDriverInfo
-    {
-        public string Id;
-        public string Name;
-        public string ConnDriverStatus;
-        public string DriverName;
-        public string DriverStatus;
-    }
-    class DataItemValue
-    {
-        public string Id;
-        public string ConnDriverName;
-        public string VariableName;
-        public string Address;
-        public string Type;
-        public string Value;
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
