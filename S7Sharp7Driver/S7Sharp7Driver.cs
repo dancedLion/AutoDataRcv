@@ -18,7 +18,7 @@ namespace CHQ.RD.S7Sharp7Driver
         List<S7SharpReadItem> m_itemlist;
         S7TCPHost m_host;
         S7Client m_client;
-        Dictionary<string, int> m_valuetype;
+        Dictionary<S7DataType, int> m_valuetype;
         Dictionary<string, int> m_dbtype;
         Dictionary<string, int> m_datalen;
         //Dictionary<int, int> m_errorcount;
@@ -45,15 +45,17 @@ namespace CHQ.RD.S7Sharp7Driver
             m_dbtype.Add("MB", 0x83);
             m_dbtype.Add("PE", 0x81);   //IB
 
-            m_valuetype = new Dictionary<string, int>();
-            m_valuetype.Add("BIT", 0x02);
-            m_valuetype.Add("BYTE", 0x02);
-            m_valuetype.Add("REAL", 0x08);
-            m_valuetype.Add("TEXT", 0x02);
-            m_valuetype.Add("INT16", 0x04);
-            m_valuetype.Add("INT", 0x06);
-            m_valuetype.Add("UINT16", 0x04);
-            m_valuetype.Add("UINT32", 0x06);
+
+
+            m_valuetype = new Dictionary<S7DataType, int>();
+            m_valuetype.Add(S7DataType.BIT, 0x02);
+            m_valuetype.Add(S7DataType.BYTE, 0x02);
+            m_valuetype.Add(S7DataType.REAL, 0x08);
+            m_valuetype.Add(S7DataType.TEXT, 0x02);
+            m_valuetype.Add(S7DataType.INT16, 0x04);
+            m_valuetype.Add(S7DataType.INT, 0x06);
+            m_valuetype.Add(S7DataType.UINT16, 0x04);
+            m_valuetype.Add(S7DataType.UINT32, 0x06);
 
             m_datalen = new Dictionary<string, int>();
             m_datalen.Add("BIT", 1);
@@ -125,8 +127,8 @@ namespace CHQ.RD.S7Sharp7Driver
                     ssri.Address.BlockArea = m_dbtype[s7add.BlockType.ToString()];
                     ssri.Address.BlockNo = s7add.BlockNo;
                     ssri.Address.Start = s7add.Start;
-                    ssri.Address.WordLen = m_valuetype[ssi.ValueType.ToString()];
-                    ssri.Address.DataLen = (ssri.ValueType == S7DataType.BIT ? 1 : s7add.DataLen / S7.DataSizeByte(m_valuetype[ssi.ValueType.ToString()]));
+                    ssri.Address.WordLen = m_valuetype[ssri.ValueType];//s7add.WordLen; //m_valuetype[ssi.ValueType.ToString()];
+                    ssri.Address.DataLen = s7add.DataLen;// (ssri.ValueType == S7DataType.BIT ? 1 : s7add.DataLen / S7.DataSizeByte(m_valuetype[ssi.ValueType.ToString()]));
                     m_itemlist.Add(ssri);
                 }
                 //每个值的试读
@@ -193,41 +195,46 @@ namespace CHQ.RD.S7Sharp7Driver
                 {
                     throw new Exception("指定ID的变量不存在("+ItemId.ToString()+")");
                 }
-                byte[] buffer = (byte[])ReadDeviceData(s7item.Address);
-                switch (s7item.ValueType)
+                int amount = s7item.ValueType == S7DataType.BIT ? 1 : s7item.Address.DataLen /S7.DataSizeByte(s7item.Address.WordLen);
+                object t = ReadDeviceData(s7item);
+                if (t != null)
                 {
-                    case S7DataType.BIT:
-                        ret = S7ByteConvert.ToBit(buffer[0], s7item.Address.DataLen, 0);
-                        break;
-                    case S7DataType.BYTE:
-                        ret = buffer[0];
-                        break;
-                    case S7DataType.INT:
-                        ret = S7ByteConvert.ToInt(buffer, 0);
-                        break;
-                    case S7DataType.INT16:
-                        ret = S7ByteConvert.ToInt16(buffer, 0);
-                        break;
-                    case S7DataType.REAL:
-                        ret = S7ByteConvert.ToFloat(buffer, 0);
-                        break;
-                    case S7DataType.UINT16:
-                        ret = S7ByteConvert.ToUInt16(buffer, 0);
-                        break;
-                    case S7DataType.UINT32:
-                        ret = S7ByteConvert.ToUInt32(buffer, 0);
-                        break;
-                    case S7DataType.TEXT:
-                        ret = Encoding.Default.GetString(buffer, 2, s7item.Address.DataLen - 2);
-                        break;
-                    default:
-                        ret = BitConverter.ToString(buffer);
-                        break;
+                    byte[] buffer = (byte[])t;
+                    switch (s7item.ValueType)
+                    {
+                        case S7DataType.BIT:
+                            ret = S7ByteConvert.ToBit(buffer[0], s7item.Address.DataLen, 0);
+                            break;
+                        case S7DataType.BYTE:
+                            ret = buffer[0];
+                            break;
+                        case S7DataType.INT:
+                            ret = S7ByteConvert.ToInt(buffer, 0);
+                            break;
+                        case S7DataType.INT16:
+                            ret = S7ByteConvert.ToInt16(buffer, 0);
+                            break;
+                        case S7DataType.REAL:
+                            ret = S7ByteConvert.ToFloat(buffer, 0);
+                            break;
+                        case S7DataType.UINT16:
+                            ret = S7ByteConvert.ToUInt16(buffer, 0);
+                            break;
+                        case S7DataType.UINT32:
+                            ret = S7ByteConvert.ToUInt32(buffer, 0);
+                            break;
+                        case S7DataType.TEXT:
+                            ret = Encoding.Default.GetString(buffer, 2, s7item.Address.DataLen - 2);
+                            break;
+                        default:
+                            ret = BitConverter.ToString(buffer);
+                            break;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                TxtLogWriter.WriteErrorMessage(errorfile,"S7SharpDriver read DataError:" + m_host.IPAddress + ";" + ItemId.ToString() + ":" + ex.Message);
+                TxtLogWriter.WriteErrorMessage(errorfile,"S7SharpDriver ReadData Error:" + m_host.IPAddress + ";" + ItemId.ToString() + ":" + ex.Message);
             }
             return ret;
         }
@@ -237,21 +244,23 @@ namespace CHQ.RD.S7Sharp7Driver
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        public override object ReadDeviceData(object t)
+        public override object ReadDeviceData(object t,int amount)
         {
             object ret=null;
             int i = 0;
             try
             {
-                //S7Client client = new S7Client();
-                //ret=client.ConnectTo(m_host.IpAddress, m_host.RackNo, m_host.SlotNo);
-                //S7SharpReadItem s7item = m_itemlist.Find((S7SharpReadItem x) => x.Id == ItemId);
-                //if (s7item == null) throw new Exception("指定的ItemID不在列表中！");
-                //S7SharpReadAddress item = s7item.Address;
+                //i = m_instance.ReadArea(
+                //                           m_memeryType[item.BlockType.ToString()],
+                //                           item.Block,
+                //                           item.StartAddress,
+                //                           item.ValueType.ToString() == "BIT" ? 1 : (item.Length / S7.DataSizeByte(m_valueType[item.ValueType.ToString()])),
+                //                           m_valueType[item.ValueType.ToString()],
+                //                           buffer);
                 S7SharpReadAddress item = (S7SharpReadAddress)t;
                 byte[] buffer = new byte[12];
                 i = m_client.ReadArea(
-                       item.BlockArea,item.BlockNo,item.Start,item.DataLen,item.WordLen,buffer
+                       item.BlockArea,item.BlockNo,item.Start,amount,item.WordLen,buffer
                         );
                 if (i != 0)
                 {
@@ -262,7 +271,7 @@ namespace CHQ.RD.S7Sharp7Driver
                     {
                         ErrorCount.Add(i, 1);
                     }
-                    throw new Exception("read data error, item id=" + t.ToString() + "!");
+                    throw new Exception("read data error,ItemId="+ ErrorCode=" + i.ToString() + " !");
                 }
                 ret = buffer;
             }

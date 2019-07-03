@@ -211,9 +211,17 @@ namespace CHQ.RD.ConnectorBase
         {
             try
             {
+                //m_connection.Id + ";" +
+                //e.ItemId + ";" +
+                //Convert.ToString(e.Value) + ";" +
+                //DateTime.Now.ToString()
+                string msg = m_id + ";" +
+                    item.Id.ToString() + ";" +
+                    Convert.ToString(value) + ";" +
+                    DateTime.Now.ToString();
                 UdpClient client = new UdpClient();
                 client.Connect(dss.Host, dss.HostPort);
-                byte[] buff = System.Text.Encoding.Default.GetBytes(item.ConnId + ";" + item.Id.ToString() + ";" + value.ToString() + ";" + DateTime.Now.ToString());
+                byte[] buff = System.Text.Encoding.Default.GetBytes(msg);
                 client.Send(buff, buff.Length);
                 client.Close();
             }
@@ -229,7 +237,7 @@ namespace CHQ.RD.ConnectorBase
                 IPEndPoint iep = new IPEndPoint(IPAddress.Parse(dss.Host), dss.HostPort);
                 Socket sck = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                 sck.Connect(iep);
-                byte[] buffer = Encoding.UTF8.GetBytes(item.ConnId+";"+item.Id.ToString() + ";" + value.ToString()+";"+DateTime.Now.ToString());
+                byte[] buffer = Encoding.UTF8.GetBytes(item.TransSig + ";" + value.ToString()+";"+DateTime.Now.ToString());
                 sck.Send(buffer);
                 sck.Close();
             }

@@ -337,7 +337,19 @@ namespace CHQ.RD.ConnectorBase
         {
             int ret = 0;
             try {
-                if (m_status!=ConnDriverStatus.Inited||m_status!=ConnDriverStatus.Closed)
+                if (m_status == ConnDriverStatus.Running)
+                {
+                    return 0;
+                }
+                if (m_status == ConnDriverStatus.Closed || m_status == ConnDriverStatus.None || m_status == ConnDriverStatus.Error)
+                {
+                    Init();
+                    if (m_status != ConnDriverStatus.Inited)
+                    {
+                        throw new Exception("尝试初始化失败！");
+                    }
+                }
+                if (m_status!=ConnDriverStatus.Inited&&m_status!=ConnDriverStatus.Stoped)
                 {
                     Init();
                     if (m_status != ConnDriverStatus.Inited)
