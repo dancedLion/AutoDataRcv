@@ -250,7 +250,7 @@ namespace CHQ.RD.DriverBase
             return ret;
         }
 
-        public virtual object ReadDeviceData(object Item,int Amount)
+        public virtual object ReadDeviceData(object Item)
         {
             object ret = 0;
             return ret;

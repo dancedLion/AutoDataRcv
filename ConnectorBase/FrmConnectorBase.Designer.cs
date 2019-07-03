@@ -89,7 +89,7 @@
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(36, 22);
-            this.toolStripButton1.Text = "设置";
+            this.toolStripButton1.Text = "刷新";
             // 
             // toolStripSeparator1
             // 

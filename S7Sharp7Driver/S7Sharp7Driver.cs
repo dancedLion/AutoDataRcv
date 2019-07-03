@@ -193,9 +193,8 @@ namespace CHQ.RD.S7Sharp7Driver
                 S7SharpReadItem s7item = m_itemlist.Find((S7SharpReadItem x) => x.Id == ItemId);
                 if (s7item == null)
                 {
-                    throw new Exception("指定ID的变量不存在("+ItemId.ToString()+")");
+                    throw new Exception("指定ID的变量不存在(" + ItemId.ToString() + ")");
                 }
-                int amount = s7item.ValueType == S7DataType.BIT ? 1 : s7item.Address.DataLen /S7.DataSizeByte(s7item.Address.WordLen);
                 object t = ReadDeviceData(s7item);
                 if (t != null)
                 {
@@ -244,7 +243,7 @@ namespace CHQ.RD.S7Sharp7Driver
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        public override object ReadDeviceData(object t,int amount)
+        public override object ReadDeviceData(object t)
         {
             object ret=null;
             int i = 0;
@@ -257,10 +256,16 @@ namespace CHQ.RD.S7Sharp7Driver
                 //                           item.ValueType.ToString() == "BIT" ? 1 : (item.Length / S7.DataSizeByte(m_valueType[item.ValueType.ToString()])),
                 //                           m_valueType[item.ValueType.ToString()],
                 //                           buffer);
-                S7SharpReadAddress item = (S7SharpReadAddress)t;
+                S7SharpReadItem item = (S7SharpReadItem)t;
+                int amount = item.ValueType == S7DataType.BIT ? 1 : item.Address.DataLen / S7.DataSizeByte(item.Address.WordLen);
                 byte[] buffer = new byte[12];
                 i = m_client.ReadArea(
-                       item.BlockArea,item.BlockNo,item.Start,amount,item.WordLen,buffer
+                       item.Address.BlockArea,
+                       item.Address.BlockNo,
+                       item.Address.Start,
+                       amount,
+                       item.Address.WordLen,
+                       buffer
                         );
                 if (i != 0)
                 {
@@ -271,7 +276,7 @@ namespace CHQ.RD.S7Sharp7Driver
                     {
                         ErrorCount.Add(i, 1);
                     }
-                    throw new Exception("read data error,ItemId="+ ErrorCode=" + i.ToString() + " !");
+                    throw new Exception("read data error,ItemId="+item.Id+" ErrorCode=" + i.ToString() + " !");
                 }
                 ret = buffer;
             }

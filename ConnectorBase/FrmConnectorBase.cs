@@ -173,6 +173,7 @@ namespace CHQ.RD.ConnectorBase
                 {
                     ds.Id.ToString(),
                     ds.Name,
+                    ds.ConnDriverClass.FullName,
                     ds.ReadMode.ToString(),
                     ds.ReadInterval.ToString(),
                     ds.TransMode.ToString(),
@@ -351,7 +352,8 @@ namespace CHQ.RD.ConnectorBase
                     case "LocalDataBaseSetting":
                         toAddLocalDataSetting();
                         break;
-                    
+                    case "ConnDrivers":
+                        break;
                 }
             }
         }
@@ -370,8 +372,35 @@ namespace CHQ.RD.ConnectorBase
                     case "DataSendingSetting":
                         toEditDataSendingSet();
                         break;
-
+                    case "LocalDataBaseSetting":
+                        toEditLocalDataSetting();
+                        break;
+                    case "ConnDrivers":
+                    case "":
+                        toEditConnDriver();
+                        break;
                 }
+            }
+        }
+
+        void toEditConnDriver()
+        {
+            FrmConnDriverEdit edit = new FrmConnDriverEdit();
+            if (edit.EditConnDriver((ConnDriverSetting)detailView.SelectedItems[0].Tag) > -1)
+            {
+                ConnDriverSetting ds = edit.ReturnedValue;
+                ListViewItem item = detailView.SelectedItems[0];
+                item.Text = ds.Id.ToString();
+                item.SubItems[1].Text = ds.Name;
+                item.SubItems[2].Text = ds.ConnDriverClass.FullName;
+                item.SubItems[3].Text =ds.ReadMode.ToString();
+                item.SubItems[4].Text =ds.ReadInterval.ToString();
+                item.SubItems[5].Text =ds.TransMode.ToString();
+                item.SubItems[6].Text =ds.ClassFile == null ? "" : ds.ClassFile.DriverName;
+                item.SubItems[7].Text ="";
+                ds.DriverSet.ToString();
+                item.Tag = ds;
+                detailView.Items.Add(item);
             }
         }
         void toEditDataSendingSet()
@@ -380,7 +409,32 @@ namespace CHQ.RD.ConnectorBase
             if (frm.EditDataSendingSet(m_rcId, (DataSendingSet)detailView.SelectedItems[0].Tag) > -1)
             {
                 //更新
+                detailView.SelectedItems[0].Remove();
+                ListViewItem item = new ListViewItem(new string[]
+                {
+                    frm.ReturnedValue.Id.ToString(),frm.ReturnedValue.Name,
+                    frm.ReturnedValue.Host,frm.ReturnedValue.HostPort.ToString(),
+                    frm.ReturnedValue.SendInterval.ToString(),frm.ReturnedValue.Memo,
+                    frm.ReturnedValue.ConnDrivers,frm.ReturnedValue.Via.ToString()
+                });
+                item.Tag = frm.ReturnedValue;
+                detailView.Items.Add(item);
+            }
+        }
+        void toEditLocalDataSetting()
+        {
 
+            FrmDataStorage fds = new FrmDataStorage();
+            if (fds.EditConnectorLocalData((ConnectorLocalData)detailView.SelectedItems[0].Tag) > -1)
+            {
+                detailView.SelectedItems[0].Remove();
+                ConnectorLocalData cld = fds.ReturnedValue;
+                ListViewItem item = new ListViewItem(new string[]
+                {
+                    cld.Id.ToString(),cld.Desc,cld.RDType.ToString(),cld.DBDriverType.ToString(),cld.ConnectString
+                });
+                item.Tag = cld;
+                detailView.Items.Add(item);
             }
         }
         /// <summary>
@@ -463,6 +517,7 @@ namespace CHQ.RD.ConnectorBase
                 detailView.Items.Add(item);
             }
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -533,7 +588,7 @@ namespace CHQ.RD.ConnectorBase
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
-
+            Edit();
         }
     }
 }
