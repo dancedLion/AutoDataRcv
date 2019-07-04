@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using CHQ.RD.DriverBase;
 using CHQ.RD.DataContract;
+using System.Threading.Tasks;
 using System.Threading;
 using System.Reflection;    //创建驱动实例用
 using GeneralOPs;
@@ -252,26 +253,31 @@ namespace CHQ.RD.ConnectorBase
             {
                 foreach (ConnDriverDataItem item in m_dataitems)
                 {
-                    object value = ReadData(item.Id);
+                    object value = m_driver.ReadData(item.Id);
+
                     object curvalue = m_host.ValueList[item.Id];
                     if (value == null)
                     {
                         if (curvalue != null)
                         {
                             //引起值变化
-                            onDataChanged(this, new DataChangeEventArgs(item.Id, value));
+
+                            //new Task(runDataChange<new DataChangeEventArgs(item.Id, value)>).Start();
+                            runDataChange(new DataChangeEventArgs(item.Id, value));
+                            //onDataChanged(this, new DataChangeEventArgs(item.Id, value));
                         }
                     }
                     else
                     {
-                        if (value.ToString() == ErrorString)
-                        {
-                            continue;
-                        }
+                        //if (value.ToString() == ErrorString)
+                        //{
+                        //    continue;
+                        //}
                         if (curvalue == null || !object.Equals( curvalue,value))
                         {
                             //引起值变化
-                            onDataChanged(this, new DataChangeEventArgs(item.Id, value));
+                            runDataChange(new DataChangeEventArgs(item.Id, value));
+                            //onDataChanged(this, new DataChangeEventArgs(item.Id, value));
                         }
                     }
                 }
@@ -307,6 +313,7 @@ namespace CHQ.RD.ConnectorBase
         /// <returns></returns>
         public virtual int Init()
         {
+           
             //加载驱动
             int ret = -1;
             m_driver = (IDriverBase)m_driverclass.Assembly.CreateInstance(m_driverclass.FullName);
@@ -600,7 +607,7 @@ namespace CHQ.RD.ConnectorBase
         }
 
 
-
+        
 
 
         #region 内部事件和方法
@@ -614,6 +621,11 @@ namespace CHQ.RD.ConnectorBase
             {
                 m_datachangehandler(sender, e);
             }
+        }
+        public async Task runDataChange(DataChangeEventArgs e)
+        {
+            (new Task(() => onDataChanged(this, e))).Start();
+            //onDataChanged(this, e));
         }
         #endregion
 
