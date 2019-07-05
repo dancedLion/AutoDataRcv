@@ -40,6 +40,7 @@ namespace GeneralOPs
                         File.Create(filename).Close();  //文件创建后默认是打开的，一定要关闭
                     }
                 }
+
                 return true;
             }
             catch

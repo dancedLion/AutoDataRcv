@@ -21,6 +21,7 @@ namespace CHQ.RD.S7Sharp7Driver
         Dictionary<S7DataType, int> m_valuetype;
         Dictionary<string, int> m_dbtype;
         Dictionary<string, int> m_datalen;
+        int writedatetime = 0;
         //Dictionary<int, int> m_errorcount;
         string errorfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\S7Sharp7DriverError.log";
         string logfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\S7Sharp7Driver.log";
@@ -190,69 +191,73 @@ namespace CHQ.RD.S7Sharp7Driver
             object ret = null;
             try
             {
-                S7SharpReadItem s7item = m_itemlist.Find((S7SharpReadItem x) => x.Id == ItemId);
-                if (s7item == null)
+                lock (this)
                 {
-                    throw new Exception("指定ID的变量不存在(" + ItemId.ToString() + ")");
-                }
-
-                ///
-                int amount = s7item.ValueType == S7DataType.BIT ? 1 : s7item.Address.DataLen / S7.DataSizeByte(s7item.Address.WordLen);
-                byte[] buffer = new byte[12];
-                int i = m_client.ReadArea(
-                       s7item.Address.BlockArea,
-                       s7item.Address.BlockNo,
-                       s7item.Address.Start,
-                       amount,
-                       s7item.Address.WordLen,
-                       buffer
-                        );
-                if (i != 0)
-                {
-                    if (ErrorCount.ContainsKey(i))
+                    S7SharpReadItem s7item = m_itemlist.Find((S7SharpReadItem x) => x.Id == ItemId);
+                    if (s7item == null)
                     {
-                        ErrorCount[i] += 1;
+                        throw new Exception("指定ID的变量不存在(" + ItemId.ToString() + ")");
                     }
-                    else
+
+                    ///
+                    int amount = s7item.ValueType == S7DataType.BIT ? 1 : s7item.Address.DataLen / S7.DataSizeByte(s7item.Address.WordLen);
+                    byte[] buffer = new byte[12];
+                    //if (writedatetime == 0) TxtLogWriter.WriteMessage(logfile, "ItemID=" + s7item.Id + " begin at" + DateTime.Now.ToString("hh:mm:ss fff"));
+                    int i = m_client.ReadArea(
+                           s7item.Address.BlockArea,
+                           s7item.Address.BlockNo,
+                           s7item.Address.Start,
+                           amount,
+                           s7item.Address.WordLen,
+                           buffer
+                            );
+                    //if (writedatetime == 0) TxtLogWriter.WriteMessage(logfile, "ItemID=" + s7item.Id + " End At" + DateTime.Now.ToString("hh:mm:ss fff"));
+                    if (i != 0)
                     {
-                        ErrorCount.Add(i, 1);
+                        if (ErrorCount.ContainsKey(i))
+                        {
+                            ErrorCount[i] += 1;
+                        }
+                        else
+                        {
+                            ErrorCount.Add(i, 1);
+                        }
+                        throw new Exception("read data error,ItemId=" + s7item.Id + " ErrorCode=" + i.ToString() + " !");
                     }
-                    throw new Exception("read data error,ItemId=" + s7item.Id + " ErrorCode=" + i.ToString() + " !");
-                }
-                ///
-                //object t = ReadDeviceData(s7item);
+                    ///
+                    //object t = ReadDeviceData(s7item);
 
-                switch (s7item.ValueType)
-                {
-                    case S7DataType.BIT:
-                        ret = S7ByteConvert.ToBit(buffer[0], s7item.Address.DataLen, 0);
-                        break;
-                    case S7DataType.BYTE:
-                        ret = buffer[0];
-                        break;
-                    case S7DataType.INT:
-                        ret = S7ByteConvert.ToInt(buffer, 0);
-                        break;
-                    case S7DataType.INT16:
-                        ret = S7ByteConvert.ToInt16(buffer, 0);
-                        break;
-                    case S7DataType.REAL:
-                        ret = S7ByteConvert.ToFloat(buffer, 0);
-                        break;
-                    case S7DataType.UINT16:
-                        ret = S7ByteConvert.ToUInt16(buffer, 0);
-                        break;
-                    case S7DataType.UINT32:
-                        ret = S7ByteConvert.ToUInt32(buffer, 0);
-                        break;
-                    case S7DataType.TEXT:
-                        ret = Encoding.Default.GetString(buffer, 2, s7item.Address.DataLen - 2);
-                        break;
-                    default:
-                        ret = BitConverter.ToString(buffer);
-                        break;
+                    switch (s7item.ValueType)
+                    {
+                        case S7DataType.BIT:
+                            ret = S7ByteConvert.ToBit(buffer[0], s7item.Address.DataLen, 0);
+                            break;
+                        case S7DataType.BYTE:
+                            ret = buffer[0];
+                            break;
+                        case S7DataType.INT:
+                            ret = S7ByteConvert.ToInt(buffer, 0);
+                            break;
+                        case S7DataType.INT16:
+                            ret = S7ByteConvert.ToInt16(buffer, 0);
+                            break;
+                        case S7DataType.REAL:
+                            ret = S7ByteConvert.ToFloat(buffer, 0);
+                            break;
+                        case S7DataType.UINT16:
+                            ret = S7ByteConvert.ToUInt16(buffer, 0);
+                            break;
+                        case S7DataType.UINT32:
+                            ret = S7ByteConvert.ToUInt32(buffer, 0);
+                            break;
+                        case S7DataType.TEXT:
+                            ret = Encoding.Default.GetString(buffer, 2, s7item.Address.DataLen - 2);
+                            break;
+                        default:
+                            ret = BitConverter.ToString(buffer);
+                            break;
+                    }
                 }
-
             }
             catch (Exception ex)
             {
@@ -282,6 +287,7 @@ namespace CHQ.RD.S7Sharp7Driver
                 S7SharpReadItem item = (S7SharpReadItem)t;
                 int amount = item.ValueType == S7DataType.BIT ? 1 : item.Address.DataLen / S7.DataSizeByte(item.Address.WordLen);
                 byte[] buffer = new byte[12];
+                
                 i = m_client.ReadArea(
                        item.Address.BlockArea,
                        item.Address.BlockNo,
@@ -290,6 +296,7 @@ namespace CHQ.RD.S7Sharp7Driver
                        item.Address.WordLen,
                        buffer
                         );
+
                 if (i != 0)
                 {
                     if (ErrorCount.ContainsKey(i)){
