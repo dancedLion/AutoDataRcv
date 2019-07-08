@@ -82,7 +82,13 @@ namespace CHQ.RD.S7Sharp7Driver
             m_datalen.Add(S7DataType.UINT32, 4);
             m_datalen.Add(S7DataType.INT, 4);
         }
-
+        /// <summary>
+        /// 获取设置并初始化
+        /// readinterval和tranmode来自于驱动连接器设置
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
         public override int AcceptSetting(object host, object list)
         {
             int ret=-1;
@@ -155,7 +161,7 @@ namespace CHQ.RD.S7Sharp7Driver
 
         public override object ReadData(int ItemId)
         {
-            return base.ReadData(ItemId);
+            return m_values[ItemId];
         }
 
         public override int Init()
@@ -163,8 +169,7 @@ namespace CHQ.RD.S7Sharp7Driver
             int ret = 0;
             try
             {
-                if (ReadInterval == 0) throw new Exception("主动读取模式下需要设置读取间隔！");
-                m_readtimer = new Timer(ReadAndParsing, null, ReadInterval, ReadInterval);
+                if (ReadInterval == 0) throw new Exception("主动读取模式下需要设置读取间隔！");              
             }
             catch (Exception ex)
             {
@@ -175,15 +180,58 @@ namespace CHQ.RD.S7Sharp7Driver
         }
         public override int Start()
         {
-            return base.Start();
+            int ret = 0;
+            try
+            {
+                m_readtimer = new Timer(ReadAndParsing, null, ReadInterval, ReadInterval);
+                Status = DriverStatus.Running;
+            }
+            catch(Exception ex)
+            {
+                ret = -1;
+                TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().ToString() + ".Start Error:" + ex.Message);
+            }
+            return ret;
         }
         public override int Stop()
         {
-            return base.Stop();
+            int ret = 0;
+            try
+            {
+                m_datareader = null;
+                m_datareader.Dispose();
+                Status = DriverStatus.Stoped;
+            }
+            catch(Exception ex)
+            {
+                ret = -1;
+                TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().ToString() + ".Stop Error:" + ex.Message);
+            }
+            return ret;
         }
-
         public override void Dispose()
         {
+            if (Status == DriverStatus.Running)
+            {
+                Stop();
+            }
+            if (Status == DriverStatus.Inited||Status==DriverStatus.Stoped)
+            {
+                m_client.Disconnect();
+                m_client = null;
+                m_blocktypes.Clear();
+                m_blocktypes = null;
+                m_values.Clear();
+                m_values = null;
+                m_items.Clear();
+                m_items = null;
+                m_datalen.Clear();
+                m_datalen = null;
+                m_valuetype.Clear();
+                m_valuetype = null;
+                m_area.Clear();
+                m_area = null;
+            }
             base.Dispose();
         }
 
@@ -240,6 +288,10 @@ namespace CHQ.RD.S7Sharp7Driver
             }
             return ret;
         }
+        /// <summary>
+        /// 读取PLC数据并更新值列表
+        /// </summary>
+        /// <param name="state"></param>
         void ReadAndParsing(object state)
         {
             foreach(S7MultiVarExp exp in m_blocktypes)

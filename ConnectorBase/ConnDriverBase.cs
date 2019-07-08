@@ -377,8 +377,12 @@ namespace CHQ.RD.ConnectorBase
                 {
                     if (m_readmode == 0)
                     {
+                        //如果驱动的读取模式为主动，则驱动开始读取模式
+                        if (m_conndriverset.DriverSet.ReadMode == 1)
+                        {
+                            m_driver.Start();
+                        }
                         m_datareader = new Timer(ReadData, null, m_readinterval, m_readinterval);
-
                         m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
                     }
                     else
@@ -418,6 +422,11 @@ namespace CHQ.RD.ConnectorBase
                 }
                 if (m_readmode == 0)
                 {
+                    //如果驱动的读取模式为主动，则驱动停止读取模式
+                    if (m_conndriverset.DriverSet.ReadMode == 1)
+                    {
+                        m_driver.Stop();
+                    }
                     m_datareader.Dispose();
                 }
                 else
@@ -456,6 +465,7 @@ namespace CHQ.RD.ConnectorBase
                 }
                 if (m_readmode == 0)
                 {
+                    m_driver.Dispose();
                     m_datareader = null;
                     //m_driverset = null;
                     //m_driverclass = null;
@@ -526,6 +536,11 @@ namespace CHQ.RD.ConnectorBase
                         //
                         if (m_readmode == 0)
                         {
+                            //如果驱动在运行中，则需要停止
+                            if (m_conndriverset.DriverSet.ReadMode == 1)
+                            {
+                                m_driver.Stop();
+                            }
                             if (m_datareader != null)
                             {
                                 m_datareader.Dispose();
