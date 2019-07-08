@@ -173,11 +173,21 @@ namespace CHQ.RD.ConnectorBase
             int ret = -1;
             return ret;
         }
-        public virtual int CloseConnDriver(ConnDriverBase conn)
+        public virtual int CloseConnDriver(IConnDriverBase conn)
         {
             int ret = -1;
+            try {
+                conn.Close();
+                ret = 0;
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorlogfile, this.GetType().FullName + ".CloseConnDriver Error(id=" + conn.ID + "):" + ex.Message);
+                
+            }
             return ret;
         }
+
 
         public virtual int SendData(ConnectorDataItem item,object value)
         {

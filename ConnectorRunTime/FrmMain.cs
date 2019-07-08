@@ -49,6 +49,8 @@ namespace CHQ.RD.ConnectorRunTime
             return ret;
         }
 
+
+
         int startSingleConnDriver()
         {
             int ret = -1;
@@ -71,10 +73,53 @@ namespace CHQ.RD.ConnectorRunTime
         int closeSingleConnDriver()
         {
             int ret = -1;
-
+            if (listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)
+            {
+                IConnDriverBase cd = (IConnDriverBase)listView1.SelectedItems[0].Tag;
+                if (cd.Status == ConnDriverStatus.Running)
+                {
+                    m_connector.CloseConnDriver(cd);
+                    listView1.SelectedItems[0].SubItems[3].Text = cd.Status.ToString();
+                }
+                ret = 1;
+            }
+            else
+            {
+                MyMessageBox.ShowTipMessage("请先选择一行！");
+            }
             return ret;
         }
 
+        int restartSingleConnDriver()
+        {
+            int ret = -1;
+            if (listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)
+            {
+                IConnDriverBase cd = (IConnDriverBase)listView1.SelectedItems[0].Tag;
+                if (cd.Status == ConnDriverStatus.Running)
+                {
+                    m_connector.CloseConnDriver(cd);
+                    m_connector.InitConnDriver(cd);
+                    m_connector.RunConnDriver(cd);
+                    listView1.SelectedItems[0].SubItems[3].Text = cd.Status.ToString();
+                }
+                ret = 1;
+            }
+            else
+            {
+                MyMessageBox.ShowTipMessage("请先选择一行！");
+            }
+            return ret;
+        }
+
+        void refreshStatus()
+        {
+            foreach(ListViewItem item in listView1.Items)
+            {
+                IConnDriverBase cd = (IConnDriverBase)item.Tag;
+                item.SubItems[3].Text = cd.Status.ToString();
+            }
+        }
         void viewData()
         {
             if (listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)
@@ -100,6 +145,29 @@ namespace CHQ.RD.ConnectorRunTime
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
             viewData();
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            closeSingleConnDriver();
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            restartSingleConnDriver();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            refreshStatus();
+        }
+
+        private void FrmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F5)
+            {
+                refreshStatus();
+            }
         }
     }
 }

@@ -8,12 +8,6 @@ namespace CHQ.RD.DataContract
     class SerialDriver
     {
     }
-
-    public enum SerialDataType
-    {
-        INT,
-        TEXT
-    }
     public class SerialHost
     {
         public string ComPort;
@@ -22,6 +16,7 @@ namespace CHQ.RD.DataContract
 
     public class SerialAddress
     {
+        //起始位、停止位、有效数据、校验位
         public int BagLength;
         public int StartBits;
         public int StopBits;

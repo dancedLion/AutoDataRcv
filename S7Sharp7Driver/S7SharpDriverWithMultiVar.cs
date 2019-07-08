@@ -344,7 +344,6 @@ namespace CHQ.RD.S7Sharp7Driver
         public int BlockNo;
         public int Start;
         public int End;
-
     }
     #endregion
 
