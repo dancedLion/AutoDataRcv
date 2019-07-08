@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 using System.Threading;
 using CHQ.RD.DataContract;
 using GeneralOPs;
@@ -274,6 +275,32 @@ namespace CHQ.RD.DriverBase
         public virtual object ParsingAddress(string address)
         {
             object ret = null;
+            try
+            {
+                if (m_addresstype == null)
+                {
+                    return null;
+                }
+                ret = m_addresstype.Assembly.CreateInstance(m_addresstype.FullName);
+                FieldInfo[] flds = m_addresstype.GetFields();
+                string[] rows = address.Split(';');
+                for(int i = 0; i < rows.Length; i++)
+                {
+                    string[] kvp = rows[i].Split('=');
+                    for(int j = 0; j < flds.Length; j++)
+                    {
+                        if (kvp[0].ToUpper() == flds[j].Name.ToUpper())
+                        {
+                            flds[j].SetValue(ret, Convert.ChangeType(kvp[1], flds[j].FieldType));
+                            break;  //退出当前并继续下一个循环
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().ToString() + ".ParsingAddress(" + address + ") Error:" + ex.Message);
+            }
             return ret;
         }
     }

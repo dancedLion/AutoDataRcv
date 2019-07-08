@@ -181,7 +181,9 @@ namespace CHQ.RD.ConnectorBase
                 m_readmode = m_conndriverset.ReadMode;
                 m_readinterval = m_conndriverset.ReadInterval;
                 m_transmode = m_conndriverset.TransMode;
+
                 //数据行的获取
+
                 foreach(ConnectorDataItem cditem in m_conndriverset.DataItems)
                 {
                     m_dataitems.Add(
@@ -318,6 +320,13 @@ namespace CHQ.RD.ConnectorBase
             int ret = -1;
             m_driver = (IDriverBase)m_driverclass.Assembly.CreateInstance(m_driverclass.FullName);
             ret=m_driver.AcceptSetting(m_conndriverset.DriverSet.Host, m_dataitems);
+            //如果驱动是主动读取且有需求则传
+            if (m_conndriverset.DriverSet.ReadMode == 1)
+            {
+                m_driver.ReadMode = m_conndriverset.DriverSet.ReadMode;
+                m_driver.ReadInterval = m_conndriverset.DriverSet.ReadInterval;
+                m_driver.TransMode = m_conndriverset.DriverSet.TransMode;
+            }
             //设置状态
             if (ret != 0)
             {

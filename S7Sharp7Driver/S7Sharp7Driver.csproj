@@ -43,6 +43,7 @@
     <Compile Include="S7ByteConvert.cs" />
     <Compile Include="S7Sharp7Driver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="S7SharpDriverWithMultiVar.cs" />
     <Compile Include="Sharp7.cs" />
   </ItemGroup>
   <ItemGroup>
