@@ -44,8 +44,9 @@ namespace CHQ.RD.DataContract
             return "BlockType=" + BlockType.ToString() + ";BlockNo=" + BlockNo.ToString() + ";Start=" + Start.ToString() + ";DataLen=" + DataLen.ToString() + ";WordLen=" + WordLen.ToString();
         }
         //通过解析字符串获取地址值 
-        public void Parsing(string addressString)
+        public object Parsing(string addressString)
         {
+            S7Address ret = new S7Address();
             string[] flds = addressString.Split(';');
             for(int i = 0; i < flds.Length; i++)
             {
@@ -53,22 +54,23 @@ namespace CHQ.RD.DataContract
                 switch (keyvalue[0])
                 {
                     case "BlockType":
-                        BlockType = (S7BlockType)Enum.Parse(typeof(S7BlockType), keyvalue[1]);
+                        ret.BlockType = (S7BlockType)int.Parse(keyvalue[1]);
                         break;
                     case "BlockNo":
-                        BlockNo = int.Parse(keyvalue[1]);
+                        ret.BlockNo = int.Parse(keyvalue[1]);
                         break;
                     case "Start":
-                        Start = int.Parse(keyvalue[1]);
+                        ret.Start = int.Parse(keyvalue[1]);
                         break;
                     case "DataLen":
-                        DataLen = int.Parse(keyvalue[1]);
+                        ret.DataLen = int.Parse(keyvalue[1]);
                         break;
                     case "WordLen":
-                        WordLen = int.Parse(keyvalue[1]);
+                        ret.WordLen = int.Parse(keyvalue[1]);
                         break;
                 }
             }
+            return ret;
         }
     }
     public class S7TCPHost

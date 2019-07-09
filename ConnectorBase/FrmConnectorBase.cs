@@ -400,7 +400,7 @@ namespace CHQ.RD.ConnectorBase
                 item.SubItems[7].Text ="";
                 ds.DriverSet.ToString();
                 item.Tag = ds;
-                detailView.Items.Add(item);
+                //detailView.Items.Add(item);
             }
         }
         void toEditDataSendingSet()

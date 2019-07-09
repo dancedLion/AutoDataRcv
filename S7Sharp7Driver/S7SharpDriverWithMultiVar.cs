@@ -41,7 +41,6 @@ namespace CHQ.RD.S7Sharp7Driver
 
 
 
-
         #endregion
         public S7SharpDriverWithMultiVar() : base()
         {
@@ -102,13 +101,20 @@ namespace CHQ.RD.S7Sharp7Driver
                 //转换列表
                 foreach (ConnDriverDataItem item in (List<ConnDriverDataItem>)list)
                 {
+                    S7Address sad = (S7Address)(new S7Address()).Parsing(item.Address);
                     S7SharpReadItem t = new S7SharpReadItem
                     {
                         Id = item.Id,
-                        Address = (S7SharpReadAddress)ParsingAddress(item.Address),
+                        Address = new S7SharpReadAddress {
+                             BlockArea=m_area[sad.BlockType],
+                             BlockNo=sad.BlockNo,
+                             Start=sad.Start,
+                              DataLen=sad.DataLen,
+                               WordLen=sad.WordLen
+                        },
                         ValueType = (S7DataType)Enum.Parse(typeof(S7DataType), item.ValueType)
                     };
-                    t.Address.BlockArea = m_area[(S7BlockType)t.Address.BlockArea]; //从枚举转换为BLOCK类型
+                    //t.Address.BlockArea = m_area[(S7BlockType)t.Address.BlockArea]; //从枚举转换为BLOCK类型
                     m_items.Add(t);
                     m_values.Add(t.Id, null);
                 }
@@ -116,7 +122,7 @@ namespace CHQ.RD.S7Sharp7Driver
                 //对每条数据，比较相同blocktype,相同blockno，根据valuetype+值
                 foreach(S7SharpReadItem item in m_items)
                 {
-                    S7MultiVarExp exp = m_blocktypes.Find((S7MultiVarExp x) => x.BlockNo == item.Address.BlockArea&&x.BlockNo==item.Address.BlockNo);
+                    S7MultiVarExp exp = m_blocktypes.Find((S7MultiVarExp x) => x.BlockType == item.Address.BlockArea&&x.BlockNo==item.Address.BlockNo);
                     if (exp == null)
                     {
                         m_blocktypes.Add(new S7MultiVarExp
@@ -129,13 +135,16 @@ namespace CHQ.RD.S7Sharp7Driver
                     }
                     else
                     {
-                        if (exp.Start < item.Address.Start)
+                        if (item.Address.Start<exp.Start)
                         {
                             exp.Start = item.Address.Start;
                         }
                         else
                         {
-                            exp.End = item.Address.Start + item.Address.DataLen;
+                            if (item.Address.Start + item.Address.DataLen > exp.End)
+                            {
+                                exp.End = item.Address.Start + item.Address.DataLen;
+                            }
                         }
                     }
                 }
@@ -294,46 +303,62 @@ namespace CHQ.RD.S7Sharp7Driver
         /// <param name="state"></param>
         void ReadAndParsing(object state)
         {
+            if (DebugMode == 0) { TxtLogWriter.WriteMessage(logfile, "Begin Read Prepare at" + DateTime.Now.ToString("hh:mm:ss fff")); }
             foreach(S7MultiVarExp exp in m_blocktypes)
             {
-                S7MultiVar mv = new S7MultiVar(m_client);
+                //S7MultiVar mv = new S7MultiVar(m_client);
                 byte[] buff = new byte[exp.End - exp.Start];
-                mv.Add(exp.BlockType, S7Consts.S7WLByte, exp.BlockNo, exp.Start, exp.End,ref buff);
-                mv.Read();
-                foreach(S7SharpReadItem item in m_items)
+                //mv.Add(exp.BlockType, S7Consts.S7WLByte, exp.BlockNo, exp.Start, exp.End,ref buff);
+                if (DebugMode == 0) { TxtLogWriter.WriteMessage(logfile, "Begin Read at" + DateTime.Now.ToString("hh:mm:ss fff")); }
+                //mv.Read();
+                int i=m_client.ReadArea(exp.BlockType, exp.BlockType, exp.Start, exp.End - exp.Start, S7Consts.S7WLByte, buff);
+                if (i != 0)
+                {
+                    if (ErrorCount.ContainsKey(i))
+                    {
+                        ErrorCount[i] += 1;
+                    }
+                    else
+                    {
+                        ErrorCount.Add(i, 1);
+                    }
+                }
+                if (DebugMode == 0) { TxtLogWriter.WriteMessage(logfile, "End Read At " + DateTime.Now.ToString("hh:mm:ss fff")); }
+                foreach (S7SharpReadItem item in m_items)
                 {
                     if (item.Address.BlockArea == exp.BlockType && item.Address.BlockNo == exp.BlockNo)
                     {
                         switch (item.ValueType)
                         {
                             case S7DataType.BIT:
-                                m_values[item.Id] = S7.GetBitAt(buff, item.Address.Start, item.Address.DataLen);
+                                m_values[item.Id] = S7.GetBitAt(buff, item.Address.Start-exp.Start, item.Address.DataLen);
                                 break;
                             case S7DataType.BYTE:
-                                m_values[item.Id] = S7.GetByteAt(buff, item.Address.Start);
+                                m_values[item.Id] = S7.GetByteAt(buff, item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.REAL:
-                                m_values[item.Id] = S7.GetRealAt(buff, item.Address.Start);
+                                m_values[item.Id] = S7.GetRealAt(buff, item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.INT:
-                                m_values[item.Id]=S7.GetIntAt(buff,item.Address.Start);
+                                m_values[item.Id]=S7.GetIntAt(buff,item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.INT16:
-                                m_values[item.Id] = S7.GetSIntAt(buff, item.Address.Start);
+                                m_values[item.Id] = S7.GetSIntAt(buff, item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.UINT16:
-                                m_values[item.Id] = S7.GetUSIntAt(buff, item.Address.Start);
+                                m_values[item.Id] = S7.GetUSIntAt(buff, item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.UINT32:
-                                m_values[item.Id] = S7.GetUIntAt(buff, item.Address.Start);
+                                m_values[item.Id] = S7.GetUIntAt(buff, item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.TEXT:
-                                m_values[item.Id] = Encoding.UTF8.GetString(buff, item.Address.Start + 2, item.Address.DataLen-2);
+                                m_values[item.Id] = Encoding.UTF8.GetString(buff, item.Address.Start-exp.Start + 2, item.Address.DataLen-2);
                                 break;
                         }
                     }
                 }
             }
+            if (DebugMode == 0) { TxtLogWriter.WriteMessage(logfile, "end Read Work at" + DateTime.Now.ToString("hh:mm:ss fff")); }
         }
     }
 

@@ -20,6 +20,7 @@ namespace CHQ.RD.DriverBase
         int m_transmode=0;
         int m_readmode=0;
         int m_readinterval=2000;
+        int m_debugmode = -1;
 
         string errorfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\DriverBaseError.log";
         string logfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\DriverBase.log";
@@ -44,7 +45,11 @@ namespace CHQ.RD.DriverBase
             get;set;
         }
 
-
+        public int DebugMode
+        {
+            get { return m_debugmode; }
+            set { m_debugmode = value; }
+        }
         public int TransMode
         {
             get { return m_transmode; }
@@ -270,6 +275,39 @@ namespace CHQ.RD.DriverBase
         public virtual object ParsingHost(string host)
         {
             object ret = null;
+            try
+            {
+                if (m_hosttype != null)
+                {
+                    ret = m_hosttype.Assembly.CreateInstance(m_hosttype.FullName);
+                    FieldInfo[] flds = m_hosttype.GetFields();
+                    string[] rows = host.Split(';');
+                    for (int i = 0; i < rows.Length; i++)
+                    {
+                        string[] kvp = rows[i].Split('=');
+                        for (int j = 0; j < flds.Length; j++)
+                        {
+                            if (kvp[0].ToUpper() == flds[j].Name.ToUpper())
+                            {
+                                if (flds[j].FieldType.IsEnum)
+                                {
+                                    flds[j].SetValue(ret, Convert.ChangeType(int.Parse(kvp[1]), flds[j].FieldType));
+                                }
+                                else
+                                {
+                                    flds[j].SetValue(ret, Convert.ChangeType(kvp[1], flds[j].FieldType));
+                                }
+                                break;  //退出当前并继续下一个循环
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().ToString() + ".ParsingAddress(" + host + ") Error:" + ex.Message);
+                ret = null;
+            }
             return ret;
         }
         public virtual object ParsingAddress(string address)
@@ -289,17 +327,22 @@ namespace CHQ.RD.DriverBase
                     string[] kvp = rows[i].Split('=');
                     for(int j = 0; j < flds.Length; j++)
                     {
-                        if (kvp[0].ToUpper() == flds[j].Name.ToUpper())
+                        if (flds[j].FieldType.IsEnum)
+                        {
+                            flds[j].SetValue(ret, Convert.ChangeType(int.Parse(kvp[1]), flds[j].FieldType));
+                        }
+                        else
                         {
                             flds[j].SetValue(ret, Convert.ChangeType(kvp[1], flds[j].FieldType));
-                            break;  //退出当前并继续下一个循环
                         }
+                        break;
                     }
                 }
             }
             catch(Exception ex)
             {
                 TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().ToString() + ".ParsingAddress(" + address + ") Error:" + ex.Message);
+                ret = null;
             }
             return ret;
         }

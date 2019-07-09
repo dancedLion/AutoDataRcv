@@ -25,7 +25,7 @@ namespace CHQ.RD.DataContract
 
     public interface IHostDataAddress
     {
-        void Parsing(string addressString);
+        object Parsing(string addressString);
     }
 
 
