@@ -1,0 +1,1011 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ChqUASettings" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://tfs.xinchj.cn:39297/CHQ.UA.WS.ChqUASettings.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://tfs.xinchj.cn:39297/CHQ.UA.WS.ChqUASettings.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://tfs.xinchj.cn:39297/CHQ.UA.WS.ChqUASettings.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CHQ.UA.WS" />
+      <xsd:import schemaLocation="http://tfs.xinchj.cn:39297/CHQ.UA.WS.ChqUASettings.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://tfs.xinchj.cn:39297/CHQ.UA.WS.ChqUASettings.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/CHQ.DATACONTRACT.RD" />
+      <xsd:import schemaLocation="http://tfs.xinchj.cn:39297/CHQ.UA.WS.ChqUASettings.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System.Data" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IChqUASettings_GetData_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetData" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_GetData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_GetDataUsingDataContract_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataUsingDataContract" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_GetDataUsingDataContract_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataUsingDataContractResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveUANodes_InputMessage">
+    <wsdl:part name="parameters" element="tns:saveUANodes" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveUANodes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:saveUANodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getUANodes_InputMessage">
+    <wsdl:part name="parameters" element="tns:getUANodes" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getUANodes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getUANodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getUANode_InputMessage">
+    <wsdl:part name="parameters" element="tns:getUANode" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getUANode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getUANodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getUANodeViaId_InputMessage">
+    <wsdl:part name="parameters" element="tns:getUANodeViaId" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getUANodeViaId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getUANodeViaIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getUANodesPath_InputMessage">
+    <wsdl:part name="parameters" element="tns:getUANodesPath" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getUANodesPath_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getUANodesPathResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveSubscription_InputMessage">
+    <wsdl:part name="parameters" element="tns:saveSubscription" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveSubscription_OutputMessage">
+    <wsdl:part name="parameters" element="tns:saveSubscriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_removeSubscription_InputMessage">
+    <wsdl:part name="parameters" element="tns:removeSubscription" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_removeSubscription_OutputMessage">
+    <wsdl:part name="parameters" element="tns:removeSubscriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_addSubscription_InputMessage">
+    <wsdl:part name="parameters" element="tns:addSubscription" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_addSubscription_OutputMessage">
+    <wsdl:part name="parameters" element="tns:addSubscriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveSubscriptionHeader_InputMessage">
+    <wsdl:part name="parameters" element="tns:saveSubscriptionHeader" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveSubscriptionHeader_OutputMessage">
+    <wsdl:part name="parameters" element="tns:saveSubscriptionHeaderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_addSubdetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:addSubdetails" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_addSubdetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:addSubdetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_removeSubdetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:removeSubdetails" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_removeSubdetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:removeSubdetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubscriptions_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubscriptions" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubscriptions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubscriptionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubdetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubdetails" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubdetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubdetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubDetailsViaId_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubDetailsViaId" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubDetailsViaId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubDetailsViaIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_moveSubscriptions_InputMessage">
+    <wsdl:part name="parameters" element="tns:moveSubscriptions" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_moveSubscriptions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:moveSubscriptionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubscription_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubscription" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubscription_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubscriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubscriptionViaId_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubscriptionViaId" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubscriptionViaId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubscriptionViaIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveDataBatchSettings_InputMessage">
+    <wsdl:part name="parameters" element="tns:saveDataBatchSettings" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveDataBatchSettings_OutputMessage">
+    <wsdl:part name="parameters" element="tns:saveDataBatchSettingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_delDataBatchSettings_InputMessage">
+    <wsdl:part name="parameters" element="tns:delDataBatchSettings" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_delDataBatchSettings_OutputMessage">
+    <wsdl:part name="parameters" element="tns:delDataBatchSettingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getDatabatchSetting_InputMessage">
+    <wsdl:part name="parameters" element="tns:getDatabatchSetting" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getDatabatchSetting_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getDatabatchSettingResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getAllDatabatchSettings_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAllDatabatchSettings" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getAllDatabatchSettings_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAllDatabatchSettingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getDatabatchNodes_InputMessage">
+    <wsdl:part name="parameters" element="tns:getDatabatchNodes" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getDatabatchNodes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getDatabatchNodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getConnectionString_InputMessage">
+    <wsdl:part name="parameters" element="tns:getConnectionString" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getConnectionString_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getConnectionStringResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_checkDBPrepare_InputMessage">
+    <wsdl:part name="parameters" element="tns:checkDBPrepare" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_checkDBPrepare_OutputMessage">
+    <wsdl:part name="parameters" element="tns:checkDBPrepareResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_createDBPrepare_InputMessage">
+    <wsdl:part name="parameters" element="tns:createDBPrepare" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_createDBPrepare_OutputMessage">
+    <wsdl:part name="parameters" element="tns:createDBPrepareResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getDataTransactSql_InputMessage">
+    <wsdl:part name="parameters" element="tns:getDataTransactSql" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getDataTransactSql_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getDataTransactSqlResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_tranRealdata_InputMessage">
+    <wsdl:part name="parameters" element="tns:tranRealdata" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_tranRealdata_OutputMessage">
+    <wsdl:part name="parameters" element="tns:tranRealdataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getScalar_InputMessage">
+    <wsdl:part name="parameters" element="tns:getScalar" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getScalar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getScalarResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveAlertType_InputMessage">
+    <wsdl:part name="parameters" element="tns:saveAlertType" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveAlertType_OutputMessage">
+    <wsdl:part name="parameters" element="tns:saveAlertTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getAlertTypes_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertTypes" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getAlertTypes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getAlertType_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertType" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getAlertType_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSysAlertData_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSysAlertData" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSysAlertData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSysAlertDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveAlert_InputMessage">
+    <wsdl:part name="parameters" element="tns:saveAlert" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveAlert_OutputMessage">
+    <wsdl:part name="parameters" element="tns:saveAlertResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveNewSubView_InputMessage">
+    <wsdl:part name="parameters" element="tns:saveNewSubView" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveNewSubView_OutputMessage">
+    <wsdl:part name="parameters" element="tns:saveNewSubViewResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveEditedSubview_InputMessage">
+    <wsdl:part name="parameters" element="tns:saveEditedSubview" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_saveEditedSubview_OutputMessage">
+    <wsdl:part name="parameters" element="tns:saveEditedSubviewResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubviewList_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubviewList" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubviewList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubviewListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubviewItems_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubviewItems" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubviewItems_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubviewItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubviewData_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubviewData" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubviewData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubviewDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubviewDataAsTable_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubviewDataAsTable" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubviewDataAsTable_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubviewDataAsTableResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubviewItemsRTData_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubviewItemsRTData" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getSubviewItemsRTData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubviewItemsRTDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getDomainUserId_InputMessage">
+    <wsdl:part name="parameters" element="tns:getDomainUserId" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getDomainUserId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getDomainUserIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getGasFlow_InputMessage">
+    <wsdl:part name="parameters" element="tns:getGasFlow" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getGasFlow_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getGasFlowResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getGasATFlow_InputMessage">
+    <wsdl:part name="parameters" element="tns:getGasATFlow" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getGasATFlow_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getGasATFlowResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getGasHourFlow_InputMessage">
+    <wsdl:part name="parameters" element="tns:getGasHourFlow" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getGasHourFlow_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getGasHourFlowResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_Get_QCAnalyse_P_InputMessage">
+    <wsdl:part name="parameters" element="tns:Get_QCAnalyse_P" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_Get_QCAnalyse_P_OutputMessage">
+    <wsdl:part name="parameters" element="tns:Get_QCAnalyse_PResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_Get_QcAnalyse_Item_P_InputMessage">
+    <wsdl:part name="parameters" element="tns:Get_QcAnalyse_Item_P" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_Get_QcAnalyse_Item_P_OutputMessage">
+    <wsdl:part name="parameters" element="tns:Get_QcAnalyse_Item_PResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_Get_QcAnylyse_PAl_InputMessage">
+    <wsdl:part name="parameters" element="tns:Get_QcAnylyse_PAl" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_Get_QcAnylyse_PAl_OutputMessage">
+    <wsdl:part name="parameters" element="tns:Get_QcAnylyse_PAlResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_Get_QcAnylyse_CMn_InputMessage">
+    <wsdl:part name="parameters" element="tns:Get_QcAnylyse_CMn" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_Get_QcAnylyse_CMn_OutputMessage">
+    <wsdl:part name="parameters" element="tns:Get_QcAnylyse_CMnResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getLtWave01_InputMessage">
+    <wsdl:part name="parameters" element="tns:getLtWave01" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getLtWave01_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getLtWave01Response" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getLtWave01Hist_InputMessage">
+    <wsdl:part name="parameters" element="tns:getLtWave01Hist" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getLtWave01Hist_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getLtWave01HistResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IChqUASettings">
+    <wsdl:operation name="GetData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/GetData" message="tns:IChqUASettings_GetData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/GetDataResponse" message="tns:IChqUASettings_GetData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/GetDataUsingDataContract" message="tns:IChqUASettings_GetDataUsingDataContract_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/GetDataUsingDataContractResponse" message="tns:IChqUASettings_GetDataUsingDataContract_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="saveUANodes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/saveUANodes" message="tns:IChqUASettings_saveUANodes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/saveUANodesResponse" message="tns:IChqUASettings_saveUANodes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getUANodes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getUANodes" message="tns:IChqUASettings_getUANodes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getUANodesResponse" message="tns:IChqUASettings_getUANodes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getUANode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getUANode" message="tns:IChqUASettings_getUANode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getUANodeResponse" message="tns:IChqUASettings_getUANode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getUANodeViaId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getUANodeViaId" message="tns:IChqUASettings_getUANodeViaId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getUANodeViaIdResponse" message="tns:IChqUASettings_getUANodeViaId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getUANodesPath">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getUANodesPath" message="tns:IChqUASettings_getUANodesPath_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getUANodesPathResponse" message="tns:IChqUASettings_getUANodesPath_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="saveSubscription">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/saveSubscription" message="tns:IChqUASettings_saveSubscription_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/saveSubscriptionResponse" message="tns:IChqUASettings_saveSubscription_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="removeSubscription">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/removeSubscription" message="tns:IChqUASettings_removeSubscription_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/removeSubscriptionResponse" message="tns:IChqUASettings_removeSubscription_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="addSubscription">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/addSubscription" message="tns:IChqUASettings_addSubscription_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/addSubscriptionResponse" message="tns:IChqUASettings_addSubscription_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="saveSubscriptionHeader">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/saveSubscriptionHeader" message="tns:IChqUASettings_saveSubscriptionHeader_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/saveSubscriptionHeaderResponse" message="tns:IChqUASettings_saveSubscriptionHeader_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="addSubdetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/addSubdetails" message="tns:IChqUASettings_addSubdetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/addSubdetailsResponse" message="tns:IChqUASettings_addSubdetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="removeSubdetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/removeSubdetails" message="tns:IChqUASettings_removeSubdetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/removeSubdetailsResponse" message="tns:IChqUASettings_removeSubdetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubscriptions">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSubscriptions" message="tns:IChqUASettings_getSubscriptions_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSubscriptionsResponse" message="tns:IChqUASettings_getSubscriptions_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubdetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSubdetails" message="tns:IChqUASettings_getSubdetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSubdetailsResponse" message="tns:IChqUASettings_getSubdetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubDetailsViaId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSubDetailsViaId" message="tns:IChqUASettings_getSubDetailsViaId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSubDetailsViaIdResponse" message="tns:IChqUASettings_getSubDetailsViaId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="moveSubscriptions">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/moveSubscriptions" message="tns:IChqUASettings_moveSubscriptions_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/moveSubscriptionsResponse" message="tns:IChqUASettings_moveSubscriptions_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubscription">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSubscription" message="tns:IChqUASettings_getSubscription_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSubscriptionResponse" message="tns:IChqUASettings_getSubscription_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubscriptionViaId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSubscriptionViaId" message="tns:IChqUASettings_getSubscriptionViaId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSubscriptionViaIdResponse" message="tns:IChqUASettings_getSubscriptionViaId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="saveDataBatchSettings">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/saveDataBatchSettings" message="tns:IChqUASettings_saveDataBatchSettings_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/saveDataBatchSettingsResponse" message="tns:IChqUASettings_saveDataBatchSettings_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="delDataBatchSettings">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/delDataBatchSettings" message="tns:IChqUASettings_delDataBatchSettings_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/delDataBatchSettingsResponse" message="tns:IChqUASettings_delDataBatchSettings_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getDatabatchSetting">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getDatabatchSetting" message="tns:IChqUASettings_getDatabatchSetting_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getDatabatchSettingResponse" message="tns:IChqUASettings_getDatabatchSetting_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAllDatabatchSettings">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getAllDatabatchSettings" message="tns:IChqUASettings_getAllDatabatchSettings_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getAllDatabatchSettingsResponse" message="tns:IChqUASettings_getAllDatabatchSettings_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getDatabatchNodes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getDatabatchNodes" message="tns:IChqUASettings_getDatabatchNodes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getDatabatchNodesResponse" message="tns:IChqUASettings_getDatabatchNodes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getConnectionString">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getConnectionString" message="tns:IChqUASettings_getConnectionString_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getConnectionStringResponse" message="tns:IChqUASettings_getConnectionString_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="checkDBPrepare">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/checkDBPrepare" message="tns:IChqUASettings_checkDBPrepare_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/checkDBPrepareResponse" message="tns:IChqUASettings_checkDBPrepare_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="createDBPrepare">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/createDBPrepare" message="tns:IChqUASettings_createDBPrepare_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/createDBPrepareResponse" message="tns:IChqUASettings_createDBPrepare_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getDataTransactSql">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getDataTransactSql" message="tns:IChqUASettings_getDataTransactSql_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getDataTransactSqlResponse" message="tns:IChqUASettings_getDataTransactSql_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="tranRealdata">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/tranRealdata" message="tns:IChqUASettings_tranRealdata_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/tranRealdataResponse" message="tns:IChqUASettings_tranRealdata_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getScalar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getScalar" message="tns:IChqUASettings_getScalar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getScalarResponse" message="tns:IChqUASettings_getScalar_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="saveAlertType">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/saveAlertType" message="tns:IChqUASettings_saveAlertType_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/saveAlertTypeResponse" message="tns:IChqUASettings_saveAlertType_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAlertTypes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getAlertTypes" message="tns:IChqUASettings_getAlertTypes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getAlertTypesResponse" message="tns:IChqUASettings_getAlertTypes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAlertType">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getAlertType" message="tns:IChqUASettings_getAlertType_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getAlertTypeResponse" message="tns:IChqUASettings_getAlertType_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSysAlertData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSysAlertData" message="tns:IChqUASettings_getSysAlertData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSysAlertDataResponse" message="tns:IChqUASettings_getSysAlertData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="saveAlert">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/saveAlert" message="tns:IChqUASettings_saveAlert_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/saveAlertResponse" message="tns:IChqUASettings_saveAlert_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="saveNewSubView">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/saveNewSubView" message="tns:IChqUASettings_saveNewSubView_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/saveNewSubViewResponse" message="tns:IChqUASettings_saveNewSubView_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="saveEditedSubview">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/saveEditedSubview" message="tns:IChqUASettings_saveEditedSubview_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/saveEditedSubviewResponse" message="tns:IChqUASettings_saveEditedSubview_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubviewList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSubviewList" message="tns:IChqUASettings_getSubviewList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSubviewListResponse" message="tns:IChqUASettings_getSubviewList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubviewItems">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSubviewItems" message="tns:IChqUASettings_getSubviewItems_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSubviewItemsResponse" message="tns:IChqUASettings_getSubviewItems_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubviewData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSubviewData" message="tns:IChqUASettings_getSubviewData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSubviewDataResponse" message="tns:IChqUASettings_getSubviewData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubviewDataAsTable">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSubviewDataAsTable" message="tns:IChqUASettings_getSubviewDataAsTable_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSubviewDataAsTableResponse" message="tns:IChqUASettings_getSubviewDataAsTable_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubviewItemsRTData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getSubviewItemsRTData" message="tns:IChqUASettings_getSubviewItemsRTData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getSubviewItemsRTDataResponse" message="tns:IChqUASettings_getSubviewItemsRTData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getDomainUserId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getDomainUserId" message="tns:IChqUASettings_getDomainUserId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getDomainUserIdResponse" message="tns:IChqUASettings_getDomainUserId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getGasFlow">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getGasFlow" message="tns:IChqUASettings_getGasFlow_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getGasFlowResponse" message="tns:IChqUASettings_getGasFlow_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getGasATFlow">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getGasATFlow" message="tns:IChqUASettings_getGasATFlow_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getGasATFlowResponse" message="tns:IChqUASettings_getGasATFlow_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getGasHourFlow">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getGasHourFlow" message="tns:IChqUASettings_getGasHourFlow_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getGasHourFlowResponse" message="tns:IChqUASettings_getGasHourFlow_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Get_QCAnalyse_P">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/Get_QCAnalyse_P" message="tns:IChqUASettings_Get_QCAnalyse_P_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/Get_QCAnalyse_PResponse" message="tns:IChqUASettings_Get_QCAnalyse_P_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Get_QcAnalyse_Item_P">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/Get_QcAnalyse_Item_P" message="tns:IChqUASettings_Get_QcAnalyse_Item_P_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/Get_QcAnalyse_Item_PResponse" message="tns:IChqUASettings_Get_QcAnalyse_Item_P_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Get_QcAnylyse_PAl">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/Get_QcAnylyse_PAl" message="tns:IChqUASettings_Get_QcAnylyse_PAl_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/Get_QcAnylyse_PAlResponse" message="tns:IChqUASettings_Get_QcAnylyse_PAl_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Get_QcAnylyse_CMn">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/Get_QcAnylyse_CMn" message="tns:IChqUASettings_Get_QcAnylyse_CMn_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/Get_QcAnylyse_CMnResponse" message="tns:IChqUASettings_Get_QcAnylyse_CMn_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getLtWave01">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getLtWave01" message="tns:IChqUASettings_getLtWave01_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getLtWave01Response" message="tns:IChqUASettings_getLtWave01_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getLtWave01Hist">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getLtWave01Hist" message="tns:IChqUASettings_getLtWave01Hist_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getLtWave01HistResponse" message="tns:IChqUASettings_getLtWave01Hist_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IChqUASettings" type="tns:IChqUASettings">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetData">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/GetData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveUANodes">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/saveUANodes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUANodes">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getUANodes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUANode">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getUANode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUANodeViaId">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getUANodeViaId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUANodesPath">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getUANodesPath" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveSubscription">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/saveSubscription" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="removeSubscription">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/removeSubscription" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addSubscription">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/addSubscription" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveSubscriptionHeader">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/saveSubscriptionHeader" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addSubdetails">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/addSubdetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="removeSubdetails">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/removeSubdetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubscriptions">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSubscriptions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubdetails">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSubdetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubDetailsViaId">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSubDetailsViaId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="moveSubscriptions">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/moveSubscriptions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubscription">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSubscription" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubscriptionViaId">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSubscriptionViaId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveDataBatchSettings">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/saveDataBatchSettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delDataBatchSettings">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/delDataBatchSettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDatabatchSetting">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getDatabatchSetting" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllDatabatchSettings">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getAllDatabatchSettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDatabatchNodes">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getDatabatchNodes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getConnectionString">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getConnectionString" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkDBPrepare">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/checkDBPrepare" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createDBPrepare">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/createDBPrepare" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDataTransactSql">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getDataTransactSql" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="tranRealdata">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/tranRealdata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getScalar">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getScalar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveAlertType">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/saveAlertType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAlertTypes">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getAlertTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAlertType">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getAlertType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSysAlertData">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSysAlertData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveAlert">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/saveAlert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveNewSubView">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/saveNewSubView" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveEditedSubview">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/saveEditedSubview" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubviewList">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSubviewList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubviewItems">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSubviewItems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubviewData">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSubviewData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubviewDataAsTable">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSubviewDataAsTable" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubviewItemsRTData">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getSubviewItemsRTData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDomainUserId">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getDomainUserId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGasFlow">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getGasFlow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGasATFlow">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getGasATFlow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGasHourFlow">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getGasHourFlow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Get_QCAnalyse_P">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/Get_QCAnalyse_P" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Get_QcAnalyse_Item_P">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/Get_QcAnalyse_Item_P" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Get_QcAnylyse_PAl">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/Get_QcAnylyse_PAl" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Get_QcAnylyse_CMn">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/Get_QcAnylyse_CMn" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLtWave01">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getLtWave01" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLtWave01Hist">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getLtWave01Hist" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ChqUASettings">
+    <wsdl:port name="BasicHttpBinding_IChqUASettings" binding="tns:BasicHttpBinding_IChqUASettings">
+      <soap:address location="http://tfs.xinchj.cn:39297/CHQ.UA.WS.ChqUASettings.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

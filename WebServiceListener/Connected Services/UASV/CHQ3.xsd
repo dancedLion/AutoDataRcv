@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/CHQ.DATACONTRACT.RD" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CHQ.DATACONTRACT.RD" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://tfs.xinchj.cn:39297/CHQ.UA.WS.ChqUASettings.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="UASubScription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="KeepAliveCount" type="xs:int" />
+      <xs:element minOccurs="0" name="LifetimeCount" type="xs:int" />
+      <xs:element minOccurs="0" name="MaxNotificationsPerPublish" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Parent" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Priority" type="xs:int" />
+      <xs:element minOccurs="0" name="PublishInterval" type="xs:int" />
+      <xs:element minOccurs="0" name="PublishingEnabled" type="xs:int" />
+      <xs:element minOccurs="0" name="SubType" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UASubScription" nillable="true" type="tns:UASubScription" />
+  <xs:complexType name="UASubDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="UANodes" nillable="true" type="q1:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UASubDetail" nillable="true" type="tns:UASubDetail" />
+  <xs:complexType name="ArrayOfUASubScription">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UASubScription" nillable="true" type="tns:UASubScription" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUASubScription" nillable="true" type="tns:ArrayOfUASubScription" />
+  <xs:complexType name="UADatabatchSetting">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="IsEntireBatch" type="xs:int" />
+      <xs:element minOccurs="0" name="KeepTimes" type="xs:int" />
+      <xs:element minOccurs="0" name="KeyNodeId" type="xs:int" />
+      <xs:element minOccurs="0" name="KeyNodeName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Period" type="xs:int" />
+      <xs:element minOccurs="0" name="RaiseAlert" type="xs:int" />
+      <xs:element minOccurs="0" name="RunAdditionalEvent" type="xs:int" />
+      <xs:element minOccurs="0" name="SaveCondition" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SnapPeriod" type="xs:int" />
+      <xs:element minOccurs="0" name="StartTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SubId" type="xs:int" />
+      <xs:element minOccurs="0" name="TriggerSnap" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TriggerSnapValue" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TriggerType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TriggerValue" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="memo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UADatabatchSetting" nillable="true" type="tns:UADatabatchSetting" />
+  <xs:complexType name="ArrayOfUADatabatchSetting">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UADatabatchSetting" nillable="true" type="tns:UADatabatchSetting" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUADatabatchSetting" nillable="true" type="tns:ArrayOfUADatabatchSetting" />
+  <xs:complexType name="ArrayOfUAAlertType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UAAlertType" nillable="true" type="tns:UAAlertType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUAAlertType" nillable="true" type="tns:ArrayOfUAAlertType" />
+  <xs:complexType name="UAAlertType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CanCancel" type="xs:int" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Level" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Memo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UAAlertType" nillable="true" type="tns:UAAlertType" />
+  <xs:complexType name="UASubView">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Memo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Subscriptionid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UASubView" nillable="true" type="tns:UASubView" />
+  <xs:complexType name="ArrayOfUASubViewItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UASubViewItem" nillable="true" type="tns:UASubViewItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUASubViewItem" nillable="true" type="tns:ArrayOfUASubViewItem" />
+  <xs:complexType name="UASubViewItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DecimalLength" type="xs:int" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RaiseAlert" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="RangeMax" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="RangeMin" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="Source" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Type" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UASubViewItem" nillable="true" type="tns:UASubViewItem" />
+  <xs:complexType name="ArrayOfUASubView">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UASubView" nillable="true" type="tns:UASubView" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUASubView" nillable="true" type="tns:ArrayOfUASubView" />
+</xs:schema>
