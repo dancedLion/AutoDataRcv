@@ -44,6 +44,8 @@ namespace CHQ.RD.S7Sharp7Driver
         #endregion
         public S7SharpDriverWithMultiVar() : base()
         {
+            DebugMode = 0;
+
             HostType = typeof(S7TCPHost);
             AddressType = typeof(S7Address);
 
@@ -148,6 +150,20 @@ namespace CHQ.RD.S7Sharp7Driver
                         }
                     }
                 }
+                //如果为DEBUG，则写
+                if (DebugMode == 0)
+                {
+                    TxtLogWriter.WriteMessage(logfile, this.GetType().FullName+":Rows in Blocks");
+                    foreach(S7MultiVarExp exp in m_blocktypes)
+                    {
+                        TxtLogWriter.WriteMessage(logfile,
+                            "BlockType=" + exp.BlockType.ToString() + ";" +
+                            "BlockNo=" + exp.BlockNo + ";" +
+                            "Start=" + exp.Start + ";" +
+                            "End=" + exp.End + "");
+                    }
+
+                }
                 m_client = new S7Client();
                 ret = m_client.ConnectTo(((S7TCPHost)m_host).IPAddress, ((S7TCPHost)m_host).RackNo, ((S7TCPHost)m_host).SlotNo);
                 if (ret != 0) throw new Exception("Try ConnectTo Host(" + ((S7TCPHost)m_host).IPAddress.ToString() + ") Error, Errcode=" + ret.ToString());
@@ -207,8 +223,8 @@ namespace CHQ.RD.S7Sharp7Driver
             int ret = 0;
             try
             {
-                m_datareader = null;
-                m_datareader.Dispose();
+                m_readtimer = null;
+                m_readtimer.Dispose();
                 Status = DriverStatus.Stoped;
             }
             catch(Exception ex)

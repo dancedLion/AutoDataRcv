@@ -145,40 +145,42 @@ namespace CHQ.RD.S7Sharp7Driver
             }
             return ret;
         }
-        //public override int SettingAddress()
-        //{
-        //    //return base.SettingAddress();
-        //    //测试每个地址的设置是否OK，如果错误就返回错误值 
-        //    int result = 1;
-        //    try
-        //    {
-        //        foreach (S7SharpItem add in m_itemlist)
-        //        {
-        //            S7Address address = (S7Address)add.Address;
-        //            S7Client.S7DataItem item = new S7Client.S7DataItem();
-        //            item.Area = m_dbtype[address.BlockType.ToString()];
-        //            item.DBNumber = address.BlockAddress;
-        //            item.Start = address.ByteAddress;
-        //            item.Amount = address.DataType.ToString() == "BIT" ? 1 : (address.DataLength / S7.DataSizeByte(m_valuetype[address.DataType.ToString()]));
-        //            item.WordLen = m_datalen[address.DataType.ToString()];
-        //            S7DataItemSetting s7item = new S7DataItemSetting();
-        //            s7item.Id = add.Id; s7item.DataItem = item;
-        //            m_dataitem.Add(s7item);
-        //        }
-        //        foreach(S7DataItemSetting item in m_dataitem)
-        //        {
-        //            object t = ReadDeviceData(item);
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        TxtLogWriter.WriteErrorMessage(this.ToString() + ":SettingAddress ERROR:" + ex.Message);
-        //        result = -1;
-        //    }
-        //    return result;
-        //}
 
+        public override int Start()
+        {
+            int ret = 0;
+            try
+            {
+                if (m_client.Connected)
+                {
 
+                }
+                else
+                {
+                    m_client.ConnectTo(m_host.IPAddress, m_host.RackNo, m_host.SlotNo);
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().FullName + ".Start Error:" + ex.Message);
+                ret = -1;
+            }
+            return ret;
+        }
+        public override int Stop()
+        {
+            int ret = -1;
+            try
+            {
+                m_client.Disconnect();
+                ret = 1;
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().FullName + ".Stop Error:" + ex.Message);
+            }
+            return ret;
+        }
 
         /// <summary>
         /// 读取数据，直接转换为相应的类型设置

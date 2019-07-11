@@ -420,26 +420,31 @@ namespace CHQ.RD.ConnectorBase
                 XmlNodeList nodes = doc.GetElementsByTagName("DriverAssemblies");
                 if (nodes.Count == 0)
                 {
-                    XmlElement ele = doc.CreateElement("DriverAssemblies");
-                    doc.DocumentElement.AppendChild(ele);
+                    XmlElement mele = doc.CreateElement("DriverAssemblies");
+                    doc.DocumentElement.AppendChild(mele);
+                    //doc.Save(xmlfile);
                 }
                 nodes = doc.GetElementsByTagName("DriverAssemblies");
+                XmlElement ele = null;
                 foreach (XmlElement e in nodes[0].ChildNodes)
                 {
                     if(e.Attributes["ClassName"].Value==driverclass.ClassName||
                         e.Attributes["Id"].Value == driverclass.Id.ToString()||
                         e.Attributes["DriverName"].Value==driverclass.DriverName)
                     {
-                        throw new Exception("指定的类型或者名称或者ID已经存在！");
+                        //throw new Exception("指定的类型或者名称或者ID已经存在！");
+                        ele = (XmlElement)e;
+                        break;
                     }
                 }
-                XmlElement newele = doc.CreateElement("Assemblie");
-                newele.SetAttribute("Id", driverclass.Id.ToString());
-                newele.SetAttribute("DriverName", driverclass.DriverName);
-                newele.SetAttribute("ClassName", driverclass.ClassName);
-                newele.SetAttribute("AssemblyInfo", driverclass.AssemblyInfo);
-                newele.SetAttribute("FileName", driverclass.FileName);
-                nodes[0].AppendChild(newele);
+                if (ele == null) { ele = doc.CreateElement("Assemblie");
+                    nodes[0].AppendChild(ele);
+                }
+                ele.SetAttribute("Id", driverclass.Id.ToString());
+                ele.SetAttribute("DriverName", driverclass.DriverName);
+                ele.SetAttribute("ClassName", driverclass.ClassName);
+                ele.SetAttribute("AssemblyInfo", driverclass.AssemblyInfo);
+                ele.SetAttribute("FileName", driverclass.FileName);               
                 doc.Save(xmlfile);
                 ret = 0;
             }
@@ -532,6 +537,8 @@ namespace CHQ.RD.ConnectorBase
                     {
                         e.SetAttribute("Id", newdriver.Id.ToString());
                         e.SetAttribute("DriverName", newdriver.DriverName);
+                        e.SetAttribute("FileName", newdriver.FileName);
+                        e.SetAttribute("AssemblyInfo", newdriver.AssemblyInfo);
                         break;
                     }
                 }

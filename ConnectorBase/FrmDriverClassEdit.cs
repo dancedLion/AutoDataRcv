@@ -78,8 +78,16 @@ namespace CHQ.RD.ConnectorBase
         {
             if (FormToAssemblyFile() == 0)
             {
-                m_result = 0;
-                this.DialogResult = DialogResult.OK;
+                int ret = 0;    // Ops.saveDriverClass(m_returnedvalue);
+                if (ret >= 0)
+                {
+                    m_result = 0;
+                    this.DialogResult = DialogResult.OK;
+                }
+                else
+                {
+                    MyMessageBox.ShowErrorMessage("保存出错，请查看日志！");
+                }
             }
         }
         void toCancel()

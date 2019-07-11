@@ -93,6 +93,7 @@ namespace CHQ.RD.ConnectorBase
                             new object[] {cds.Id,this},null,null
                             );
                             //new ConnDriverBase(cds.Id, this);
+         
                         InitConnDriver(cdb);
                     }
                     catch(Exception ex)

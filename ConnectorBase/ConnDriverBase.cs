@@ -63,10 +63,7 @@ namespace CHQ.RD.ConnectorBase
         /// 驱动连接器状态变量
         /// </summary>
         ConnDriverStatus m_status = ConnDriverStatus.None;
-        /// <summary>
-        /// 不同种类的错误计数
-        /// </summary>
-        Dictionary<int, int> m_errorCount;
+
         /// <summary>
         /// 错误日志文件路径
         /// </summary>
@@ -220,14 +217,14 @@ namespace CHQ.RD.ConnectorBase
                         }
 
                         //20190624 如果不是侦听模式，就读个值试试
-                        if (m_readmode == 0)
-                        {
-                            object value = tmp.ReadData(m_dataitems[0].Id);
-                            if (value.ToString() == ErrorString)
-                            {
-                                throw new Exception("试读数据时出错！");
-                            }
-                        }
+                        //if (m_readmode == 0)
+                        //{
+                        //    object value = tmp.ReadData(m_dataitems[0].Id);
+                        //    if (value.ToString() == ErrorString)
+                        //    {
+                        //        throw new Exception("试读数据时出错！");
+                        //    }
+                        //}
                     }
                     else
                     {
@@ -236,7 +233,7 @@ namespace CHQ.RD.ConnectorBase
                 }
                 catch (Exception ex)
                 {
-                    TxtLogWriter.WriteErrorMessage("ConnDriverBase.TryDriver(" + m_id.ToString() + "):" + ex.Message);
+                    TxtLogWriter.WriteErrorMessage(errorfile,"ConnDriverBase.TryDriver(" + m_id.ToString() + "):" + ex.Message);
                     ret = -1;
                 }
             }
@@ -265,8 +262,8 @@ namespace CHQ.RD.ConnectorBase
                             //引起值变化
 
                             //new Task(runDataChange<new DataChangeEventArgs(item.Id, value)>).Start();
-                            runDataChange(new DataChangeEventArgs(item.Id, value));
-                            //onDataChanged(this, new DataChangeEventArgs(item.Id, value));
+                            //runDataChange(new DataChangeEventArgs(item.Id, value));
+                            onDataChanged(this, new DataChangeEventArgs(item.Id, value));
                         }
                     }
                     else
@@ -278,8 +275,8 @@ namespace CHQ.RD.ConnectorBase
                         if (curvalue == null || !object.Equals( curvalue,value))
                         {
                             //引起值变化
-                            runDataChange(new DataChangeEventArgs(item.Id, value));
-                            //onDataChanged(this, new DataChangeEventArgs(item.Id, value));
+                            //runDataChange(new DataChangeEventArgs(item.Id, value));
+                            onDataChanged(this, new DataChangeEventArgs(item.Id, value));
                         }
                     }
                 }
@@ -378,10 +375,7 @@ namespace CHQ.RD.ConnectorBase
                     if (m_readmode == 0)
                     {
                         //如果驱动的读取模式为主动，则驱动开始读取模式
-                        if (m_conndriverset.DriverSet.ReadMode == 1)
-                        {
-                            m_driver.Start();
-                        }
+                        ret=m_driver.Start();
                         m_datareader = new Timer(ReadData, null, m_readinterval, m_readinterval);
                         m_errortransact = new Timer(ErrorTransact, null, m_errortransactinterval, m_errortransactinterval);
                     }
@@ -396,8 +390,6 @@ namespace CHQ.RD.ConnectorBase
                     }
                     m_status = ConnDriverStatus.Running;
                 }
-                
-            
             }
             catch(Exception ex)
             {
@@ -423,10 +415,7 @@ namespace CHQ.RD.ConnectorBase
                 if (m_readmode == 0)
                 {
                     //如果驱动的读取模式为主动，则驱动停止读取模式
-                    if (m_conndriverset.DriverSet.ReadMode == 1)
-                    {
-                        m_driver.Stop();
-                    }
+                    m_driver.Stop();
                     m_datareader.Dispose();
                 }
                 else
@@ -537,10 +526,7 @@ namespace CHQ.RD.ConnectorBase
                         if (m_readmode == 0)
                         {
                             //如果驱动在运行中，则需要停止
-                            if (m_conndriverset.DriverSet.ReadMode == 1)
-                            {
-                                m_driver.Stop();
-                            }
+                            m_driver.Stop();
                             if (m_datareader != null)
                             {
                                 m_datareader.Dispose();
@@ -626,7 +612,7 @@ namespace CHQ.RD.ConnectorBase
             m_thread = null;
             m_dataitems = null;
             m_driverclass = null;
-            m_driver = null;
+            m_driver.Dispose();
             m_conndriverset = null;
         }
 
@@ -646,11 +632,11 @@ namespace CHQ.RD.ConnectorBase
                 m_datachangehandler(sender, e);
             }
         }
-        public async Task runDataChange(DataChangeEventArgs e)
-        {
-            (new Task(() => onDataChanged(this, e))).Start();
-            //onDataChanged(this, e));
-        }
+        //public async Task runDataChange(DataChangeEventArgs e)
+        //{
+        //    (new Task(() => onDataChanged(this, e))).Start();
+        //    //onDataChanged(this, e));
+        //}
         #endregion
 
     }

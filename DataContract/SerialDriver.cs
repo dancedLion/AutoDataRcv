@@ -14,7 +14,7 @@ namespace CHQ.RD.DataContract
         public int baudRate;
         public int parity;
         public int dataBits;
-        public string stopBits;
+        public int stopBits;
     }
 
     public class SerialAddress
