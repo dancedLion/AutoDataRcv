@@ -125,6 +125,16 @@
       <Project>{ce1d7b60-53de-4d8d-bd9c-9d5e2b8ea3f4}</Project>
       <Name>DriverBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GeneralOPs\GeneralOPs.csproj">
+      <Project>{1c37dead-2077-44d4-8ea6-4a19217706e4}</Project>
+      <Name>GeneralOPs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="IronAndBasket.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
