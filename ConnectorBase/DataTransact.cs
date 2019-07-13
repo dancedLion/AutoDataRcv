@@ -137,4 +137,10 @@ namespace CHQ.RD.ConnectorBase
         }
 
     }
+
+    public class IronAndBasketDataTransact
+    {
+
+    }
+
 }

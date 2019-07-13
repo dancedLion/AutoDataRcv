@@ -93,6 +93,14 @@
       <Project>{340315dd-849a-43f6-b9e7-f277d4baf7a0}</Project>
       <Name>S7Sharp7Driver</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SerialDriver\SerialDriver.csproj">
+      <Project>{89a00632-3401-4958-a581-abfe4e5cd364}</Project>
+      <Name>SerialDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebServiceListener\WebServiceListener.csproj">
+      <Project>{06b429b7-1c84-4a03-86bc-834aa9a5ef78}</Project>
+      <Name>WebServiceListener</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

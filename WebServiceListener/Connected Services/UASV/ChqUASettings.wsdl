@@ -322,6 +322,18 @@
   <wsdl:message name="IChqUASettings_getLtWave01Hist_OutputMessage">
     <wsdl:part name="parameters" element="tns:getLtWave01HistResponse" />
   </wsdl:message>
+  <wsdl:message name="IChqUASettings_getLastMeasureDataOfIron_InputMessage">
+    <wsdl:part name="parameters" element="tns:getLastMeasureDataOfIron" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getLastMeasureDataOfIron_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getLastMeasureDataOfIronResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getLastMeasureDataOfBasket_InputMessage">
+    <wsdl:part name="parameters" element="tns:getLastMeasureDataOfBasket" />
+  </wsdl:message>
+  <wsdl:message name="IChqUASettings_getLastMeasureDataOfBasket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getLastMeasureDataOfBasketResponse" />
+  </wsdl:message>
   <wsdl:portType name="IChqUASettings">
     <wsdl:operation name="GetData">
       <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/GetData" message="tns:IChqUASettings_GetData_InputMessage" />
@@ -530,6 +542,14 @@
     <wsdl:operation name="getLtWave01Hist">
       <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getLtWave01Hist" message="tns:IChqUASettings_getLtWave01Hist_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getLtWave01HistResponse" message="tns:IChqUASettings_getLtWave01Hist_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getLastMeasureDataOfIron">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getLastMeasureDataOfIron" message="tns:IChqUASettings_getLastMeasureDataOfIron_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getLastMeasureDataOfIronResponse" message="tns:IChqUASettings_getLastMeasureDataOfIron_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getLastMeasureDataOfBasket">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChqUASettings/getLastMeasureDataOfBasket" message="tns:IChqUASettings_getLastMeasureDataOfBasket_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChqUASettings/getLastMeasureDataOfBasketResponse" message="tns:IChqUASettings_getLastMeasureDataOfBasket_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IChqUASettings" type="tns:IChqUASettings">
@@ -995,6 +1015,24 @@
     </wsdl:operation>
     <wsdl:operation name="getLtWave01Hist">
       <soap:operation soapAction="http://tempuri.org/IChqUASettings/getLtWave01Hist" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLastMeasureDataOfIron">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getLastMeasureDataOfIron" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLastMeasureDataOfBasket">
+      <soap:operation soapAction="http://tempuri.org/IChqUASettings/getLastMeasureDataOfBasket" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

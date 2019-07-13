@@ -318,12 +318,10 @@ namespace CHQ.RD.ConnectorBase
             m_driver = (IDriverBase)m_driverclass.Assembly.CreateInstance(m_driverclass.FullName);
             ret=m_driver.AcceptSetting(m_conndriverset.DriverSet.Host, m_dataitems);
             //如果驱动是主动读取且有需求则传
-            if (m_conndriverset.DriverSet.ReadMode == 1)
-            {
-                m_driver.ReadMode = m_conndriverset.DriverSet.ReadMode;
-                m_driver.ReadInterval = m_conndriverset.DriverSet.ReadInterval;
-                m_driver.TransMode = m_conndriverset.DriverSet.TransMode;
-            }
+            m_driver.ReadMode = m_conndriverset.DriverSet.ReadMode;
+            m_driver.ReadInterval = m_conndriverset.DriverSet.ReadInterval;
+            m_driver.TransMode = m_conndriverset.DriverSet.TransMode;
+            
             //设置状态
             if (ret != 0)
             {
@@ -583,17 +581,19 @@ namespace CHQ.RD.ConnectorBase
                 {
                     ListKeyValue t = ((Queue<ListKeyValue>)m_driver.ValueList).Dequeue();
                     object curvalue = m_host.ValueList[t.Id];
-                    if(curvalue==null&&t.Value!=null || t.Value == null && curvalue != null)
-                    {
-                        onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
-                    }
-                    else
-                    {
-                        if (!object.Equals(curvalue, t.Value))
-                        {
-                            onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
-                        }
-                    }
+                    //侦听模式下，收到数据就要体现
+                    onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
+                    //if(curvalue==null&&t.Value!=null || t.Value == null && curvalue != null)
+                    //{
+                    //    onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
+                    //}
+                    //else
+                    //{
+                    //    if (!object.Equals(curvalue, t.Value))
+                    //    {
+                    //        onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
+                    //    }
+                    //}
                 }
             }
         }
@@ -617,11 +617,14 @@ namespace CHQ.RD.ConnectorBase
         }
 
 
-        
+        public virtual void WriteErrorMessage(string message)
+        {
+            TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().FullName + message);
+        }
 
 
         #region 内部事件和方法
-        public void onDataChanged(object sender,DataChangeEventArgs e)
+        public virtual void onDataChanged(object sender,DataChangeEventArgs e)
         {
             //写值
             m_host.ValueList[e.ItemId] = e.Value;

@@ -30,6 +30,30 @@ namespace CHQ.RD.ConnectorBase
         
 
         #region 驱动及驱动连接器
+        public static string getConnDriverAttribute(int connId,string attType,string attName)
+        {
+            string ret = "";
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(xmlfile);
+                XmlNodeList nodes = doc.DocumentElement.SelectNodes("ConnDrivers/ConnDriver[@Id=" + connId + "]/" + attType);
+                if (nodes != null && nodes.Count > 0)
+                {
+                    ret = nodes[0].Attributes[attName].Value;
+                }
+                else
+                {
+                    throw new Exception("未找到指定节点！");
+                }
+            }
+            catch(Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, "getConnDriverAttribute("+connId+";"+attType+";"+attName+"): Error" + ex.Message);
+            }
+            return ret;
+        }
+
         /// <summary>
         /// 获取驱动连接器设置列表
         /// </summary>

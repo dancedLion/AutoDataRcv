@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CDIronAndBasket.cs" />
     <Compile Include="ConnDriverBase.cs" />
     <Compile Include="ConnectBase.cs" />
     <Compile Include="ConnectorEvent.cs" />
@@ -173,6 +174,10 @@
     <ProjectReference Include="..\SerialDriver\SerialDriver.csproj">
       <Project>{89a00632-3401-4958-a581-abfe4e5cd364}</Project>
       <Name>SerialDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebServiceListener\WebServiceListener.csproj">
+      <Project>{06b429b7-1c84-4a03-86bc-834aa9a5ef78}</Project>
+      <Name>WebServiceListener</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

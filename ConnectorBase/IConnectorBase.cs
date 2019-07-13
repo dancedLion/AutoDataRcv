@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CHQ.RD.DataContract;
-
+using CHQ.RD.DriverBase;
 namespace CHQ.RD.ConnectorBase
 {
     public interface IConnectorBase:IDisposable
@@ -30,6 +30,7 @@ namespace CHQ.RD.ConnectorBase
         ConnDriverStatus Status{ get; set; }
         List<ConnDriverDataItem> DataItems { get; set; }
         ConnDriverSetting ConnDriverSet { get; set; }
+        IDriverBase Driver { get; }
         int ID { get; set; }
         int Init();
         int Start();

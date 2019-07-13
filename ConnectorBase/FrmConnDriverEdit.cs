@@ -233,7 +233,7 @@ namespace CHQ.RD.ConnectorBase
         void toSelectDriver()
         {
             FrmDriverClassView v = new FrmDriverClassView();
-            if (v.SelectDriver() == 1)
+            if (v.SelectDriver() == 0)
             {
                 AssemblyFile file = v.ReturnedValue;
                 if (m_file==null||file.ClassName != m_file.ClassName)
@@ -255,6 +255,7 @@ namespace CHQ.RD.ConnectorBase
                         }
                     }
                     m_file = file;
+                    tbxdriverclass.Text = m_file.DriverName;
                 }
             }
         }
@@ -328,7 +329,7 @@ namespace CHQ.RD.ConnectorBase
                 }
                 tbxid.Text = conndriver.Id.ToString();
                 tbxname.Text = conndriver.Name;
-                tbxConnDriverType.Text = conndriver.ConnDriverClass.FullName;
+                tbxConnDriverType.Text = conndriver.ConnDriverClass.FullName==null?"":conndriver.ConnDriverClass.FullName;
                 tbxconndriverreadinterval.Text = conndriver.ReadInterval.ToString();
                 cbxconndriversendmode.SelectedIndex = conndriver.TransMode;
                 cboconndriverreadmode.SelectedIndex = conndriver.ReadMode;

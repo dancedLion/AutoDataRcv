@@ -1444,6 +1444,12 @@ namespace CHQ.RD.WebServiceListener.UASV {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChqUASettings/getLtWave01Hist", ReplyAction="http://tempuri.org/IChqUASettings/getLtWave01HistResponse")]
         string getLtWave01Hist(System.DateTime begindate, System.DateTime enddate, bool recent);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChqUASettings/getLastMeasureDataOfIron", ReplyAction="http://tempuri.org/IChqUASettings/getLastMeasureDataOfIronResponse")]
+        System.Data.DataTable getLastMeasureDataOfIron(System.DateTime dateTime);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChqUASettings/getLastMeasureDataOfBasket", ReplyAction="http://tempuri.org/IChqUASettings/getLastMeasureDataOfBasketResponse")]
+        System.Data.DataTable getLastMeasureDataOfBasket(System.DateTime dateTime);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1679,6 +1685,14 @@ namespace CHQ.RD.WebServiceListener.UASV {
         
         public string getLtWave01Hist(System.DateTime begindate, System.DateTime enddate, bool recent) {
             return base.Channel.getLtWave01Hist(begindate, enddate, recent);
+        }
+        
+        public System.Data.DataTable getLastMeasureDataOfIron(System.DateTime dateTime) {
+            return base.Channel.getLastMeasureDataOfIron(dateTime);
+        }
+        
+        public System.Data.DataTable getLastMeasureDataOfBasket(System.DateTime dateTime) {
+            return base.Channel.getLastMeasureDataOfBasket(dateTime);
         }
     }
 }

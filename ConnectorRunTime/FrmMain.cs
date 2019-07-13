@@ -135,7 +135,24 @@ namespace CHQ.RD.ConnectorRunTime
 
         }
 
-
+        void openDebug()
+        {
+            if (listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)
+            {
+                IConnDriverBase cd = (IConnDriverBase)listView1.SelectedItems[0].Tag;
+                listView1.SelectedItems[0].BackColor = Color.AliceBlue;
+                cd.Driver.DebugMode = 0;
+            }
+        }
+        void closeDebug()
+        {
+            if (listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)
+            {
+                IConnDriverBase cd = (IConnDriverBase)listView1.SelectedItems[0].Tag;
+                listView1.SelectedItems[0].BackColor = Color.White;
+                cd.Driver.DebugMode = -1;
+            }
+        }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
@@ -167,6 +184,25 @@ namespace CHQ.RD.ConnectorRunTime
             if (e.KeyCode == Keys.F5)
             {
                 refreshStatus();
+            }
+        }
+
+        private void toolStripButton6_Click(object sender, EventArgs e)
+        {
+            openDebug();
+        }
+
+        private void toolStripButton7_Click(object sender, EventArgs e)
+        {
+            closeDebug();
+        }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            foreach(ListViewItem litem in listView1.Items)
+            {
+                IConnDriverBase cd = (IConnDriverBase)litem.Tag;
+                cd.Driver.Dispose();
             }
         }
     }

@@ -3,10 +3,15 @@
   <DriverAssemblies>
     <Assemblie Id="1" DriverName="S7Sharp7驱动" ClassName="CHQ.RD.S7Sharp7Driver.S7Sharp7Driver" AssemblyInfo="CHQ.RD.S7Sharp7Driver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" FileName="E:\vsprojs\CHQ.AUTODATA\Console\S7Sharp7Driver\bin\Debug\CHQ.RD.S7Sharp7Driver.dll" />
     <Assemblie Id="3" DriverName="Sharp7_区内连续读取" ClassName="CHQ.RD.S7Sharp7Driver.S7SharpDriverWithMultiVar" AssemblyInfo="CHQ.RD.S7Sharp7Driver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" FileName="E:\vsprojs\CHQ.AUTODATA\Console\Console\bin\Debug\CHQ.RD.S7Sharp7Driver.dll" />
+    <Assemblie Id="5" DriverName="铁水和料篮计量" ClassName="CHQ.RD.WebServiceListener.MeasOfIronAndBasket" AssemblyInfo="CHQ.RD.WebServiceListener, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" FileName="E:\vsprojs\CHQ.AUTODATA\Console\WebServiceListener\bin\Debug\CHQ.RD.WebServiceListener.dll" />
   </DriverAssemblies>
   <ConnDrivers>
     <ConnDriver Id="1" Name="某个连接" ConnDriverClass="CHQ.RD.ConnectorBase.ConnDriverBase" AssemblieId="3" ReadInterval="2000" ReadMode="0" TransMode="0">
-      <Driver Host="IPAddress=192.168.106.11;Port=102;RackNo=0;SlotNo=2" ReadInterval="2000" ReadMode="0" TransMode="0" />
+      <Driver Host="IPAddress=192.168.106.11;Port=102;RackNo=0;SlotNo=2" ReadInterval="2000" ReadMode="1" TransMode="0" />
+    </ConnDriver>
+    <ConnDriver Id="5" ConnDriverClass="CHQ.RD.ConnectorBase.CDIronAndBasket" AssemblieId="5" ReadInterval="2000" ReadMode="1" TransMode="0" Name="料篮和铁水计量">
+      <Driver ReadInterval="10000" TransMode="1" Host="Host=" ReadMode="1" />
+      <LocalDataStorage ConnectionString="data source=192.168.1.39;database=uasettings;user id=uaservice;password=123qwe.,">
     </ConnDriver>
   </ConnDrivers>
   <CustomViews>

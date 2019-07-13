@@ -48,6 +48,7 @@
     <Compile Include="S7.cs" />
     <Compile Include="S7SharpDriver.cs" />
     <Compile Include="SerialDriver.cs" />
+    <Compile Include="WebListener.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
