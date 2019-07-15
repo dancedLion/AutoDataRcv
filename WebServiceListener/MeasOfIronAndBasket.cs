@@ -116,14 +116,17 @@ namespace CHQ.RD.WebServiceListener
                                 dr["suttle"].ToString() + ";" +
                                 dr["grosstime"].ToString()+";"+
                                 dr["suttletime"].ToString();
-                            m_values.Enqueue(new ListKeyValue
+                            lock (m_values)
                             {
-                                Id = m_datalist.Find((ConnDriverDataItem x) => x.Address.IndexOf("Iron") >= 0).Id,
-                                Value = s
-                            });
-                            if (row.LastQueryTime < DateTime.Parse(dr["suttletime"].ToString()))
-                            {
-                                row.LastQueryTime = DateTime.Parse(dr["suttletime"].ToString());
+                                m_values.Enqueue(new ListKeyValue
+                                {
+                                    Id = m_datalist.Find((ConnDriverDataItem x) => x.Address.IndexOf("Iron") >= 0).Id,
+                                    Value = s
+                                });
+                                if (row.LastQueryTime < DateTime.Parse(dr["suttletime"].ToString()))
+                                {
+                                    row.LastQueryTime = DateTime.Parse(dr["suttletime"].ToString());
+                                }
                             }
                         }
                         //最新的日期是指计量行中的最大的净重日期
@@ -145,11 +148,14 @@ namespace CHQ.RD.WebServiceListener
                                 dr["suttle"].ToString() + ";" +
                                 dr["grosstime"].ToString()+";"+
                                 dr["suttletime"].ToString();
-                            m_values.Enqueue(new ListKeyValue
+                            lock (m_values)
                             {
-                                Id = m_datalist.Find((ConnDriverDataItem x) => x.Address.IndexOf("Basket") >= 0).Id,
-                                Value = s
-                            });
+                                m_values.Enqueue(new ListKeyValue
+                                {
+                                    Id = m_datalist.Find((ConnDriverDataItem x) => x.Address.IndexOf("Basket") >= 0).Id,
+                                    Value = s
+                                });
+                            }
                             if (row.LastQueryTime < DateTime.Parse(dr["suttletime"].ToString()))
                             {
                                 row.LastQueryTime = DateTime.Parse(dr["suttletime"].ToString());
@@ -195,7 +201,7 @@ namespace CHQ.RD.WebServiceListener
                 XmlElement node =(XmlElement)doc.DocumentElement.SelectSingleNode("LastTime");
                 if (node != null)
                 {
-                    node.SetAttribute(materialtype, dt.ToString("yyyy-MM-dd hh:mm:ss"));
+                    node.SetAttribute(materialtype, dt.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
                 doc.Save(settingsfile);
                 ret = 0;

@@ -579,10 +579,13 @@ namespace CHQ.RD.ConnectorBase
                 mre.WaitOne();
                 if (((Queue<ListKeyValue>)m_driver.ValueList).Count > 0)
                 {
-                    ListKeyValue t = ((Queue<ListKeyValue>)m_driver.ValueList).Dequeue();
-                    object curvalue = m_host.ValueList[t.Id];
-                    //侦听模式下，收到数据就要体现
-                    onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
+                    lock (m_driver.ValueList)
+                    {
+                        ListKeyValue t = ((Queue<ListKeyValue>)m_driver.ValueList).Dequeue();
+                        object curvalue = m_host.ValueList[t.Id];
+                        //侦听模式下，收到数据就要体现
+                        onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
+                    }
                     //if(curvalue==null&&t.Value!=null || t.Value == null && curvalue != null)
                     //{
                     //    onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
