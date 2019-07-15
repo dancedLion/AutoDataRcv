@@ -24,8 +24,9 @@ namespace CHQ.RD.WebServiceListener
         private string settingsfile = AppDomain.CurrentDomain.BaseDirectory + "IronAndBasket.xml";
         string errorfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\WebServiceListenerError.xml";
         DateTime currenttime = DateTime.Now;
-        ManualResetEvent mre = new ManualResetEvent(false);
-        Thread m_readthread = null;
+        //ManualResetEvent mre = new ManualResetEvent(false);
+        //Thread m_readthread = null; //有严重的性能问题
+        Timer m_readtimer = null;
         List<MeasRow> m_items = new List<MeasRow>();
         Queue<ListKeyValue> m_values = new Queue<ListKeyValue>();
 
@@ -53,8 +54,8 @@ namespace CHQ.RD.WebServiceListener
                 MaterialType = "Basket",
                 LastQueryTime = getLastDate("Basket")
             });
-            m_readthread = new Thread(ReadingValue);
-            m_readthread.Start();
+            //m_readthread = new Thread(ReadingValue);
+            //m_readthread.Start();
         }
 
         public override int AcceptSetting(object host, object list)
@@ -77,102 +78,96 @@ namespace CHQ.RD.WebServiceListener
         public override int Start()
         {
             int ret = 0;
-            mre.Set();
+            //mre.Set();
+            m_readtimer = new Timer(ReadingValue, null, ReadInterval, ReadInterval);
             if (DebugMode == 0) TxtLogWriter.WriteMessage(this.GetType().FullName + ".Started at" + DateTime.Now.ToString("hh:mm:ss"));
             return ret;
         }
         public override int Stop()
         {
-            mre.Reset();
+            //mre.Reset();
+            m_readtimer.Dispose();
+            m_readtimer = null;
             return 0;
             //return base.Stop();
         }
         /// <summary>
         /// 根据取回的计量数据转换为字符并传给驱动连接器
         /// </summary>
-        public void ReadingValue()
+        public void ReadingValue(object state)
         {
-            while (true)
+            //mre.WaitOne();
+            try
             {
-                mre.WaitOne();
-                try
+                if (DebugMode == 0) TxtLogWriter.WriteMessage(this.GetType().FullName + ".Start Reading at" + DateTime.Now.ToString("hh:mm:ss"));
+                UASV.ChqUASettingsClient client = new UASV.ChqUASettingsClient();
+                //读取铁水数据
+                MeasRow row = m_items.Find((MeasRow x) => x.MaterialType == "Iron");
+                DataTable dt = client.getLastMeasureDataOfIron(row.LastQueryTime);
+                //如果有行则写最新的日期
+                if (dt.Rows.Count > 0)
                 {
-                    if (DebugMode == 0) TxtLogWriter.WriteMessage(this.GetType().FullName + ".Start Reading at" + DateTime.Now.ToString("hh:mm:ss"));
-                    UASV.ChqUASettingsClient client = new UASV.ChqUASettingsClient();
-                    //读取铁水数据
-                    MeasRow row = m_items.Find((MeasRow x) => x.MaterialType == "Iron");
-                    DataTable dt = client.getLastMeasureDataOfIron(row.LastQueryTime);
-                    //如果有行则写最新的日期
-                    if (dt.Rows.Count > 0)
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        foreach (DataRow dr in dt.Rows)
+                        string s = dr["carno"].ToString() + ";" +
+                            dr["materialname"].ToString() + ";" +
+                            dr["sourceName"].ToString() + ";" +
+                            dr["targetName"].ToString() + ";" +
+                            dr["gross"].ToString() + ";" +
+                            dr["tare"].ToString() + ";" +
+                            dr["suttle"].ToString() + ";" +
+                            dr["grosstime"].ToString() + ";" +
+                            dr["suttletime"].ToString();
+                        m_values.Enqueue(new ListKeyValue
                         {
-                            string s = dr["carno"].ToString()+";"+
-                                dr["materialname"].ToString() + ";" +
-                                dr["sourceName"].ToString() + ";" +
-                                dr["targetName"].ToString() + ";" +
-                                dr["gross"].ToString() + ";" +
-                                dr["tare"].ToString() + ";" +
-                                dr["suttle"].ToString() + ";" +
-                                dr["grosstime"].ToString()+";"+
-                                dr["suttletime"].ToString();
-                            lock (m_values)
-                            {
-                                m_values.Enqueue(new ListKeyValue
-                                {
-                                    Id = m_datalist.Find((ConnDriverDataItem x) => x.Address.IndexOf("Iron") >= 0).Id,
-                                    Value = s
-                                });
-                                if (row.LastQueryTime < DateTime.Parse(dr["suttletime"].ToString()))
-                                {
-                                    row.LastQueryTime = DateTime.Parse(dr["suttletime"].ToString());
-                                }
-                            }
+                            Id = m_datalist.Find((ConnDriverDataItem x) => x.Address.IndexOf("Iron") >= 0).Id,
+                            Value = s
+                        });
+                        if (row.LastQueryTime < DateTime.Parse(dr["suttletime"].ToString()))
+                        {
+                            row.LastQueryTime = DateTime.Parse(dr["suttletime"].ToString());
                         }
-                        //最新的日期是指计量行中的最大的净重日期
-                        saveLastDate(row.LastQueryTime, row.MaterialType);
                     }
-                    //取料篮数据
-                    row = m_items.Find((MeasRow x) => x.MaterialType == "Basket");
-                    dt = client.getLastMeasureDataOfBasket(row.LastQueryTime);
-                    if (dt.Rows.Count > 0)
+                    //最新的日期是指计量行中的最大的净重日期
+                    saveLastDate(row.LastQueryTime, row.MaterialType);
+                }
+                //取料篮数据
+                row = m_items.Find((MeasRow x) => x.MaterialType == "Basket");
+                dt = client.getLastMeasureDataOfBasket(row.LastQueryTime);
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        foreach (DataRow dr in dt.Rows)
+                        string s = dr["basketno"].ToString() + ";" +
+                            dr["materialname"].ToString() + ";" +
+                            dr["sourceName"].ToString() + ";" +
+                            dr["targetName"].ToString() + ";" +
+                            dr["gross"].ToString() + ";" +
+                            dr["tare"].ToString() + ";" +
+                            dr["suttle"].ToString() + ";" +
+                            dr["grosstime"].ToString() + ";" +
+                            dr["suttletime"].ToString();
+                        m_values.Enqueue(new ListKeyValue
                         {
-                            string s = dr["basketno"].ToString()+";"+
-                                dr["materialname"].ToString() + ";" +
-                                dr["sourceName"].ToString() + ";" +
-                                dr["targetName"].ToString() + ";" +
-                                dr["gross"].ToString() + ";" +
-                                dr["tare"].ToString() + ";" +
-                                dr["suttle"].ToString() + ";" +
-                                dr["grosstime"].ToString()+";"+
-                                dr["suttletime"].ToString();
-                            lock (m_values)
-                            {
-                                m_values.Enqueue(new ListKeyValue
-                                {
-                                    Id = m_datalist.Find((ConnDriverDataItem x) => x.Address.IndexOf("Basket") >= 0).Id,
-                                    Value = s
-                                });
-                            }
-                            if (row.LastQueryTime < DateTime.Parse(dr["suttletime"].ToString()))
-                            {
-                                row.LastQueryTime = DateTime.Parse(dr["suttletime"].ToString());
-                            }
+                            Id = m_datalist.Find((ConnDriverDataItem x) => x.Address.IndexOf("Basket") >= 0).Id,
+                            Value = s
+                        });
+                        if (row.LastQueryTime < DateTime.Parse(dr["suttletime"].ToString()))
+                        {
+                            row.LastQueryTime = DateTime.Parse(dr["suttletime"].ToString());
                         }
-                        //最新的日期是指计量行中的最大的净重日期
-                        saveLastDate(row.LastQueryTime, row.MaterialType);
                     }
-                    if (DebugMode == 0) TxtLogWriter.WriteMessage(this.GetType().FullName + ".End Reading at" + DateTime.Now.ToString("hh:mm:ss"));
+                    //最新的日期是指计量行中的最大的净重日期
+                    saveLastDate(row.LastQueryTime, row.MaterialType);
+                }
+                if (DebugMode == 0) TxtLogWriter.WriteMessage(this.GetType().FullName + ".End Reading at" + DateTime.Now.ToString("hh:mm:ss"));
 
-                    //执行完成后休息一会
-                    Thread.Sleep(ReadInterval);
-                }
-                catch (Exception ex)
-                {
-                    TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().FullName + ".ReadValue Error:" + ex.Message);
-                }
+                //执行完成后休息一会
+                //Thread.Sleep(ReadInterval);
+            }
+            catch (Exception ex)
+            {
+                TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().FullName + ".ReadValue Error:" + ex.Message);
             }
         }
 
@@ -216,10 +211,16 @@ namespace CHQ.RD.WebServiceListener
         public override void Dispose()
         {
             m_items.Clear();
-            mre.Reset();
-            m_readthread.Abort();
-            m_readthread = null;
+            //mre.Reset();
+            //m_readthread.Abort();
+            //m_readthread = null;
+            m_readtimer.Dispose();
+            m_readtimer = null;
             m_values.Clear();
+            m_datalist.Clear();
+            m_items = null;
+            m_values = null;
+            m_datalist = null;
         }
     }
     public class MeasRow
