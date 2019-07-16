@@ -418,8 +418,8 @@ namespace CHQ.RD.ConnectorBase
                 }
                 else
                 {
-                    m_driver.Stop();
                     mre.Reset();
+                    m_driver.Stop();
                 }
                 m_status = ConnDriverStatus.Stoped;
             }
@@ -597,7 +597,9 @@ namespace CHQ.RD.ConnectorBase
                     //        onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
                     //    }
                     //}
+
                 }
+                Thread.Sleep(ReadInterval);
             }
         }
         #endregion

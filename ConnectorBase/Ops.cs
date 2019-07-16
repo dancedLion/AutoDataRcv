@@ -108,43 +108,32 @@ namespace CHQ.RD.ConnectorBase
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlfile);
-                XmlNodeList nodes = doc.GetElementsByTagName("ConnDriver");
-                XmlNode node = null;
-                foreach (XmlNode n in nodes)
+                XmlNodeList nodes = doc.DocumentElement.SelectNodes("ConnDrivers/ConnDriver[@Id=" + connDriverId + "]");
+                XmlNode pNode = null;
+                if (nodes == null || nodes.Count == 0) throw new Exception("指定的驱动连接器ID不存在");
+                pNode = nodes[0];
+                //doc.GetElementsByTagName("ConnDriver");
+                nodes = nodes[0].SelectNodes("Driver");
+                if (nodes != null && nodes.Count > 1)
                 {
-                    if (n.Attributes["Id"].Value == connDriverId.ToString())
+                    for(int j = nodes.Count; j > 0; j--)
                     {
-                        node = n;
-                        break;
+                        pNode.RemoveChild(nodes[j - 1]);
                     }
                 }
-                if (node == null)
+                XmlElement elem = null;
+                if (nodes == null||nodes.Count==0)
                 {
-                    throw new Exception("指定的驱动连接ID不存在！");
+                    elem = doc.CreateElement("Driver");
+                    pNode.AppendChild(elem);
                 }
                 else
                 {
-                    //更新节点
-                    if (node.ChildNodes.Count == 1)
-                    {
-                        ((XmlElement)node.ChildNodes[0]).SetAttribute("ReadInterval", setting.ReadInterval.ToString());
-                        ((XmlElement)node.ChildNodes[0]).SetAttribute("ReadMode", setting.ReadMode.ToString());
-                        ((XmlElement)node.ChildNodes[0]).SetAttribute("TransMode",setting.TransMode.ToString());
-                        ((XmlElement)node.ChildNodes[0]).SetAttribute("Host",setting.Host);
-                    }
-                    else
-                    {
-                        while (node.HasChildNodes)
-                        {
-                            node.RemoveChild(node.FirstChild);
-                        }
-                        XmlElement elem = doc.CreateElement("Driver");
-                        elem.SetAttribute("ReadInterval", setting.ReadInterval.ToString());
-                        elem.SetAttribute("TransMode", setting.ReadMode.ToString());
-                        elem.SetAttribute("TransMode", setting.TransMode.ToString());
-                        elem.SetAttribute("Host", setting.Host);
-                        node.AppendChild(elem);
-                    }
+                    elem = (XmlElement)nodes[0];
+                    elem.SetAttribute("ReadInterval", setting.ReadInterval.ToString());
+                    elem.SetAttribute("TransMode", setting.ReadMode.ToString());
+                    elem.SetAttribute("TransMode", setting.TransMode.ToString());
+                    elem.SetAttribute("Host", setting.Host);
                 }
                 doc.Save(xmlfile);
             }

@@ -346,5 +346,9 @@ namespace CHQ.RD.DriverBase
             }
             return ret;
         }
+        public virtual void WriteErrorMessage(string msg)
+        {
+            TxtLogWriter.WriteErrorMessage(errorfile, this.GetType().FullName + "." + msg);
+        }
     }
 }

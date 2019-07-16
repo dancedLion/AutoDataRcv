@@ -214,8 +214,11 @@ namespace CHQ.RD.WebServiceListener
             //mre.Reset();
             //m_readthread.Abort();
             //m_readthread = null;
-            m_readtimer.Dispose();
-            m_readtimer = null;
+            if (m_readtimer != null)
+            {
+                m_readtimer.Dispose();
+                m_readtimer = null;
+            }
             m_values.Clear();
             m_datalist.Clear();
             m_items = null;

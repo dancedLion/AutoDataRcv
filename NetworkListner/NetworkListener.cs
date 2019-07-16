@@ -106,11 +106,13 @@ namespace CHQ.RD.NetworkListener
         public virtual void startUDPListener()
         {
             UdpClient client = new UdpClient(m_port);
+            IPEndPoint iep = new IPEndPoint(IPAddress.Any, 0);
             while (true)
             {
                 mre.WaitOne();
-                byte[] buffer = new byte[1024];
-
+                byte[] buffer = client.Receive(ref iep);
+                string result = Encoding.Default.GetString(buffer);
+                ParsingValues(result);
             }
         }
         public virtual void startTCPListener()
