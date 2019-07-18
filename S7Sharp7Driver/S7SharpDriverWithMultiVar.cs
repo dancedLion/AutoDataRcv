@@ -356,16 +356,16 @@ namespace CHQ.RD.S7Sharp7Driver
                                 m_values[item.Id] = S7.GetRealAt(buff, item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.INT:
-                                m_values[item.Id]=S7.GetIntAt(buff,item.Address.Start-exp.Start);
+                                m_values[item.Id]=S7.GetDIntAt(buff,item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.INT16:
-                                m_values[item.Id] = S7.GetSIntAt(buff, item.Address.Start-exp.Start);
+                                m_values[item.Id] = S7.GetIntAt(buff, item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.UINT16:
-                                m_values[item.Id] = S7.GetUSIntAt(buff, item.Address.Start-exp.Start);
+                                m_values[item.Id] = S7.GetUIntAt(buff, item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.UINT32:
-                                m_values[item.Id] = S7.GetUIntAt(buff, item.Address.Start-exp.Start);
+                                m_values[item.Id] = S7.GetUDIntAt(buff, item.Address.Start-exp.Start);
                                 break;
                             case S7DataType.TEXT:
                                 m_values[item.Id] = Encoding.UTF8.GetString(buff, item.Address.Start-exp.Start + 2, item.Address.DataLen-2);
