@@ -7,12 +7,13 @@ using System.Data.SqlClient;
 using System.Threading;
 using GeneralOPs;
 using CHQ.RD.DataContract;
+
 namespace CHQ.RD.ConnectorBase
 {
     public class VariableDeclare
     {
         public static string errorfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\DataTransactError.log";
-        public static List<ConnectorDataItem> AllItems = Ops.getConnectorDataItemList();
+        public static List<ConnectorDataItem> AllItems = ConnectorOps.getConnectorDataItemList();
         public static string TypeConvert(string sourceType)
         {
             string targetType = "VarChar";

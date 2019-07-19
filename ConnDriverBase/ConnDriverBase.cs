@@ -26,15 +26,16 @@ using System.Threading;
 using System.Reflection;    //创建驱动实例用
 using GeneralOPs;
 using System.Data;
-namespace CHQ.RD.ConnectorBase
+namespace CHQ.RD.ConnDriverBase
 {
     public class ConnDriverBase:IConnDriverBase
     {
-        public ConnDriverBase(int id,ConnectorBase host)
+        public ConnDriverBase(int id)
         {
             m_id = id;
-            m_host = host;
             m_dataitems = new List<ConnDriverDataItem>();
+            m_values = new Dictionary<int, object>();
+            m_valuestoRead = new Queue<ListKeyValue>();
             GetSettings();
  
         }
@@ -47,9 +48,8 @@ namespace CHQ.RD.ConnectorBase
         ConnDriverSetting m_conndriverset;
         //数据项列表
         List<ConnDriverDataItem> m_dataitems;
-
-        //连接管理器宿主
-        ConnectorBase m_host;
+        Queue<ListKeyValue> m_valuestoRead;
+        Dictionary<int, object> m_values;
         //数据发生变化事件
         DataChangeEventHandler m_datachangehandler;
         //数据处理线程
@@ -86,6 +86,22 @@ namespace CHQ.RD.ConnectorBase
         ///
         /// </summary>
         protected Thread m_thread;
+
+
+        /// <summary>
+        /// 用于将值传给ConnectorBase;
+        /// ConnectorBase主动读取
+        /// </summary>
+        public Queue<ListKeyValue> ValuesToRead
+        {
+            get { return m_valuestoRead; }
+            set { m_valuestoRead = value; }
+        }
+        public Dictionary<int,object> ValueList
+        {
+            get { return m_values; }
+            set { m_values = value; }
+        }
         public ConnDriverSetting ConnDriverSet
         {
             get { return m_conndriverset; }
@@ -254,7 +270,7 @@ namespace CHQ.RD.ConnectorBase
                 {
                     object value = m_driver.ReadData(item.Id);
 
-                    object curvalue = m_host.ValueList[item.Id];
+                    object curvalue = m_values[item.Id];
                     if (value == null)
                     {
                         if (curvalue != null)
@@ -302,6 +318,7 @@ namespace CHQ.RD.ConnectorBase
             catch(Exception ex)
             {
                 ret = null;
+                WriteErrorMessage(".ReadData(Id=" + itemid + ") Error:" + ex.Message);
             }
             return ret;
         }
@@ -582,7 +599,7 @@ namespace CHQ.RD.ConnectorBase
                     lock (m_driver.ValueList)
                     {
                         ListKeyValue t = ((Queue<ListKeyValue>)m_driver.ValueList).Dequeue();
-                        object curvalue = m_host.ValueList[t.Id];
+                        object curvalue = m_values[t.Id];
                         //侦听模式下，收到数据就要体现
                         onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
                     }
@@ -604,7 +621,7 @@ namespace CHQ.RD.ConnectorBase
         }
         #endregion
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (m_status == ConnDriverStatus.Running)
             {
@@ -619,6 +636,8 @@ namespace CHQ.RD.ConnectorBase
             m_driverclass = null;
             m_driver.Dispose();
             m_conndriverset = null;
+            m_values = null;
+            m_valuestoRead = null;
         }
 
 
@@ -632,8 +651,15 @@ namespace CHQ.RD.ConnectorBase
         public virtual void onDataChanged(object sender,DataChangeEventArgs e)
         {
             //写值
-            m_host.ValueList[e.ItemId] = e.Value;
-            m_host.SendData(m_conndriverset.DataItems.Find(x => x.Id == e.ItemId), e.Value);
+            m_values[e.ItemId] = e.Value;
+            lock (m_valuestoRead)
+            {
+                m_valuestoRead.Enqueue(new ListKeyValue
+                {
+                    Id = e.ItemId,
+                    Value = e.Value
+                });
+            }
             //触发handler
             if(m_datachangehandler!=null)
             {

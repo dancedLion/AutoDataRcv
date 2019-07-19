@@ -8,6 +8,7 @@ using CHQ.RD.DataContract;
 using GeneralOPs;
 using System.Net;
 using System.Net.Sockets;
+using CHQ.RD.ConnDriverBase;
 namespace CHQ.RD.ConnectorBase
 {
     /// <summary>
@@ -62,6 +63,7 @@ namespace CHQ.RD.ConnectorBase
             m_id = id;
             ValueList = new Dictionary<int, object>();
             connDriverList = new List<IConnDriverBase>();
+            readingThread = new Thread(ReadingData);
             startDataTransact();
         }
 
@@ -81,7 +83,7 @@ namespace CHQ.RD.ConnectorBase
             try
             {
                 //初始化各驱动连接器
-                List<ConnDriverSetting> allcds = Ops.getConnDriverSettingList();
+                List<ConnDriverSetting> allcds = ConnDriverBase.Ops.getConnDriverSettingList();
                 foreach (ConnDriverSetting cds in allcds)
                 {
                     try
@@ -90,7 +92,7 @@ namespace CHQ.RD.ConnectorBase
                             (IConnDriverBase)cds.ConnDriverClass.Assembly.
                             CreateInstance(cds.ConnDriverClass.FullName,true,
                             System.Reflection.BindingFlags.Default,null,
-                            new object[] {cds.Id,this},null,null
+                            new object[] {cds.Id},null,null
                             );
                             //new ConnDriverBase(cds.Id, this);
          
@@ -105,7 +107,7 @@ namespace CHQ.RD.ConnectorBase
                 //TODO:初始化自己，以供外部程序取数
 
                 //TODO:初始化数据读取
-                m_sendins = Ops.getDataSendingList(m_id);
+                m_sendins = ConnectorOps.getDataSendingList(m_id);
 
                 //TODO:初始化数据发送
             }
@@ -282,7 +284,7 @@ namespace CHQ.RD.ConnectorBase
         int startDataTransact()
         {
             int ret = 0;
-            m_localdata = Ops.getConnectorLocalDataList();
+            m_localdata = ConnectorOps.getConnectorLocalDataList();
             foreach (ConnectorLocalData cld in m_localdata)
             {
                 switch (cld.RDType)
@@ -301,6 +303,30 @@ namespace CHQ.RD.ConnectorBase
             return ret;
         }
         #endregion
+
+        #region 读取数值 
+        public virtual void ReadingData()
+        {
+            if (connDriverList != null)
+            {
+                foreach(IConnDriverBase iconndriver in connDriverList)
+                {
+                    lock (iconndriver.ValuesToRead)
+                    {
+                        ListKeyValue t = iconndriver.ValuesToRead.Dequeue();
+                        if (!ValueList[t.Id].Equals(t.Value))
+                        {
+                            onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
+                        }
+                    }
+                }
+            }
+            Thread.Sleep(1000);
+        }
+        #endregion
+
+
+
         //TODO:数据变化时的事件
         //附加的事件
         #region 内部事件和方法

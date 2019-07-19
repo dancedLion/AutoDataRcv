@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CHQ.RD.DataContract;
 using CHQ.RD.ConnectorBase;
+using CHQ.RD.ConnDriverBase;
 namespace CHQ.RD.ConnectorRunTime
 {
     public partial class FrmMain : Form
@@ -127,7 +128,7 @@ namespace CHQ.RD.ConnectorRunTime
                 List<IConnDriverBase> cdblist = new List<IConnDriverBase>();
                 foreach(ListViewItem item in listView1.SelectedItems)
                 {
-                    cdblist.Add((ConnDriverBase)item.Tag);
+                    cdblist.Add((IConnDriverBase)item.Tag);
                 }
                 FrmViewValue frm = new FrmViewValue();
                 frm.ViewData(m_connector, cdblist);

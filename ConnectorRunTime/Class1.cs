@@ -45,13 +45,13 @@ namespace CHQ.RD.ConnectorRunTime
 
         void init()
         {
-            m_rcId = Ops.getCurrentConnector();
+            m_rcId = ConnectorOps.getCurrentConnector();
             m_sendings = new List<DataSendingSet>();
             m_cb = new ConnectorBase.ConnectorBase(m_rcId);
             //加载connector设置
             //加载Host 设置
             //加载发送数据设置
-            m_sendings = Ops.getDataSendingList(m_rcId);
+            m_sendings = ConnectorOps.getDataSendingList(m_rcId);
             
         }
 

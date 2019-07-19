@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using CHQ.RD.ConnDriverBase;
 namespace CHQ.RD.ConnectorBase
 {
     public partial class FrmInputBox : Form

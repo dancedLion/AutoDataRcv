@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
-namespace CHQ.RD.ConnectorBase
+namespace CHQ.RD.ConnDriverBase
 {
     public partial class FrmDriverSettingEdit : Form
     {

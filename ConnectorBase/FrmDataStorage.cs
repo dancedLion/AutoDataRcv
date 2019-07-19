@@ -12,6 +12,7 @@ using System.Text;
 using System.Windows.Forms;
 using GeneralOPs;
 using CHQ.RD.DataContract;
+using CHQ.RD.ConnDriverBase;
 namespace CHQ.RD.ConnectorBase
 {
     public partial class FrmDataStorage : Form
@@ -126,7 +127,7 @@ namespace CHQ.RD.ConnectorBase
         {
             if (formToData())
             {
-                if (Ops.saveConnectorLocalData(m_cld) < 0)
+                if (ConnectorOps.saveConnectorLocalData(m_cld) < 0)
                 {
                     MyMessageBox.ShowErrorMessage("保存时出现错误，请查看日志!");
                 }

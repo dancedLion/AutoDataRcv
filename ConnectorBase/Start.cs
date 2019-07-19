@@ -10,7 +10,7 @@ namespace CHQ.RD.ConnectorBase
 
         public Start()
         {
-            m_runningConnectorId = Ops.getCurrentConnector();
+            m_runningConnectorId = ConnectorOps.getCurrentConnector();
             FrmConnectorBase frm = new FrmConnectorBase();
             frm.RunningConnectorId = m_runningConnectorId;
             frm.Show();

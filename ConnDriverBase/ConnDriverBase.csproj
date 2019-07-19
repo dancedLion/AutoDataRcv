@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F4FAEE95-32AF-4001-90AD-6AA7252E71EC}</ProjectGuid>
+    <ProjectGuid>{78F0FAF5-D8DD-4A7C-8506-4E16A40281CD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CHQ.RD.ConnectorRunTime</RootNamespace>
-    <AssemblyName>Chq.Rd.ConnectorRunTime</AssemblyName>
+    <RootNamespace>CHQ.RD.ConnDriverBase</RootNamespace>
+    <AssemblyName>CHQ.RD.ConnDriverBase</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,7 +29,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,38 +42,57 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CDIronAndBasket.cs" />
     <Compile Include="Class1.cs" />
-    <Compile Include="FrmMain.cs">
+    <Compile Include="ConnDriverBase.cs" />
+    <Compile Include="ConnectorEvent.cs" />
+    <Compile Include="FrmConnDriverEdit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmMain.Designer.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
+    <Compile Include="FrmConnDriverEdit.Designer.cs">
+      <DependentUpon>FrmConnDriverEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmViewValue.cs">
+    <Compile Include="FrmConnDriverView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmViewValue.Designer.cs">
-      <DependentUpon>FrmViewValue.cs</DependentUpon>
+    <Compile Include="FrmConnDriverView.Designer.cs">
+      <DependentUpon>FrmConnDriverView.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmDataItemsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDataItemsView.Designer.cs">
+      <DependentUpon>FrmDataItemsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDriverClassEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDriverClassEdit.Designer.cs">
+      <DependentUpon>FrmDriverClassEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDriverClassView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDriverClassView.Designer.cs">
+      <DependentUpon>FrmDriverClassView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDriverSettingEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDriverSettingEdit.Designer.cs">
+      <DependentUpon>FrmDriverSettingEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSelectClassFromFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSelectClassFromFile.Designer.cs">
+      <DependentUpon>FrmSelectClassFromFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IConnDriverBase.cs" />
+    <Compile Include="Ops.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FrmMain.resx">
-      <DependentUpon>FrmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmViewValue.resx">
-      <DependentUpon>FrmViewValue.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ConnDriverBase\ConnDriverBase.csproj">
-      <Project>{78f0faf5-d8dd-4a7c-8506-4e16a40281cd}</Project>
-      <Name>ConnDriverBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ConnectorBase\ConnectorBase.csproj">
-      <Project>{870f19e1-1bc7-4d09-8a67-50d077ce801e}</Project>
-      <Name>ConnectorBase</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataContract\DataContract.csproj">
       <Project>{e84f2e6a-a6b4-4cce-b385-7bf71d275538}</Project>
       <Name>DataContract</Name>
@@ -105,6 +121,26 @@
       <Project>{06b429b7-1c84-4a03-86bc-834aa9a5ef78}</Project>
       <Name>WebServiceListener</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmConnDriverEdit.resx">
+      <DependentUpon>FrmConnDriverEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmConnDriverView.resx">
+      <DependentUpon>FrmConnDriverView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDriverClassEdit.resx">
+      <DependentUpon>FrmDriverClassEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDriverClassView.resx">
+      <DependentUpon>FrmDriverClassView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDriverSettingEdit.resx">
+      <DependentUpon>FrmDriverSettingEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSelectClassFromFile.resx">
+      <DependentUpon>FrmSelectClassFromFile.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -25,25 +25,25 @@ namespace CHQ.RD.ConnectorBase
         //int DropDriverInstance();
     }
 
-    public interface IConnDriverBase:IDisposable
-    {
-        ConnDriverStatus Status{ get; set; }
-        List<ConnDriverDataItem> DataItems { get; set; }
-        ConnDriverSetting ConnDriverSet { get; set; }
-        IDriverBase Driver { get; }
-        int ID { get; set; }
-        int Init();
-        int Start();
-        int Stop();
-        int Close();
-        event DataChangeEventHandler DataChange;
-        /// <summary>
-        /// 重新初始化并启动
-        /// </summary>
-        /// <returns>0-成功</returns>
-        int Restart();
-        void AcceptValue();
-        //object ConnectDriver();
-        void ReadData(object state);
-    }
+    //public interface IConnDriverBase:IDisposable
+    //{
+    //    ConnDriverStatus Status{ get; set; }
+    //    List<ConnDriverDataItem> DataItems { get; set; }
+    //    ConnDriverSetting ConnDriverSet { get; set; }
+    //    IDriverBase Driver { get; }
+    //    int ID { get; set; }
+    //    int Init();
+    //    int Start();
+    //    int Stop();
+    //    int Close();
+    //    event DataChangeEventHandler DataChange;
+    //    /// <summary>
+    //    /// 重新初始化并启动
+    //    /// </summary>
+    //    /// <returns>0-成功</returns>
+    //    int Restart();
+    //    void AcceptValue();
+    //    //object ConnectDriver();
+    //    void ReadData(object state);
+    //}
 }

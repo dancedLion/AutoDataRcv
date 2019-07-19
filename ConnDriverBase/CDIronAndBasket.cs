@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-namespace CHQ.RD.ConnectorBase
+namespace CHQ.RD.ConnDriverBase
 {
     public class CDIronAndBasket:ConnDriverBase
     {
         string m_connectionstring = "";
 
-        public CDIronAndBasket(int id,ConnectorBase host) : base(id,host)
+        public CDIronAndBasket(int id) : base(id)
         {
             m_connectionstring = Ops.getConnDriverAttribute(ID, "LocalDataStorage", "ConnectionString");
         }

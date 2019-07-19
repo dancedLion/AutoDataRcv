@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using CHQ.RD.DriverBase;
 using CHQ.RD.DataContract;
-namespace CHQ.RD.ConnectorBase
+namespace CHQ.RD.ConnDriverBase
 {
     public partial class FrmSelectClassFromFile : Form
     {

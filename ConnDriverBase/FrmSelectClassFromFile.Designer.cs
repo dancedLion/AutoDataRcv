@@ -1,4 +1,4 @@
-﻿namespace CHQ.RD.ConnectorBase
+﻿namespace CHQ.RD.ConnDriverBase
 {
     partial class FrmSelectClassFromFile
     {

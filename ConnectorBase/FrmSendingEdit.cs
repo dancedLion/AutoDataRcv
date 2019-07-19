@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CHQ.RD.DataContract;
 using GeneralOPs;
+using CHQ.RD.ConnDriverBase;
 namespace CHQ.RD.ConnectorBase
 {
     public partial class FrmSendingEdit : Form
@@ -96,7 +97,7 @@ namespace CHQ.RD.ConnectorBase
             {
                 try
                 {
-                    if (Ops.saveDataSending(m_connectorId, m_set) >= 0)
+                    if (ConnectorOps.saveDataSending(m_connectorId, m_set) >= 0)
                     {
                         m_result = 1;
                         this.DialogResult = DialogResult.OK;

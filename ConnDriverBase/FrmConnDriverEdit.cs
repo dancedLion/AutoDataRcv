@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using CHQ.RD.DataContract;
 using CHQ.RD.DriverBase;
 using System.Reflection;
-namespace CHQ.RD.ConnectorBase
+namespace CHQ.RD.ConnDriverBase
 {
     public partial class FrmConnDriverEdit : Form
     {
@@ -255,7 +255,7 @@ namespace CHQ.RD.ConnectorBase
                         }
                     }
                     m_file = file;
-                    tbxdriverclass.Text = m_file.DriverName;
+                    tbxdriverclass.Text = m_file==null?"":m_file.DriverName;
                 }
             }
         }
@@ -329,7 +329,7 @@ namespace CHQ.RD.ConnectorBase
                 }
                 tbxid.Text = conndriver.Id.ToString();
                 tbxname.Text = conndriver.Name;
-                tbxConnDriverType.Text = conndriver.ConnDriverClass.FullName==null?"":conndriver.ConnDriverClass.FullName;
+                tbxConnDriverType.Text = conndriver.ConnDriverClass==null?"":conndriver.ConnDriverClass.FullName;
                 tbxconndriverreadinterval.Text = conndriver.ReadInterval.ToString();
                 cbxconndriversendmode.SelectedIndex = conndriver.TransMode;
                 cboconndriverreadmode.SelectedIndex = conndriver.ReadMode;

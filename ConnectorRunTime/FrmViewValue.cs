@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CHQ.RD.DataContract;
 using CHQ.RD.ConnectorBase;
+using CHQ.RD.ConnDriverBase;
 namespace CHQ.RD.ConnectorRunTime
 {
     public partial class FrmViewValue : Form
@@ -35,7 +36,7 @@ namespace CHQ.RD.ConnectorRunTime
             dataGridView1.DataSource = varList;
             m_host = host;
             //写入到表中
-            foreach (ConnDriverBase cd in conndrivers)
+            foreach (IConnDriverBase cd in conndrivers)
             {
                 foreach (ConnDriverDataItem item in cd.DataItems)
                 {
