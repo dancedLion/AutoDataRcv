@@ -22,6 +22,7 @@ namespace CHQ.RD.ConnectorBase
         #region variables and properties
         protected string XmlSettingFile =AppDomain.CurrentDomain.BaseDirectory+ "ConnectorSetting.xml";
         string errorlogfile = AppDomain.CurrentDomain.BaseDirectory + "logs\\connectorError.log";
+        string logFile = AppDomain.CurrentDomain.BaseDirectory + "logs\\connectorLog.log";
         protected Thread readingThread;
         protected Thread manageThread;
         protected Thread sendingThread;
@@ -58,6 +59,10 @@ namespace CHQ.RD.ConnectorBase
             set { m_sendins = value; }
         }
         #endregion
+
+
+
+        #region Connector Actions
         public ConnectorBase(int id)
         {
             m_id = id;
@@ -67,9 +72,6 @@ namespace CHQ.RD.ConnectorBase
             startDataTransact();
         }
 
-
-
-        #region Connector Actions
         /// <summary>
         /// 初始化
         /// 1、自身建立host
@@ -109,6 +111,7 @@ namespace CHQ.RD.ConnectorBase
                 //TODO:初始化数据读取
                 m_sendins = ConnectorOps.getDataSendingList(m_id);
 
+                readingThread.Start();
                 //TODO:初始化数据发送
             }
             catch(Exception ex)
@@ -119,12 +122,33 @@ namespace CHQ.RD.ConnectorBase
             return ret;
         }
 
+        public virtual void Dispose()
+        {
+            readingThread.Abort();
 
+            foreach (IConnDriverBase icdb in connDriverList)
+            {
+                icdb.Dispose();
+            }
+        }
+
+        public virtual void WriteErrorMessage(string msg)
+        {
+            TxtLogWriter.WriteErrorMessage(errorlogfile, this.GetType().FullName + "." + msg);
+        }
+        public virtual void WriteLogMessage(string msg)
+        {
+            TxtLogWriter.WriteMessage(logFile, this.GetType().FullName + "." + msg);
+        }
         public virtual int ReadValue(int itemid)
         {
             return 1;
         }
-
+        #endregion
+        
+        
+        
+        #region 驱动连接器控制
         public virtual int InitConnDriver(IConnDriverBase conn)
         {
             int ret = -1;
@@ -192,10 +216,14 @@ namespace CHQ.RD.ConnectorBase
         }
 
 
-        public virtual int SendData(ConnectorDataItem item,object value)
+
+        #endregion
+
+        #region datasending
+        public virtual int SendData(int itemId, object value)
         {
             int ret = 0;
-            foreach(DataSendingSet dss in m_sendins)
+            foreach (DataSendingSet dss in m_sendins)
             {
                 //本发送只发送有变化的数据
                 if (dss.SendInterval == 0)
@@ -203,24 +231,23 @@ namespace CHQ.RD.ConnectorBase
                     switch (dss.Via)
                     {
                         case 0: //socket
-                            sendViaSocket(dss, item, value);
+                            sendViaSocket(dss, itemId, value);
                             break;
                         case 1: //UDP
-                            sendViaUDP(dss, item, value);
+                            sendViaUDP(dss, itemId, value);
                             break;
                         case 2: //TCP
-                            sendViaTCP(dss, item, value);
+                            sendViaTCP(dss, itemId, value);
                             break;
                     }
                 }
             }
             //20190626添加，驱动连接器触发的实时数据变更产生的发送数据时，触发数据变更事件
-            onDataChanged(this, new DataChangeEventArgs(item.Id, value));
+            //onDataChanged(this, new DataChangeEventArgs(, value));
             return ret;
         }
-        #endregion
-        #region datasending
-        void sendViaUDP(DataSendingSet dss,ConnectorDataItem item,object value)
+
+        void sendViaUDP(DataSendingSet dss,int itemId,object value)
         {
             try
             {
@@ -229,7 +256,7 @@ namespace CHQ.RD.ConnectorBase
                 //Convert.ToString(e.Value) + ";" +
                 //DateTime.Now.ToString()
                 string msg = m_id + ";" +
-                    item.Id.ToString() + ";" +
+                    itemId.ToString() + ";" +
                     Convert.ToString(value) + ";" +
                     DateTime.Now.ToString();
                 UdpClient client = new UdpClient();
@@ -243,14 +270,14 @@ namespace CHQ.RD.ConnectorBase
                 TxtLogWriter.WriteErrorMessage(errorlogfile, this.GetType().ToString() + ".sendViaUDP Error:" + ex.Message);
             }
         }
-        void sendViaSocket(DataSendingSet dss, ConnectorDataItem item, object value)
+        void sendViaSocket(DataSendingSet dss, int itemId, object value)
         {
             try
             {
                 IPEndPoint iep = new IPEndPoint(IPAddress.Parse(dss.Host), dss.HostPort);
                 Socket sck = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                 sck.Connect(iep);
-                byte[] buffer = Encoding.UTF8.GetBytes(item.TransSig + ";" + value.ToString()+";"+DateTime.Now.ToString());
+                byte[] buffer = Encoding.UTF8.GetBytes(m_id + ";" +itemId.ToString()+";"+ value.ToString()+";"+DateTime.Now.ToString());
                 sck.Send(buffer);
                 sck.Close();
             }
@@ -259,7 +286,7 @@ namespace CHQ.RD.ConnectorBase
                 TxtLogWriter.WriteErrorMessage(errorlogfile, this.GetType().ToString() + ".SendViaSocket(" + dss.Name + ") Error:" + ex.Message);
             }
         }
-        void sendViaTCP(DataSendingSet dss, ConnectorDataItem item, object value)
+        void sendViaTCP(DataSendingSet dss, int itemId, object value)
         {
             try
             {
@@ -272,13 +299,7 @@ namespace CHQ.RD.ConnectorBase
         }
         #endregion
 
-        public void Dispose()
-        {
-            foreach(IConnDriverBase icdb in connDriverList)
-            {
-                icdb.Dispose();
-            }
-        }
+
         #region 本地数据存储处理
         SqlRealTimeDataTransact m_tran = null;
         int startDataTransact()
@@ -297,7 +318,6 @@ namespace CHQ.RD.ConnectorBase
                             m_tran = null;
                         }
                         break;
-
                 }
             }
             return ret;
@@ -307,21 +327,42 @@ namespace CHQ.RD.ConnectorBase
         #region 读取数值 
         public virtual void ReadingData()
         {
-            if (connDriverList != null)
+            while (true)
             {
-                foreach(IConnDriverBase iconndriver in connDriverList)
+                try
                 {
-                    lock (iconndriver.ValuesToRead)
+
+                    if (connDriverList != null)
                     {
-                        ListKeyValue t = iconndriver.ValuesToRead.Dequeue();
-                        if (!ValueList[t.Id].Equals(t.Value))
+                        foreach (IConnDriverBase iconndriver in connDriverList)
                         {
-                            onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
+                            lock (iconndriver.ValuesToRead)
+                            {
+                                while (iconndriver.ValuesToRead.Count > 0)
+                                {
+                                    ListKeyValue t = iconndriver.ValuesToRead.Dequeue();
+                                    if (ValueList[t.Id] == null && t.Value != null || ValueList[t.Id] != null && t.Value == null)
+                                    {
+                                        onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
+                                    }
+                                    else
+                                    {
+                                        if (!ValueList[t.Id].Equals(t.Value))
+                                        {
+                                            onDataChanged(this, new DataChangeEventArgs(t.Id, t.Value));
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    TxtLogWriter.WriteErrorMessage(errorlogfile, this.GetType().FullName + "." + "ReadingData Error:" + ex.Message);
+                }
+                Thread.Sleep(1000);
             }
-            Thread.Sleep(1000);
         }
         #endregion
 
@@ -333,6 +374,9 @@ namespace CHQ.RD.ConnectorBase
         void onDataChanged(object sender, DataChangeEventArgs e)
         {
             //写值   
+            ValueList[e.ItemId] = e.Value;
+            //senddata
+            SendData(e.ItemId, e.Value);
             //触发handler
             if (m_dchandler != null)
             {

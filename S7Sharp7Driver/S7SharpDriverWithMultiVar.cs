@@ -44,7 +44,7 @@ namespace CHQ.RD.S7Sharp7Driver
         #endregion
         public S7SharpDriverWithMultiVar() : base()
         {
-            DebugMode = 0;
+            DebugMode = -1;
 
             HostType = typeof(S7TCPHost);
             AddressType = typeof(S7Address);
@@ -208,6 +208,14 @@ namespace CHQ.RD.S7Sharp7Driver
             int ret = 0;
             try
             {
+                if (!m_client.Connected)
+                {
+                    ret=m_client.ConnectTo(((S7TCPHost)m_host).IPAddress, ((S7TCPHost)m_host).RackNo, ((S7TCPHost)m_host).SlotNo);
+                    if (ret > 0)
+                    {
+                        throw new Exception("Connection To PLC Error(Errcode=" + ret + ")");
+                    }
+                }
                 m_readtimer = new Timer(ReadAndParsing, null, ReadInterval, ReadInterval);
                 Status = DriverStatus.Running;
             }
@@ -223,8 +231,13 @@ namespace CHQ.RD.S7Sharp7Driver
             int ret = 0;
             try
             {
-                m_readtimer = null;
                 m_readtimer.Dispose();
+                ret = m_client.Disconnect();
+                if (ret > 0)
+                {
+                    throw new Exception("关闭至PLC的连接出错(ErrorCode="+ret+"！");
+                }
+                m_readtimer = null;
                 Status = DriverStatus.Stoped;
             }
             catch(Exception ex)
@@ -327,7 +340,7 @@ namespace CHQ.RD.S7Sharp7Driver
                 //mv.Add(exp.BlockType, S7Consts.S7WLByte, exp.BlockNo, exp.Start, exp.End,ref buff);
                 if (DebugMode == 0) { TxtLogWriter.WriteMessage(logfile, "Begin Read at" + DateTime.Now.ToString("hh:mm:ss fff")); }
                 //mv.Read();
-                int i=m_client.ReadArea(exp.BlockType, exp.BlockType, exp.Start, exp.End - exp.Start, S7Consts.S7WLByte, buff);
+                int i=m_client.ReadArea(exp.BlockType, exp.BlockNo, exp.Start, exp.End - exp.Start, S7Consts.S7WLByte, buff);
                 if (i != 0)
                 {
                     if (ErrorCount.ContainsKey(i))

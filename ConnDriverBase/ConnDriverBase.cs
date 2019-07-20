@@ -207,6 +207,7 @@ namespace CHQ.RD.ConnDriverBase
                             Address = cditem.Address
                         }
                     );
+                    m_values.Add(cditem.Id, null);
                 }
                 Assembly asm = Assembly.LoadFile(m_conndriverset.ClassFile.FileName);
                 m_driverclass = asm.GetType(m_conndriverset.ClassFile.ClassName);
