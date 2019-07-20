@@ -548,6 +548,7 @@ namespace CHQ.RD.ConnDriverBase
                                 m_datareader.Dispose();
                                 m_datareader = null;
                             }
+                            m_driver.Dispose();
                             //准备重新启动并初始化驱动
                             //TODO:停止errortransact，在timer启动的进程中杀掉timer，不知道会不会可行
                             m_errortransact.Dispose();
