@@ -4,7 +4,7 @@
     <server Id="1" Path="\\it$\09.Developer\Console\AU" Type="AutoUpdate.NetworkShareAU" />
   </Settings>
   <Files>
-    
+    <File Id="1" FileName=""/>
   </Files>
   <Client>
     <CurrentServer Id="" UpdateType="Auto"/>

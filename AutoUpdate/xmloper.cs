@@ -111,6 +111,37 @@ namespace AutoUpdate
         #endregion
 
         #region 文件操作
+        /// <summary>
+        /// 获取客户端所有文件信息
+        /// </summary>
+        /// <returns></returns>
+        public static List<AUFileInfo> getClientFileInfos()
+        {
+            List<AUFileInfo> ret = new List<AUFileInfo>();
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(settingFile);
+                XmlNodeList nodes = doc.DocumentElement.SelectNodes("Files/File");
+                foreach (XmlNode node in nodes)
+                {
+                    AUFileInfo auii = new AUFileInfo
+                    {
+                        FileId = int.Parse(node.Attributes["FileId"].Value),
+                        FileName = node.Attributes["FileName"].Value,
+                        FileVersion = node.Attributes["FileVersion"].Value,
+                        FileSize = int.Parse(node.Attributes["FileSize"].Value),
+                        FilePath = node.Attributes["FilePath"].Value
+                    };
+                    ret.Add(auii);
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteErrorMessage(errorLog, "getServerFileInfos Error:" + ex.Message);
+            }
+            return ret;
+        }
 
         #endregion
 
