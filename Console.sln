@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceListener", "WebSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnDriverBase", "ConnDriverBase\ConnDriverBase.csproj", "{78F0FAF5-D8DD-4A7C-8506-4E16A40281CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdate", "AutoUpdate\AutoUpdate.csproj", "{3E57A176-C74C-4B6E-A00B-F42F54E31278}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{78F0FAF5-D8DD-4A7C-8506-4E16A40281CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78F0FAF5-D8DD-4A7C-8506-4E16A40281CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78F0FAF5-D8DD-4A7C-8506-4E16A40281CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E57A176-C74C-4B6E-A00B-F42F54E31278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E57A176-C74C-4B6E-A00B-F42F54E31278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E57A176-C74C-4B6E-A00B-F42F54E31278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E57A176-C74C-4B6E-A00B-F42F54E31278}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AutoUpdate>
+  <Settings>
+    <server Id="1" Path="\\it$\09.Developer\Console\AU" Type="AutoUpdate.NetworkShareAU" />
+  </Settings>
+  <Files>
+    
+  </Files>
+  <Client>
+    <CurrentServer Id="" UpdateType="Auto"/>
+  </Client>
+</AutoUpdate>
