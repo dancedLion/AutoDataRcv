@@ -43,6 +43,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="FrmServerSettingEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmServerSettingEdit.Designer.cs">
+      <DependentUpon>FrmServerSettingEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmServerSettingsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmServerSettingsView.Designer.cs">
+      <DependentUpon>FrmServerSettingsView.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,9 +79,17 @@
     <Compile Include="xmloper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UpdateSettings.xml" />
+    <None Include="UpdateSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FrmServerSettingEdit.resx">
+      <DependentUpon>FrmServerSettingEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmServerSettingsView.resx">
+      <DependentUpon>FrmServerSettingsView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmUpload.resx">
       <DependentUpon>FrmUpload.cs</DependentUpon>
     </EmbeddedResource>

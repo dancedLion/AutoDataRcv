@@ -107,7 +107,29 @@ namespace AutoUpdate
         #endregion
 
         #region 客户端设置与获取
-
+        /// <summary>
+        /// 获取设置的当前自动更新服务器的设置
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string,string> getCurrentServerSetting()
+        {
+            Dictionary<string, string> ret = null;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(settingFile);
+                XmlNode node = doc.DocumentElement.SelectSingleNode("Client/CurrentServer");
+                if (node != null)
+                {
+                    ret=getAUSSetting(int.Parse(node.Attributes["Id"].Value));
+                }
+            }
+            catch(Exception ex)
+            {
+                WriteErrorMessage("getCurrentServerSetting Error:" + ex.Message);
+            }
+            return ret;
+        }
         #endregion
 
         #region 文件操作
@@ -143,6 +165,38 @@ namespace AutoUpdate
             return ret;
         }
 
+        public static int saveClientFileInfo(AUFileInfo info)
+        {
+            int ret = -1;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(settingFile);
+                XmlNodeList nodes = doc.DocumentElement.SelectNodes("Files/File[@FileId=" + info.FileId + "]");
+                XmlElement elem = null;
+                if (nodes == null || nodes.Count == 0)
+                {
+                    elem = doc.CreateElement("File");
+                    elem.SetAttribute("FileId", info.FileId.ToString());
+                    doc.DocumentElement.SelectSingleNode("Files").AppendChild(elem);
+                }
+                else
+                {
+                    elem = (XmlElement)nodes[0];
+                }
+                //设置属性
+                elem.SetAttribute("FileName", info.FileName);
+                elem.SetAttribute("FileSize", info.FileSize.ToString());
+                elem.SetAttribute("FileVersion", info.FileVersion);
+                elem.SetAttribute("FilePath", info.FilePath);
+                doc.Save(settingFile);
+            }
+            catch(Exception ex)
+            {
+                WriteErrorMessage("saveClientFileInfo(filename=" + info.FileName + ") Error:" + ex.Message);
+            }
+            return ret;
+        }
         #endregion
 
         #region 日志写入
