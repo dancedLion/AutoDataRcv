@@ -26,7 +26,7 @@ namespace AutoUpdate
         /// </summary>
         /// <param name="fileId"></param>
         /// <returns></returns>
-        AUFileInfo GetFileInfo(int fileId);
+        AUFileInfo GetFileInfo(string fileId);
         /// <summary>
         /// 获取所有服务器端文件信息
         /// </summary>
@@ -37,7 +37,7 @@ namespace AutoUpdate
         /// </summary>
         /// <param name="fileId">文件ID</param>
         /// <returns>字节流</returns>
-        byte[] PrepareFile(int fileId);
+        byte[] PrepareFile(string fileId);
         /// <summary>
         /// 设置服务器文件，保存上传的文件
         /// </summary>
@@ -55,6 +55,7 @@ namespace AutoUpdate
     }
     public interface IAutoUpdateClient
     {
+        Dictionary<string,string> ClientSetting { get; set; }
         /// <summary>
         /// 自动更新
         /// </summary>
@@ -87,7 +88,7 @@ namespace AutoUpdate
         /// </summary>
         /// <param name="fileId"></param>
         /// <returns></returns>
-        AUFileInfo GetFileInfo(int fileId);
+        AUFileInfo GetFileInfo(string fileId);
         /// <summary>
         /// 获取客户端所有的文件信息
         /// </summary>

@@ -14,6 +14,7 @@ namespace AutoUpdate
         #region 变量和属性
         List<AUFileInfo> m_fileinfos;
         IAutoUpdateServer m_server;
+        Dictionary<string, string> m_clientsetting;
         string m_localpath = AppDomain.CurrentDomain.BaseDirectory;
         public IAutoUpdateServer AUServer
         {
@@ -25,12 +26,18 @@ namespace AutoUpdate
             get { return m_fileinfos; }
             set { m_fileinfos = value; }
         }
+        public Dictionary<string,string> ClientSetting
+        {
+            get { return m_clientsetting; }
+            set { m_clientsetting = value; }
+        }
         #endregion
 
         public AUCLient()
         {
             m_fileinfos = new List<AUFileInfo>();
             GetAllFileInfos();
+            m_clientsetting = xmloper.getClientSetting();
             InitServer();
         }
         #region Interface Methods
@@ -132,6 +139,8 @@ namespace AutoUpdate
                 }
                 FileStream fs = new FileStream(m_localpath + info.FilePath + info.FileName, FileMode.OpenOrCreate, FileAccess.Write);
                 fs.Write(buff, 0, buff.Length);
+                fs.Flush();
+                fs.Close();
                 //更新本地信息
                 AUFileInfo linfo = m_fileinfos.Find(t => t.FileId == info.FileId);
                 if (linfo == null)
@@ -160,7 +169,7 @@ namespace AutoUpdate
         {
             return xmloper.getClientFileInfos();
         }
-        public virtual AUFileInfo GetFileInfo(int fileId)
+        public virtual AUFileInfo GetFileInfo(string fileId)
         {
             return m_fileinfos.Find(t => t.FileId == fileId);
         }
@@ -197,8 +206,8 @@ namespace AutoUpdate
         #region properties
         string m_remotelocation = "";
         string m_fileinfofile = "";
-        
-        List<AUFileInfo> m_fileinfos;
+        string m_remotepath = "";
+        List <AUFileInfo> m_fileinfos;
         int m_status = -1;
         public int ServerStatus
         {
@@ -224,6 +233,7 @@ namespace AutoUpdate
             {
                 Dictionary<string, string> settings = xmloper.getAUSSetting(serverId);
                 m_remotelocation = settings["Path"];
+                m_remotepath = m_remotelocation + @"\";
                 m_fileinfofile = settings["FileInfoSetting"];
                 ret = PrepareEnv();
                 m_status = ret;
@@ -259,13 +269,15 @@ namespace AutoUpdate
                 }
                 
                 //先写文件
-                string filename = m_remotelocation + info.FilePath + info.FileName;
-                if (!Directory.Exists(m_remotelocation + info.FilePath))
+                string filename = m_remotepath + info.FilePath + info.FileName;
+                if (!Directory.Exists(m_remotepath + info.FilePath))
                 {
-                    Directory.CreateDirectory(m_remotelocation + info.FilePath);
+                    Directory.CreateDirectory(m_remotepath + info.FilePath);
                 }
                 FileStream fstream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
                 fstream.Write(fs, 0, fs.Length);
+                fstream.Flush();
+                fstream.Close();
                 //写全局信息文件
                 if (editmode == 0)
                 {
@@ -288,14 +300,14 @@ namespace AutoUpdate
                 }
                 //写配置文件
                 XmlDocument doc = new XmlDocument();
-                doc.Load(m_remotelocation + m_fileinfofile);
+                doc.Load(m_remotepath + m_fileinfofile);
                 XmlElement elem = null;
                 XmlNode node = doc.SelectSingleNode("Files/File[@FileId=" + info.FileId + "]");
                 if (node == null)
                 {
                     elem = doc.CreateElement("File");
                     elem.SetAttribute("FileId", info.FileId.ToString());
-                    doc.SelectSingleNode("Files").AppendChild(elem);
+                    doc.DocumentElement.SelectSingleNode("Files").AppendChild(elem);
                 }
                 else
                 {
@@ -305,7 +317,7 @@ namespace AutoUpdate
                 elem.SetAttribute("FileSize", info.FileSize.ToString());
                 elem.SetAttribute("FileVersion", info.FileVersion);
                 elem.SetAttribute("FilePath", info.FilePath);
-                doc.Save(m_remotelocation + m_fileinfofile);
+                doc.Save(m_remotepath + m_fileinfofile);
                 ret = 0;
             }
             catch(Exception ex)
@@ -314,16 +326,13 @@ namespace AutoUpdate
             }
             return ret;
         }
-        public byte[] PrepareFile(int fileId)
-        {
-            return PrepareFile(GetFileInfo(fileId).FileName);
-        }
-        public byte[] PrepareFile(string fileName)
+        public byte[] PrepareFile(string fileId)
         {
             byte[] ret = null;
             try
             {
-                string filename = m_remotelocation + fileName;
+                AUFileInfo auinfo = GetFileInfo(fileId);
+                string filename = m_remotepath + auinfo.FilePath + auinfo.FileName;
                 FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
                 ret = new byte[fs.Length];
                 int numReading = 0;
@@ -338,10 +347,11 @@ namespace AutoUpdate
                     numReading += n;
                     numToReading -= n;
                 }
+                fs.Close();
             }
             catch (Exception ex)
             {
-                xmloper.WriteErrorMessage(this.GetType().FullName + ".PrepareFile(" + fileName + ") Error:" + ex.Message);
+                xmloper.WriteErrorMessage(this.GetType().FullName + ".PrepareFile(" + fileId + ") Error:" + ex.Message);
             }
             return ret;
         }
@@ -351,21 +361,21 @@ namespace AutoUpdate
             try
             {
                 //可以访问
-                if (!Cmd(m_remotelocation))
+                if (!Cmd(@"net use "+m_remotelocation))
                 {
                     throw new Exception("目标目录不存在或者不可访问！");
                 }
                 //文件信息文件存在,如不存在则创建新文件
-                if (!File.Exists(m_remotelocation + m_fileinfofile))
+                if (!File.Exists(m_remotepath + m_fileinfofile))
                 {
-                    File.Create(m_remotelocation+m_fileinfofile).Close();
+                    File.Create(m_remotepath+m_fileinfofile).Close();
                     XmlDocument doc = new XmlDocument();
                     doc.LoadXml(@"<?xml version=""1.0"" encoding=""utf-8"" ?>" +
                         @"<FileInfos>" +
                         @"<Files>" +
                         @"</Files>" +
                         @"</FileInfos>");
-                    doc.Save(m_remotelocation + m_fileinfofile);
+                    doc.Save(m_remotepath + m_fileinfofile);
                 }
                 ret = 0;
             }
@@ -381,13 +391,13 @@ namespace AutoUpdate
             try
             {
                 XmlDocument doc = new XmlDocument();
-                doc.LoadXml(m_remotelocation + m_fileinfofile);
+                doc.Load(m_remotepath + m_fileinfofile);
                 XmlNodeList nodes = doc.DocumentElement.SelectNodes("Files/File");
                 foreach (XmlNode node in nodes)
                 {
                     AUFileInfo auii = new AUFileInfo
                     {
-                        FileId = int.Parse(node.Attributes["FileId"].Value),
+                        FileId = node.Attributes["FileId"].Value,
                         FileName = node.Attributes["FileName"].Value,
                         FileVersion = node.Attributes["FileVersion"].Value,
                         FileSize = int.Parse(node.Attributes["FileSize"].Value),
@@ -402,7 +412,7 @@ namespace AutoUpdate
             }
             return ret;
         }
-        public AUFileInfo GetFileInfo(int fileId)
+        public AUFileInfo GetFileInfo(string fileId)
         {
             if (m_fileinfos == null || m_fileinfos.Count == 0)
             {
@@ -420,7 +430,7 @@ namespace AutoUpdate
             try
             {
                 XmlDocument doc = new XmlDocument();
-                doc.Load(m_remotelocation + m_fileinfofile);
+                doc.Load(m_remotepath + m_fileinfofile);
                 XmlNode node = doc.DocumentElement.SelectSingleNode("Files/File[@FileId=" + fileId + "]");
                 if (node != null)
                 {

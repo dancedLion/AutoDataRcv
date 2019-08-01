@@ -34,11 +34,11 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.colKey = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -70,6 +70,7 @@
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(36, 22);
             this.toolStripButton1.Text = "保存";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripSeparator1
             // 
@@ -84,6 +85,7 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(36, 22);
             this.toolStripButton2.Text = "退出";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // splitContainer1
             // 
@@ -108,22 +110,14 @@
             this.splitContainer1.SplitterDistance = 72;
             this.splitContainer1.TabIndex = 1;
             // 
-            // label1
+            // button1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(32, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "ID：";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(59, 14);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(225, 21);
-            this.textBox1.TabIndex = 1;
+            this.button1.Location = new System.Drawing.Point(284, 41);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(25, 21);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "...";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // textBox2
             // 
@@ -141,14 +135,22 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "类型：";
             // 
-            // button1
+            // textBox1
             // 
-            this.button1.Location = new System.Drawing.Point(284, 41);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(25, 21);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.textBox1.Location = new System.Drawing.Point(59, 14);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(225, 21);
+            this.textBox1.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(32, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "ID：";
             // 
             // dataGridView1
             // 
@@ -165,12 +167,14 @@
             // 
             // colKey
             // 
+            this.colKey.DataPropertyName = "KeyCol";
             this.colKey.HeaderText = "键";
             this.colKey.Name = "colKey";
             this.colKey.Width = 120;
             // 
             // colValue
             // 
+            this.colValue.DataPropertyName = "ValueCol";
             this.colValue.HeaderText = "值";
             this.colValue.Name = "colValue";
             this.colValue.Width = 200;

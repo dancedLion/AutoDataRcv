@@ -43,6 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="FrmAddUpdateFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAddUpdateFile.Designer.cs">
+      <DependentUpon>FrmAddUpdateFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmServerSettingEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +60,12 @@
     </Compile>
     <Compile Include="FrmServerSettingsView.Designer.cs">
       <DependentUpon>FrmServerSettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmStarter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmStarter.Designer.cs">
+      <DependentUpon>FrmStarter.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmUpdate.cs">
       <SubType>Form</SubType>
@@ -84,11 +96,23 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FrmAddUpdateFile.resx">
+      <DependentUpon>FrmAddUpdateFile.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmServerSettingEdit.resx">
       <DependentUpon>FrmServerSettingEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmServerSettingsView.resx">
       <DependentUpon>FrmServerSettingsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmStarter.resx">
+      <DependentUpon>FrmStarter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmUpdate.resx">
+      <DependentUpon>FrmUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmUpdateSettings.resx">
+      <DependentUpon>FrmUpdateSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmUpload.resx">
       <DependentUpon>FrmUpload.cs</DependentUpon>

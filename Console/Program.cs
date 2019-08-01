@@ -15,8 +15,12 @@ namespace Console
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            AutoUpdate.AutoUpdater upd = new AutoUpdate.AutoUpdater();
+            upd.LoadUpdate();
+            
+            Application.EnableVisualStyles();
+           
             Application.Run(new Form1());
         }
     }

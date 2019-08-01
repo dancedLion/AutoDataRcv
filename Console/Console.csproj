@@ -86,6 +86,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AutoUpdate\AutoUpdate.csproj">
+      <Project>{3e57a176-c74c-4b6e-a00b-f42f54e31278}</Project>
+      <Name>AutoUpdate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConnectorBase\ConnectorBase.csproj">
       <Project>{870f19e1-1bc7-4d09-8a67-50d077ce801e}</Project>
       <Name>ConnectorBase</Name>

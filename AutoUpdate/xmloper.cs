@@ -24,7 +24,7 @@ namespace AutoUpdate
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(settingFile);
-                XmlNodeList nodes = doc.DocumentElement.SelectNodes("Settings/Server[@Id=" + settings["Id"] + "]");
+                XmlNodeList nodes = doc.DocumentElement.SelectNodes("Settings/Server[@ServerId=" + settings["ServerId"] + "]");
                 XmlElement elem = null;
                 if (nodes == null || nodes.Count > 0)
                 {
@@ -44,7 +44,7 @@ namespace AutoUpdate
             }
             catch(Exception ex)
             {
-                WriteErrorMessage(errorLog, "saveNetworkShareAUS Settings Error:" + ex.Message);
+                WriteErrorMessage(errorLog, "saveAUS Settings Error:" + ex.Message);
             }
             return ret;
         }
@@ -60,7 +60,7 @@ namespace AutoUpdate
                 XmlDocument doc = new XmlDocument();
                 doc.Load(settingFile);
                 Dictionary<string, string> auss;
-                XmlNodeList nodes = doc.SelectNodes("Settings/Server");
+                XmlNodeList nodes = doc.DocumentElement.SelectNodes("Settings/Server");
                 foreach(XmlNode node in nodes)
                 {
                     auss = new Dictionary<string, string>();
@@ -89,7 +89,7 @@ namespace AutoUpdate
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(settingFile);
-                XmlNode node = doc.SelectSingleNode("Settings/Server[@Id=" + serverId + "]");
+                XmlNode node = doc.DocumentElement.SelectSingleNode("Settings/Server[@ServerId=" + serverId + "]");
                 if (node != null)
                 {
                     foreach(XmlAttribute att in node.Attributes)
@@ -104,6 +104,37 @@ namespace AutoUpdate
             }
             return ret;
         }
+        /// <summary>
+        /// 移除指定ID的服务器设置
+        /// </summary>
+        /// <param name="serverId">服务器ID</param>
+        /// <returns></returns>
+        public static int delAUSSetting(int serverId)
+        {
+            int ret = -1;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(settingFile);
+                XmlNode node = doc.DocumentElement.SelectSingleNode("Settings/Server[@ServerId=" + serverId + "]");
+                if (node != null)
+                {
+                    node.ParentNode.RemoveChild(node);
+                }
+                else
+                {
+                    throw new Exception("指定服务器未找到！");
+                }
+                ret = 0;
+                doc.Save(settingFile);
+            }
+            catch(Exception ex)
+            {
+                WriteErrorMessage("delAUSSeting(ServerId="+serverId+") error:" + ex.Message);
+            }
+            return ret;
+        }
+
         #endregion
 
         #region 客户端设置与获取
@@ -130,6 +161,87 @@ namespace AutoUpdate
             }
             return ret;
         }
+
+        public static string getCurrentUpdateType()
+        {
+            string ret = "Auto";
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(settingFile);
+                XmlNode node = doc.DocumentElement.SelectSingleNode("Client/CurrentServer");
+                if (node == null)
+                {
+                    throw new Exception("未设置当前服务器设置！");
+                }
+                ret = node.Attributes["UpdateType"].Value;
+            }
+            catch(Exception ex)
+            {
+                WriteErrorMessage("getCurrentUpdateType Error:" + ex.Message);
+            }
+            return ret;
+        }
+        /// <summary>
+        /// 保存客户端当前设定
+        /// 服务器
+        /// 更新方式
+        /// </summary>
+        /// <param name="cursetting"></param>
+        /// <returns></returns>
+        public static int saveCurrentSetting(Dictionary<string,string> cursetting)
+        {
+            int ret = -1;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(settingFile);
+                XmlNode node = doc.DocumentElement.SelectSingleNode("Client/CurrentServer");
+                XmlElement elem = null;
+                if (node == null)
+                {
+                    elem = doc.CreateElement("CurrentServer");
+                    doc.DocumentElement.SelectSingleNode("Client").AppendChild(elem);
+                }
+                else
+                {
+                    elem = (XmlElement)node;
+                }
+                foreach(KeyValuePair<string,string> kv in cursetting)
+                {
+                    elem.SetAttribute(kv.Key, kv.Value);
+                }
+                doc.Save(settingFile);
+                ret = 0;
+            }
+            catch(Exception ex)
+            {
+                WriteErrorMessage("saveCurrentSetting Error:" + ex.Message);
+            }
+            return ret;
+        }
+
+        public static Dictionary<string,string> getClientSetting()
+        {
+            Dictionary<string, string> ret = new Dictionary<string, string>();
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(settingFile);
+                XmlNode node = doc.DocumentElement.SelectSingleNode("Client/CurrentServer");
+                if (node == null)
+                {
+                    throw new Exception("Cannot get the CurrentServer Setting!");
+                }
+                ret.Add("Id", node.Attributes["Id"].Value);
+                ret.Add("UpdateType", node.Attributes["UpdateType"].Value);
+            }
+            catch(Exception ex)
+            {
+                WriteErrorMessage("getClientSetting Error:" + ex.Message);
+            }
+            return ret;
+        }
         #endregion
 
         #region 文件操作
@@ -143,13 +255,13 @@ namespace AutoUpdate
             try
             {
                 XmlDocument doc = new XmlDocument();
-                doc.LoadXml(settingFile);
+                doc.Load(settingFile);
                 XmlNodeList nodes = doc.DocumentElement.SelectNodes("Files/File");
                 foreach (XmlNode node in nodes)
                 {
                     AUFileInfo auii = new AUFileInfo
                     {
-                        FileId = int.Parse(node.Attributes["FileId"].Value),
+                        FileId = node.Attributes["FileId"].Value,
                         FileName = node.Attributes["FileName"].Value,
                         FileVersion = node.Attributes["FileVersion"].Value,
                         FileSize = int.Parse(node.Attributes["FileSize"].Value),
@@ -160,7 +272,7 @@ namespace AutoUpdate
             }
             catch (Exception ex)
             {
-                WriteErrorMessage(errorLog, "getServerFileInfos Error:" + ex.Message);
+                WriteErrorMessage(errorLog, "getClientFileInfos Error:" + ex.Message);
             }
             return ret;
         }
@@ -191,12 +303,14 @@ namespace AutoUpdate
                 elem.SetAttribute("FilePath", info.FilePath);
                 doc.Save(settingFile);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 WriteErrorMessage("saveClientFileInfo(filename=" + info.FileName + ") Error:" + ex.Message);
             }
             return ret;
         }
+
+
         #endregion
 
         #region 日志写入

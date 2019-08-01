@@ -7,6 +7,6 @@
     <File FileId="1" FileName=""/>
   </Files>
   <Client>
-    <CurrentServer Id="1" UpdateType="Auto"/>
+    <CurrentServer Id="1" UpdateType="Admin"/>
   </Client>
 </AutoUpdate>
