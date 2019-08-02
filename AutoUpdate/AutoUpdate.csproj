@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -85,6 +86,7 @@
     <Compile Include="FrmUpload.Designer.cs">
       <DependentUpon>FrmUpload.cs</DependentUpon>
     </Compile>
+    <Compile Include="FtpAUServer.cs" />
     <Compile Include="IAutoUpdater.cs" />
     <Compile Include="NetworkShareAU.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,6 +119,9 @@
     <EmbeddedResource Include="FrmUpload.resx">
       <DependentUpon>FrmUpload.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

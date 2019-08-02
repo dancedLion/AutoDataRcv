@@ -41,7 +41,8 @@ namespace AutoUpdate
                 }
             }
             string updType = xmloper.getCurrentUpdateType();
-            comboBox1.SelectedValue = updType;
+            comboBox1.Text = updType;
+            //comboBox1.SelectedText = updType;
         }
 
         void toSave()
@@ -58,7 +59,7 @@ namespace AutoUpdate
                 }
                 Dictionary<string, string> curr = new Dictionary<string, string>();
                 curr.Add("Id", treeView1.SelectedNode.Tag.ToString());
-                curr.Add("UpdateType", comboBox1.SelectedValue.ToString());
+                curr.Add("UpdateType", comboBox1.Text);
                 if (xmloper.saveCurrentSetting(curr) > -1)
                 {
                     this.Close();

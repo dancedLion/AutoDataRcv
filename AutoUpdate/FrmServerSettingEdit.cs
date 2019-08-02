@@ -34,6 +34,7 @@ namespace AutoUpdate
             //获取最大ID
             List<Dictionary<string, string>> t = xmloper.getAUSSetingsList();
             m_setting.Add("ServerId", "1");
+            m_setting.Add("Type", "");
             if (t.Count == 0)
             {
                 

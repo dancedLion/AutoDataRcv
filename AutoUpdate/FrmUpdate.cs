@@ -53,11 +53,11 @@ namespace AutoUpdate
         {
             if (m_client.DownloadFile((AUFileInfo)item.Tag) == 0)
             {
-                item.SubItems[5].Text = "OK";
+                item.SubItems[4].Text = "OK";
             }
             else
             {
-                item.SubItems[5].Text = "Error";
+                item.SubItems[4].Text = "Error";
             }
         }
 

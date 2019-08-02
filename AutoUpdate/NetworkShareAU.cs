@@ -36,7 +36,7 @@ namespace AutoUpdate
         public AUCLient()
         {
             m_fileinfos = new List<AUFileInfo>();
-            GetAllFileInfos();
+            m_fileinfos=GetAllFileInfos();
             m_clientsetting = xmloper.getClientSetting();
             InitServer();
         }

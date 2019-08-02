@@ -302,6 +302,7 @@ namespace AutoUpdate
                 elem.SetAttribute("FileVersion", info.FileVersion);
                 elem.SetAttribute("FilePath", info.FilePath);
                 doc.Save(settingFile);
+                ret = 0;
             }
             catch (Exception ex)
             {
